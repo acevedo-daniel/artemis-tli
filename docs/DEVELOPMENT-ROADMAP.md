@@ -9,22 +9,23 @@ status: active
 
 ## Objective
 
-Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C que represente correctamente el escenario Artemis que asigne la cátedra. Construirlo de forma gradual, comprensible para cinco integrantes y verificable mediante GitHub, pruebas y una defensa técnica.
+Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C que represente correctamente el escenario Artemis asignado por la cátedra: Problema 3, inyección translunar (TLI). Construirlo de forma gradual, comprensible para cinco integrantes y verificable mediante GitHub, pruebas y una defensa técnica.
 
 **Current phase:** Preparación del equipo y GitHub
 
 ## Constraints
 
-- El escenario específico será uno de los cuatro previstos por la consigna y se asignará por la cátedra. Este roadmap no presupone cuál será.
+- El escenario asignado es el Problema 3, *Inyección Translunar — TLI e Inercia en Trayectoria Libre*; la consigna completa está en `docs/catedra/consigna.pdf`.
 - Equipo de cinco estudiantes, con participación real y progresiva de todos en el repositorio.
 - Lenguaje C; aplicación ejecutada nativamente en consola, sin interfaz gráfica ni servicios externos.
 - Menú principal, simulación interactiva por turnos o eventos y reporte final de desempeño.
 - Uso de condicionales y ciclos, funciones con parámetros, `struct`/`typedef`, arreglos, punteros, validación de entradas y manejo de errores.
 - Separación lógica mínima entre `main.c`, archivos de cabecera `.h`, módulo de simulación `.c` y módulo de validación/interfaz `.c/.h`.
 - Repositorio **público** de GitHub, con commits graduales de todos los integrantes. Se recomiendan ramas y Pull Requests.
+- `main` se integra con squash: cada Pull Request queda como un solo commit. Para que el historial muestre múltiples commits equitativos, cada integrante integra su trabajo en Pull Requests pequeños y frecuentes durante todo el período, no en uno grande al final.
 - Entrega con código fuente, `Makefile` o scripts de compilación, `README.md` completo, registro transparente de IA y video de hasta cinco minutos con participación y voces reales de los cinco integrantes.
 - Priorizar la claridad académica y la facilidad de mantenimiento: evitar dependencias, automatizaciones o arquitectura que no aporten al trabajo.
-- En GitHub, usar ramas y mensajes de commit breves en inglés, siguiendo `git-delivery` del playbook. El material de coordinación para el equipo puede mantenerse en español.
+- Todo se escribe en español: documentación, Issues, Pull Requests, descripciones de commits y ramas, comentarios, identificadores y textos de consola. Se mantienen en inglés los prefijos de tipo (`feat`, `fix`, `docs`, `chore`…), los nombres de archivo convencionales (`README.md`, `Makefile`, `docs/DEVELOPMENT.md`) y las palabras clave de C y de GitHub. El detalle está en `docs/DEVELOPMENT.md`.
 
 ## Phases
 
@@ -48,9 +49,9 @@ Dejar un entorno colaborativo mínimo, donde cada integrante pueda aportar y rev
 - Crear un repositorio público específico para el integrador; habilitar Issues e invitar a los otros cuatro integrantes como colaboradores.
 - Usar GitHub Desktop y el editor que ya conozca cada integrante; verificar que todos puedan clonar el repositorio y utilizar el compilador C elegido.
 - Registrar instrucciones cortas de colaboración en `docs/DEVELOPMENT.md`.
-- Crear un único tablero sencillo, si resulta útil: `To do`, `In progress`, `Done`. Cada Issue tendrá un responsable.
+- Usar el tablero del proyecto en GitHub (`Backlog`, `In progress`, `In review`, `Done`) con un milestone por etapa; cada Issue tendrá un único responsable.
 - Practicar el circuito completo: rama → cambio pequeño → commit → push → Pull Request → revisión → integración.
-- Incorporar `README.md`, `.gitignore` y este roadmap al repositorio.
+- Incorporar `README.md`, `.gitignore`, `AGENTS.md`, los formularios de Issues, la plantilla de Pull Request y este roadmap al repositorio.
 
 ### Out of scope
 
@@ -71,8 +72,10 @@ Transformar la situación física asignada en una especificación sencilla: qué
 
 ### In scope
 
-- Confirmar el escenario adjudicado y registrar datos, constantes físicas, restricciones, unidades y preguntas que debe resolver la simulación.
+- Registrar en `docs/PROJECT.md` los datos, constantes físicas, restricciones, unidades y preguntas del Problema 3 que debe resolver la simulación, con la fuente de cada constante que no figure en la consigna (por ejemplo, la masa y el radio de la Luna).
+- Asegurar que el programa responda las cuatro preguntas del Problema 3 a partir de valores que ingresa el usuario, no de datos fijos: el comportamiento inercial según la 1.ª Ley de Newton, la energía cinética inicial, el trabajo mínimo por unidad de masa hasta el punto de equilibrio Tierra-Luna y la comparación energética entre la ida y el regreso.
 - Definir la dinámica del juego: opciones de menú, decisiones del usuario, turnos o eventos, condición de finalización y reporte.
+- Definir qué hace desafiante la simulación y cómo se mide el desempeño que muestra el reporte final.
 - Identificar entidades y estados que podrían requerir `struct`, arreglos y funciones; diseñar un flujo de consola en pseudocódigo o diagrama breve.
 - Establecer ejemplos calculados a mano, casos normales, límites y entradas inválidas que luego servirán como pruebas.
 - Resolver con la cátedra las ambigüedades físicas que cambien el comportamiento del juego antes de implementarlas.
@@ -83,7 +86,8 @@ Transformar la situación física asignada en una especificación sencilla: qué
 
 ### Exit criteria
 
-- El escenario, las reglas, las entradas, los resultados y las condiciones de fin están documentados de modo que cualquier integrante pueda explicarlos.
+- El escenario, las reglas, las entradas, los resultados y las condiciones de fin están documentados en `docs/PROJECT.md` de modo que cualquier integrante pueda explicarlos.
+- Cada una de las cuatro preguntas del Problema 3 tiene una opción del programa, sus datos de entrada y un resultado de referencia calculado a mano.
 - Hay ejemplos de cálculo esperados y casos de prueba concretos para las operaciones principales.
 - Se conocen los módulos y sus responsabilidades, sin definir de forma prematura detalles innecesarios.
 - El equipo aprueba la interpretación funcional antes de empezar la implementación completa.
@@ -101,6 +105,8 @@ Disponer de una base compilable y navegable para que distintos integrantes pueda
 - Implementar un menú mínimo y un flujo de salida correcto, aunque algunas opciones todavía sean provisionales.
 - Añadir `Makefile` o scripts simples para compilar todo el proyecto y documentar cómo ejecutarlo.
 - Acordar contratos entre funciones y parámetros para evitar que varios desarrolladores modifiquen el mismo bloque a la vez.
+- Documentar módulos, estructuras y flujo entre archivos en `docs/ARCHITECTURE.md`, con el diagrama que luego usará el README.
+- Agregar una verificación automática en GitHub Actions que compile el proyecto con advertencias tratadas como errores y sea obligatoria para integrar Pull Requests en `main`.
 
 ### Out of scope
 
@@ -110,8 +116,9 @@ Disponer de una base compilable y navegable para que distintos integrantes pueda
 
 - El programa completo compila sin errores usando el comando documentado.
 - Al iniciarlo, el menú aparece, permite una elección básica y se puede salir correctamente.
-- Los módulos se comunican mediante cabeceras y llamadas a funciones; `main.c` no concentra los cálculos de dominio.
+- Los módulos se comunican mediante cabeceras y llamadas a funciones; `main.c` contiene únicamente `main()`, el menú principal y la inicialización del flujo, los cálculos viven en `simulador.c` y el ingreso seguro de datos en `validaciones.c`.
 - Dos integrantes diferentes pueden trabajar sobre módulos distintos y fusionar sus cambios mediante Pull Requests.
+- La verificación automática de compilación se ejecuta en cada Pull Request y bloquea la integración si falla.
 
 ## Phase: Núcleo de cálculo y simulación
 
@@ -124,7 +131,7 @@ Lograr que el sistema resuelva correctamente la parte física y actualice su est
 - Implementar funciones de cálculo por responsabilidad, respetando fórmulas, unidades, constantes y restricciones del escenario.
 - Representar el estado de la misión con estructuras apropiadas y usar arreglos y punteros con un propósito claro, no solamente para cumplir una lista.
 - Definir y procesar los cambios de estado propios de los turnos o eventos.
-- Comparar resultados contra ejercicios resueltos manualmente y probar casos límite relevantes.
+- Comparar resultados contra ejercicios resueltos manualmente y probar casos límite relevantes; registrar los casos y cómo ejecutarlos en `docs/TESTING.md`.
 - Integrar los cálculos progresivamente, evitando esperar al final para unir el trabajo de cada integrante.
 
 ### Out of scope
@@ -173,9 +180,9 @@ Entregar una versión reproducible que cumpla la consigna y pueda ser defendida 
 
 - Revisar en conjunto cálculo físico, menú, validaciones, arreglos, punteros, módulos y manejo de errores.
 - Compilar desde una copia limpia del repositorio con las instrucciones publicadas, sin depender de archivos locales no incluidos.
-- Completar el `README.md`: integrantes y comisión, escenario, reglas, funcionamiento, compilación/ejecución y registro detallado de IA (herramienta, tarea, consultas/prompts y validación o adaptación).
+- Completar el `README.md`: integrantes y comisión, escenario, reglas, funcionamiento, diagrama de módulos, compilación/ejecución y registro detallado de IA (herramienta, tarea, consultas/prompts y validación o adaptación).
 - Revisar contribuciones graduales de todos, Issues cerrados y Pull Requests integrados.
-- Grabar un video de hasta cinco minutos con los cinco integrantes, utilizando sus voces reales, explicando módulos y mostrando un caso exitoso y entradas inválidas.
+- Grabar un video de hasta cinco minutos, subido a YouTube, Drive o Loom, en el que los cinco integrantes aparecen y se presentan con sus voces reales, explican la arquitectura y la modularización, y muestran un caso exitoso y las validaciones ante entradas erróneas. No se usa IA para generar o modificar voces ni para crear avatares.
 - Preparar una explicación compartida de decisiones, fórmulas, flujo de ejecución y gestión de memoria para un posible coloquio.
 - Efectuar la entrega digital formal en el aula virtual según indique la cátedra.
 
@@ -192,8 +199,8 @@ Entregar una versión reproducible que cumpla la consigna y pueda ser defendida 
 
 ## Maintenance
 
-Al completar una etapa, actualizar **Current phase** con el nombre exacto de la siguiente. Según el playbook, eliminar del documento activo la sección y la fila de la etapa terminada: el historial de Git conserva el registro anterior.
+Al completar una etapa, actualizar **Current phase** con el nombre exacto de la siguiente. Eliminar del documento activo la sección y la fila de la etapa terminada: el historial de Git conserva el registro anterior.
 
-Al **comenzar cada etapa**, inspeccionar el estado real del repositorio y generar su plan en `local-docs/execution/<outcome-slug>.md` usando `PLAN.template.md` del `engineering-playbook`. Ese plan detalla decisiones, dependencias, tareas concretas, criterios de aceptación y verificaciones. A partir de él, crear Issues independientes con la plantilla `delegate-task`, asignándolos a los integrantes según capacidad y dependencias. Los Issues —no el documento local ignorado por Git— son la fuente de instrucciones compartida con el equipo.
+Al **comenzar cada etapa**, quien coordina revisa el estado real del repositorio y prepara un plan local de la etapa con decisiones, dependencias, tareas, criterios de aceptación y verificaciones. A partir de él crea Issues con el formulario Tarea, los asigna según capacidad y dependencias, y los agrega al tablero con el milestone de la etapa. Los Issues son la fuente de instrucciones compartida con el equipo.
 
 **Flujo de ejecución:** roadmap → plan específico de etapa → Issues asignados → ramas y commits → Pull Requests revisados → verificación de criterios de salida → siguiente etapa.
