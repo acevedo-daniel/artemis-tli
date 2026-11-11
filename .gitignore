@@ -1,0 +1,19 @@
+# Archivos de trabajo locales del coordinador
+local-docs/
+
+# Salidas de compilación de C
+*.o
+*.obj
+*.a
+*.exe
+*.out
+artemis_tli
+*.dSYM/
+
+# Editores y sistemas operativos
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini

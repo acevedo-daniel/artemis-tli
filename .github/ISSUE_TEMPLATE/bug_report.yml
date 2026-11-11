@@ -1,0 +1,40 @@
+name: Reporte de error
+description: Informar un comportamiento incorrecto del programa
+labels:
+  - bug
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: Qué pasó
+      description: Qué hiciste, qué esperabas y qué ocurrió en su lugar.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos para reproducirlo
+      placeholder: |
+        1. Compilar con ...
+        2. Elegir la opción ... del menú
+        3. Ingresar ...
+        4. Se observa ...
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Entorno
+      description: Solo lo relevante para el error.
+      placeholder: |
+        Sistema operativo: Windows 11
+        Compilador: salida de gcc --version
+    validations:
+      required: false
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Salida de consola
+      description: Pegar la salida de la consola o una captura.
+    validations:
+      required: false

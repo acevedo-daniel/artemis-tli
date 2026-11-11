@@ -1,0 +1,49 @@
+name: Tarea
+description: Tarea asignada a un integrante del equipo
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: Objetivo
+      description: Qué resultado concreto debe existir al terminar y por qué importa.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexto
+      description: Archivos, secciones de la documentación o de la consigna para leer antes de empezar.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Pasos
+      description: "Pasos concretos. Para pruebas manuales: opción de menú, dato ingresado y resultado esperado en cada paso."
+    validations:
+      required: true
+  - type: textarea
+    id: done-when
+    attributes:
+      label: Listo cuando
+      description: Resultados observables que cierran este Issue.
+      value: "- [ ] "
+    validations:
+      required: true
+  - type: dropdown
+    id: deliver
+    attributes:
+      label: Entrega
+      options:
+        - Pull Request que cierra este Issue
+        - Comentario con los resultados
+        - Archivo o datos en la ubicación indicada en Pasos
+    validations:
+      required: true
+  - type: textarea
+    id: out-of-scope
+    attributes:
+      label: Fuera de alcance
+      description: Qué no se debe modificar.
+    validations:
+      required: false

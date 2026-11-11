@@ -1,73 +1,100 @@
-# Simulador de Misiones Artemis — Guía simple de GitHub
+# Simulador de Misiones Artemis — Guía de trabajo con GitHub
 
-> Guía breve para un equipo de cinco personas que recién empieza a trabajar con GitHub.
+> Cómo colabora el equipo de cinco integrantes: herramientas, tablero, Issues, ramas y Pull Requests.
 
-## Qué utilizamos
+## Requisitos
 
-- **GitHub**: sitio donde vive el código y las tareas.
-- **GitHub Desktop**: aplicación visual para trabajar sin memorizar comandos de Git.
-- **VS Code u otro editor**: donde escribimos el código C.
-- **GCC**: compilador de C. Todos deben tener un modo de compilar el proyecto; se documentará el comando real una vez creada la base.
+| Herramienta | Uso |
+| --- | --- |
+| Cuenta de GitHub con acceso de colaborador | Ver Issues, crear ramas y abrir Pull Requests |
+| [GitHub Desktop](https://desktop.github.com/) | Clonar, crear ramas, hacer commits y push sin usar la consola |
+| VS Code u otro editor | Escribir el código C |
+| GCC | Compilar el programa; el comando exacto se documenta cuando exista el código base |
 
-## Configuración inicial (una sola vez)
+## Primera configuración
 
-1. Una persona crea el repositorio **público** con `README.md`; activa **Issues** y sube los archivos de este kit (`docs/`, `.github/` y `.gitignore`).
-2. Invita a los otros cuatro desde **Settings → Collaborators** (la ubicación exacta del menú puede variar).
-3. Cada integrante acepta la invitación, instala GitHub Desktop e inicia sesión.
-4. En GitHub Desktop, usa **File → Clone repository** y selecciona el repositorio compartido.
-5. Como equipo, opcionalmente crean un único Project sencillo con columnas **To do**, **In progress** y **Done**. No necesitan automatizaciones ni campos personalizados.
-6. Un integrante confirma que el proyecto compila en su equipo; después todos reproducen la misma instrucción.
+Cada integrante, una sola vez:
+
+1. Aceptar la invitación al repositorio desde el correo o desde <https://github.com/acevedo-daniel/trabajo-final-tpi-artemis/invitations>.
+2. Instalar GitHub Desktop e iniciar sesión con la cuenta de GitHub.
+3. En GitHub Desktop, usar **File → Clone repository** y elegir `acevedo-daniel/trabajo-final-tpi-artemis`.
+4. Abrir el [tablero del proyecto](https://github.com/users/acevedo-daniel/projects/4) y confirmar que se pueden mover tarjetas.
+5. En una terminal, ejecutar `gcc --version` y confirmar que GCC responde.
+
+## Tablero del proyecto
+
+Las tareas son Issues del repositorio y se siguen en el tablero [artemis-development](https://github.com/users/acevedo-daniel/projects/4). Los Issues nuevos se agregan solos en `Backlog`.
+
+| Status | Significado | Quién lo mueve |
+| --- | --- | --- |
+| Backlog | Tarea creada, todavía no empezada | Automático al crear el Issue |
+| In progress | El responsable trabaja en su rama | El responsable, al empezar |
+| In review | Hay un Pull Request abierto esperando revisión | El responsable, al abrir el PR |
+| Done | El Pull Request se integró y el Issue se cerró | Automático al integrar |
+
+Cada Issue tiene un único responsable (Assignees) y el milestone de la etapa del roadmap en curso. `Priority` (`P0` a `P2`) indica el orden y `Size` (`XS` a `XL`), el tamaño estimado.
 
 ## Cómo se trabaja con una tarea
 
-1. El responsable abre su **Issue** y lee objetivo, contexto, pasos, criterio de finalización y lo que no debe tocar.
-2. En GitHub Desktop, selecciona `main`, usa **Fetch origin** y **Pull origin** si hay cambios; crea una rama nueva desde esa versión actualizada.
-3. La rama describe el resultado en inglés, por ejemplo `feat/mission-menu` o `fix/numeric-input`.
-4. Implementa **solo esa tarea** y prueba el resultado. Hace uno o más commits pequeños y descriptivos, por ejemplo `feat: add mission menu`.
-5. Selecciona **Push origin** y crea un **Pull Request** hacia `main` desde GitHub Desktop o el sitio web.
-6. En el PR, explica qué cambió y enlaza el Issue (`Closes #N`, reemplazando `N` por el número real). Otro integrante revisa y pide correcciones si hacen falta.
-7. Tras aprobarse, se integra el PR. El responsable vuelve a `main`, ejecuta **Fetch origin / Pull origin** y crea una nueva rama para su siguiente tarea.
+1. El responsable abre su Issue y lee Objetivo, Contexto, Pasos, Listo cuando y Fuera de alcance. Mueve la tarjeta a `In progress`.
+2. En GitHub Desktop selecciona `main`, usa **Fetch origin** y **Pull origin**, y crea una rama nueva desde esa versión actualizada.
+3. Implementa solo esa tarea, la compila y la prueba. Hace uno o más commits pequeños.
+4. Usa **Push origin** y crea un Pull Request hacia `main`. Completa `Resumen` y `Cambios` de la plantilla; el último punto de `Resumen` es `Closes #N`, con el número real del Issue. Mueve la tarjeta a `In review`.
+5. Otro integrante revisa el Pull Request y aprueba o pide correcciones. `main` exige al menos una aprobación de otra persona, también para el coordinador.
+6. Con la aprobación, el autor integra con **Squash and merge**. La rama se borra sola y el Issue se cierra y pasa a `Done`.
+7. El autor vuelve a `main`, usa **Fetch origin** y **Pull origin**, y sigue con su próxima tarea.
 
-**Reglas de equipo:** no programar directamente en `main`; no subir archivos ejecutables ni temporales; no editar por cuenta propia el código que otra persona tiene asignado sin avisar; no fusionar cambios sin compilar o probar; y registrar commits reales a lo largo de todo el trabajo.
+Con **Squash and merge**, cada Pull Request queda en `main` como un único commit a nombre de quien lo abrió. Por eso cada integrante abre los Pull Requests de su propio trabajo: así el historial refleja los aportes reales de los cinco.
+
+## Nombres de ramas, commits y Pull Requests
+
+Se escriben en español y describen el resultado, sin números de etapa ni de tarea. El prefijo de tipo queda en inglés porque es la convención de GitHub.
+
+| Elemento | Formato | Ejemplo |
+| --- | --- | --- |
+| Rama | `<tipo>/<resultado-en-kebab-case>`, sin tildes ni `ñ` | `feat/menu-mision` |
+| Commit | `<tipo>: <verbo en infinitivo y minúsculas> <resultado>`, sin punto final | `feat: agregar menú de misión` |
+| Pull Request | igual que un commit, describiendo el resultado completo | `fix: rechazar letras en el menú` |
+
+Tipos: `feat` (funcionalidad nueva), `fix` (corrección), `refactor` (reorganización sin cambiar el comportamiento), `test` (pruebas), `docs` (documentación), `build` (compilación) y `chore` (mantenimiento).
+
+## Idioma
+
+Todo se escribe en español: documentación, Issues, Pull Requests, commits, comentarios del código, nombres de funciones y variables, y mensajes de consola. Los nombres en el código van sin tildes ni `ñ` (`calcular_energia_cinetica`).
+
+Quedan en inglés solo las convenciones que no se traducen:
+
+- los prefijos de tipo (`feat`, `fix`, `docs`, `chore`…);
+- los nombres de archivo convencionales (`README.md`, `Makefile`, `docs/DEVELOPMENT.md`);
+- las palabras clave de C y las funciones de la biblioteca estándar (`struct`, `printf`, `fgets`);
+- `Closes #N` en el Pull Request, porque GitHub solo cierra el Issue con esa palabra;
+- los estados del tablero (`Backlog`, `In progress`, `In review`, `Done`).
+
+## Reglas del equipo
+
+- No programar directamente en `main`.
+- No subir ejecutables ni archivos temporales; `.gitignore` ya los excluye.
+- No modificar el código asignado a otra persona sin avisar en su Issue.
+- No integrar cambios sin compilar y probar.
+- Registrar commits reales durante todo el trabajo.
+- Registrar todo uso de IA en el README, en el mismo Pull Request.
+
+## Cómo informar un bloqueo
+
+Comentar en el Issue qué se intentó, qué falló (con el mensaje de error completo) y mencionar al coordinador. La tarjeta queda en `In progress`. Si el Issue no coincide con el repositorio o el siguiente paso no está claro, comentar y esperar antes de cambiar el alcance.
 
 ## Cómo nos organizamos
 
-- **Roadmap:** qué etapa estamos atravesando y cuándo termina; archivo `docs/DEVELOPMENT-ROADMAP.md`.
-- **Plan de etapa:** decisiones y tareas de implementación, creado por quien coordina a partir de `PLAN.template.md` y guardado en `local-docs/execution/`.
-- **Issue:** una tarea autocontenida y asignada a una persona. El equipo trabaja desde los Issues, no necesita acceder al plan local.
-- **Pull Request:** propuesta de cambios verificable y revisable antes de unirla a `main`.
-- **README:** explicación pública del programa y, obligatoriamente, detalle del uso de IA.
+- **Roadmap:** etapa actual, alcance y criterios de finalización; archivo [DEVELOPMENT-ROADMAP.md](DEVELOPMENT-ROADMAP.md).
+- **Plan de etapa:** al comenzar cada etapa, el coordinador revisa el repositorio y arma un plan con decisiones y tareas. A partir de él crea los Issues; el equipo trabaja solo desde los Issues.
+- **Issue:** una tarea autocontenida, asignada a una persona y creada con el formulario Tarea. Los errores encontrados se informan con el formulario Reporte de error.
+- **Pull Request:** propuesta de cambios revisable antes de integrarla a `main`.
+- **README:** explicación pública del programa y registro obligatorio del uso de IA.
 
-Los cinco deben tener trabajo real de código y participar en la comprensión general del proyecto. Revisar PRs, probar y documentar también ayuda, pero no debe convertirse en una excusa para que una sola persona programe todo.
+Los cinco deben tener trabajo real de código y comprender el proyecto completo. Revisar Pull Requests, probar y documentar también suma, pero no reemplaza programar.
 
-## Formato mínimo de cada Issue
+Las tareas de una etapa se distribuyen cuando ya están decididos los módulos y sus dependencias. No hace falta repartir cinco tareas simultáneas si alguna depende de otra; sí hay que equilibrar los aportes a lo largo del proyecto.
 
-El repositorio trae `.github/ISSUE_TEMPLATE/task.yml`, basado en el formulario `delegate-task` del playbook, para que GitHub solicite automáticamente estos campos:
+## Qué no configuramos todavía
 
-```md
-### Goal
-Qué resultado concreto debe existir.
-
-### Context
-Archivos y reglas necesarias para empezar.
-
-### Steps
-1. Paso específico.
-2. Paso específico.
-
-### Done when
-- [ ] Se observa el comportamiento esperado.
-- [ ] Se ejecutó la comprobación indicada.
-
-### Deliver
-Pull request that closes this issue
-
-### Out of scope
-Qué no debe modificarse.
-```
-
-En una etapa nueva, distribuir tareas **cuando ya estén decididos los módulos y sus dependencias**. No es obligatorio entregar cinco tareas simultáneas si alguna depende de otra; sí es obligatorio equilibrar los aportes a lo largo del proyecto.
-
-## Qué no configuramos al principio
-
-No hacen falta GitHub Actions, branch protection avanzada, reglas de aprobación complejas, múltiples proyectos, bots, Docker ni herramientas de gestión adicionales. Se pueden incorporar después si resuelven un problema concreto.
+No usamos Docker, bots ni herramientas de gestión adicionales. La verificación automática de compilación con GitHub Actions se agrega en la etapa de estructura modular, cuando exista código para compilar.
