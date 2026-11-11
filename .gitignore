@@ -1,0 +1,13 @@
+# Archivos compilados en C
+*.exe
+*.o
+*.out
+artemis_tli
+codigo/artemis_tli.exe
+
+# Archivos de VS Code
+.vscode/
+
+# Sistema
+.DS_Store
+Thumbs.db
