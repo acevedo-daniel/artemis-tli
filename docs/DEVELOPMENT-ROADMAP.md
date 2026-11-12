@@ -11,7 +11,7 @@ status: active
 
 Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C que represente correctamente el escenario Artemis asignado por la cátedra: Problema 3, inyección translunar (TLI). Construirlo de forma gradual, comprensible para cinco integrantes y verificable mediante GitHub, pruebas y una defensa técnica.
 
-**Current phase:** Preparación del equipo y GitHub
+**Current phase:** Definición del escenario y reglas
 
 ## Constraints
 
@@ -31,38 +31,11 @@ Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C q
 
 | Phase | Outcome | Depends on |
 | --- | --- | --- |
-| Preparación del equipo y GitHub | Los cinco pueden colaborar con un flujo simple y trazable | Ninguna |
-| Definición del escenario y reglas | El problema asignado queda traducido a comportamientos y casos verificables | Preparación del equipo y GitHub |
+| Definición del escenario y reglas | El problema asignado queda traducido a comportamientos y casos verificables | Ninguna |
 | Estructura modular del programa | Existe una aplicación base en C que compila y tiene interfaces entre módulos | Definición del escenario y reglas |
 | Núcleo de cálculo y simulación | Los cálculos y cambios de estado del escenario producen resultados correctos | Estructura modular del programa |
 | Interacción, validaciones y reportes | El usuario puede completar una simulación sin fallas ante entradas comunes o erróneas | Núcleo de cálculo y simulación |
 | Integración, revisión y entrega | El proyecto cumple la consigna, está documentado y puede ser defendido por los cinco | Interacción, validaciones y reportes |
-
-## Phase: Preparación del equipo y GitHub
-
-### Objective
-
-Dejar un entorno colaborativo mínimo, donde cada integrante pueda aportar y revisar cambios sin necesidad de dominar Git por consola.
-
-### In scope
-
-- Crear un repositorio público específico para el integrador; habilitar Issues e invitar a los otros cuatro integrantes como colaboradores.
-- Usar GitHub Desktop y el editor que ya conozca cada integrante; verificar que todos puedan clonar el repositorio y utilizar el compilador C elegido.
-- Registrar instrucciones cortas de colaboración en `docs/DEVELOPMENT.md`.
-- Usar el tablero del proyecto en GitHub (`Backlog`, `In progress`, `In review`, `Done`) con un milestone por etapa; cada Issue tendrá un único responsable.
-- Practicar el circuito completo: rama → cambio pequeño → commit → push → Pull Request → revisión → integración.
-- Incorporar `README.md`, `.gitignore`, `AGENTS.md`, los formularios de Issues, la plantilla de Pull Request y este roadmap al repositorio.
-
-### Out of scope
-
-- Programar todavía la simulación, distribuir permanentemente roles o configurar CI, reglas avanzadas y automatizaciones complejas.
-
-### Exit criteria
-
-- El repositorio es público, tiene Issues disponibles y sus cinco integrantes cuentan con acceso.
-- Cada integrante demuestra que puede clonar, crear una rama, registrar un commit y proponer un Pull Request; sus primeros aportes quedan trazables.
-- Existe un procedimiento acordado para revisar e integrar cambios, y `main` se mantiene como versión compartida estable.
-- Todos saben dónde mirar la próxima tarea y cómo informar un bloqueo.
 
 ## Phase: Definición del escenario y reglas
 
