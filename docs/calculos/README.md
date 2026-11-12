@@ -20,5 +20,3 @@ Secciones, en este orden: `## Datos utilizados` (tabla Variable · Valor · Unid
 - Unidades del SI en todos los pasos; al final se puede agregar `km` o `MJ/kg`.
 - Coma decimal; miles separados con espacio, nunca con punto.
 - No redondear pasos intermedios: arrastrar al menos 7 cifras significativas.
-
-Para cálculos nuevos se recomienda el formato de [trabajo-minimo.md](trabajo-minimo.md).
