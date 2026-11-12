@@ -18,31 +18,31 @@ $$x_{eq} = \frac{D}{1 + \sqrt{\dfrac{M_L}{M_T}}}$$
 
 **Paso 1 — cociente de masas:**
 
-$$\frac{M_L}{M_T} = \frac{7{,}346 \times 10^{22}}{5{,}972 \times 10^{24}} = 0{,}012301$$
+$$\frac{M_L}{M_T} = \frac{7{,}346 \times 10^{22}}{5{,}972 \times 10^{24}} = 0{,}01230074$$
 
 **Paso 2 — raíz cuadrada del cociente:**
 
-$$\sqrt{0{,}012301} = 0{,}110913$$
+$$\sqrt{0{,}01230074} = 0{,}1109087$$
 
 **Paso 3 — denominador:**
 
-$$1 + 0{,}110913 = 1{,}110913$$
+$$1 + 0{,}1109087 = 1{,}1109087$$
 
 **Paso 4 — punto de equilibrio:**
 
-$$x_{eq} = \frac{384\,000\,000 \text{ m}}{1{,}110913} = 345\,661\,623 \text{ m} \approx 345\,662 \text{ km}$$
+$$x_{eq} = \frac{384\,000\,000 \text{ m}}{1{,}1109087} = 345\,662\,974 \text{ m} \approx 345\,663 \text{ km}$$
 
 **Paso 5 — distancia desde el punto de equilibrio hasta la Luna:**
 
-$$D - x_{eq} = 384\,000\,000 - 345\,661\,623 = 38\,338\,377 \text{ m} \approx 38\,338 \text{ km}$$
+$$D - x_{eq} = 384\,000\,000 - 345\,662\,974 = 38\,337\,026 \text{ m} \approx 38\,337 \text{ km}$$
 
 ## Resultado
 
 | Magnitud | Valor en metros | Valor en kilómetros |
 |----------|----------------|---------------------|
-| x_eq (desde el centro de la Tierra) | 345 661 623 m | 345 662 km |
-| D − x_eq (desde el punto hasta la Luna) | 38 338 377 m | 38 338 km |
+| x_eq (desde el centro de la Tierra) | 345 662 974 m | 345 663 km |
+| D − x_eq (desde el punto hasta la Luna) | 38 337 026 m | 38 337 km |
 
 ## Conclusión
 
-El punto de equilibrio gravitatorio Tierra-Luna se encuentra a aproximadamente 345 662 km del centro de la Tierra, lo que equivale a cerca del 90 % de la distancia total entre ambos cuerpos. Esto refleja la enorme diferencia de masas entre la Tierra y la Luna: como la Tierra es unas 81 veces más masiva, su influencia gravitatoria domina casi hasta las cercanías de la Luna. A partir de ese punto, la atracción lunar supera a la terrestre y la nave comienza a ser "capturada" gravitacionalmente por la Luna.
+El punto de equilibrio gravitatorio Tierra-Luna se encuentra a aproximadamente 345 663 km del centro de la Tierra, lo que equivale a cerca del 90 % de la distancia total entre ambos cuerpos. Esto refleja la enorme diferencia de masas entre la Tierra y la Luna: como la Tierra es unas 81 veces más masiva, su influencia gravitatoria domina casi hasta las cercanías de la Luna. A partir de ese punto, la atracción lunar supera a la terrestre y la nave comienza a ser "capturada" gravitacionalmente por la Luna.

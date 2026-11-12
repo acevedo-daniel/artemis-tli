@@ -19,7 +19,7 @@ Simulador interactivo por consola, escrito en C, del escenario Artemis asignado 
 
 ## Estado del proyecto
 
-El repositorio contiene la organización del equipo; todavía no hay código fuente. La etapa actual y las siguientes están en el [roadmap de desarrollo](docs/DEVELOPMENT-ROADMAP.md), y las tareas se siguen en el [tablero del proyecto](https://github.com/users/acevedo-daniel/projects/4).
+El repositorio contiene la organización del equipo y los cálculos de referencia del Problema 3; todavía no hay código fuente. La etapa actual y las siguientes están en el [roadmap de desarrollo](docs/DEVELOPMENT-ROADMAP.md), y las tareas se siguen en el [tablero del proyecto](https://github.com/users/acevedo-daniel/projects/4).
 
 ## Escenario asignado
 
@@ -38,6 +38,7 @@ Las reglas del juego, el menú y las instrucciones de compilación se agregan a 
 
 - [Roadmap de desarrollo](docs/DEVELOPMENT-ROADMAP.md): etapas, alcance y criterios de finalización.
 - [Guía de trabajo con GitHub](docs/DEVELOPMENT.md): cómo tomar una tarea, crear ramas, abrir Pull Requests y revisar.
+- [Cálculos de referencia](docs/calculos/README.md): desarrollos a mano de las preguntas del Problema 3.
 - [Consigna de la cátedra](docs/catedra/consigna.pdf).
 
 ## Registro de uso de inteligencia artificial
@@ -48,3 +49,6 @@ La consigna exige registrar cada uso de herramientas de IA: herramienta, tarea, 
 | --- | --- | --- | --- | --- | --- |
 | 10/11/2026 | Mario Daniel Acevedo | Claude Code (Anthropic) | Auditoría de la documentación inicial y preparación de la base de colaboración: formularios de Issues, plantilla de Pull Request, `.gitignore`, instrucciones para agentes (`AGENTS.md`), README, guía de GitHub y roadmap | "Audita mis documentos iniciales y cómo se conformó; crea un plan de implementación para las tareas iniciales" | Revisión manual de cada archivo contra la consigna; configuración de GitHub verificada con `gh` |
 | 11/11/2026 | Mario Daniel Acevedo | Claude Code (Anthropic) | Auditoría de la base implementada y del roadmap contra la consigna; reglas de idioma y traducción de formularios y plantilla de Pull Request | "Audita lo que generó el plan y que el roadmap coincida con la consigna; agrega reglas para que la mayoría esté en español" | Comparación del roadmap con cada sección de la consigna y la rúbrica; formularios validados como YAML
+| 12/11/2026 | Alan Quenardelle | Claude (Anthropic) | Cálculo y corrección del punto de equilibrio gravitatorio Tierra-Luna | Desarrollo paso a paso del cálculo y de su corrección (Pull Requests #12 y #17) | Revisión del coordinador contra valores recalculados; corrección del redondeo pedida en el Issue #7 |
+| 12/11/2026 | Mario Daniel Acevedo | Claude Code (Anthropic) | Auditoría de la etapa inicial contra el roadmap y plan correctivo | "Realiza una auditoría de la fase 1 y de ser necesario crea un plan correctivo" | Estado de Issues, Pull Requests y ruleset verificado con `gh`; valores físicos recalculados con Python |
+| 12/11/2026 | Mario Daniel Acevedo | Claude Code (Anthropic) | Normalización ligera del formato de los cálculos de referencia y guía de formato | "Agrega una normalización ligera, respetando las atribuciones de mis compañeros" | Diff revisado para conservar títulos y conclusiones de cada autor; se corrigió el redondeo del punto de equilibrio |
