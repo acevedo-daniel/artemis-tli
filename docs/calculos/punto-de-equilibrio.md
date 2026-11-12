@@ -30,19 +30,19 @@ $$1 + 0{,}110913 = 1{,}110913$$
 
 **Paso 4 — punto de equilibrio:**
 
-$$x_{eq} = \frac{384\,000\,000 \text{ m}}{1{,}110913} \approx 345\,650\,000 \text{ m}$$
+$$x_{eq} = \frac{384\,000\,000 \text{ m}}{1{,}110913} = 345\,661\,623 \text{ m} \approx 345\,662 \text{ km}$$
 
 **Paso 5 — distancia desde el punto de equilibrio hasta la Luna:**
 
-$$D - x_{eq} = 384\,000\,000 - 345\,650\,000 = 38\,350\,000 \text{ m}$$
+$$D - x_{eq} = 384\,000\,000 - 345\,661\,623 = 38\,338\,377 \text{ m} \approx 38\,338 \text{ km}$$
 
 ## Resultado
 
 | Magnitud | Valor en metros | Valor en kilómetros |
 |----------|----------------|---------------------|
-| x_eq (desde el centro de la Tierra) | 345 650 000 m | 345 650 km |
-| D − x_eq (desde el punto hasta la Luna) | 38 350 000 m | 38 350 km |
+| x_eq (desde el centro de la Tierra) | 345 661 623 m | 345 662 km |
+| D − x_eq (desde el punto hasta la Luna) | 38 338 377 m | 38 338 km |
 
 ## Conclusión
 
-El punto de equilibrio gravitatorio Tierra-Luna se encuentra a aproximadamente 345 650 km del centro de la Tierra, lo que equivale a cerca del 90 % de la distancia total entre ambos cuerpos. Esto refleja la enorme diferencia de masas entre la Tierra y la Luna: como la Tierra es unas 81 veces más masiva, su influencia gravitatoria domina casi hasta las cercanías de la Luna. A partir de ese punto, la atracción lunar supera a la terrestre y la nave comienza a ser "capturada" gravitacionalmente por la Luna.
+El punto de equilibrio gravitatorio Tierra-Luna se encuentra a aproximadamente 345 662 km del centro de la Tierra, lo que equivale a cerca del 90 % de la distancia total entre ambos cuerpos. Esto refleja la enorme diferencia de masas entre la Tierra y la Luna: como la Tierra es unas 81 veces más masiva, su influencia gravitatoria domina casi hasta las cercanías de la Luna. A partir de ese punto, la atracción lunar supera a la terrestre y la nave comienza a ser "capturada" gravitacionalmente por la Luna.
