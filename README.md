@@ -37,6 +37,7 @@ Las reglas del juego, el menú y las instrucciones de compilación se agregan a 
 ## Documentación
 
 - [Roadmap de desarrollo](docs/DEVELOPMENT-ROADMAP.md): etapas, alcance y criterios de finalización.
+- [Tablero del proyecto](https://github.com/users/acevedo-daniel/projects/4): seguimiento de tareas y estado del desarrollo.
 - [Guía de trabajo con GitHub](docs/DEVELOPMENT.md): cómo tomar una tarea, crear ramas, abrir Pull Requests y revisar.
 - [Cálculos de referencia](docs/calculos/README.md): desarrollos a mano de las preguntas del Problema 3.
 - [Consigna de la cátedra](docs/catedra/consigna.pdf).
