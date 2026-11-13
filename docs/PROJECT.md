@@ -4,7 +4,7 @@
 
 ## Escenario
 
-Problema 3 de la [consigna](catedra/consigna.pdf): estando en órbita baja (`h = 192000 m`), la etapa ICPS ejecuta la Inyección Translunar (TLI) y lleva a Orion (`m = 26000 kg`) hasta `v_TLI = 10900 m/s`. Después la ICPS se desacopla, los motores se apagan y la nave sigue una trayectoria libre hacia la Luna, a `D = 384000000 m`. Los desarrollos a mano están en [cálculos de referencia](calculos/README.md).
+Problema 3 de la [consigna](catedra/consigna.pdf): estando en órbita baja (`h = 192 000 m`), la etapa ICPS ejecuta la Inyección Translunar (TLI) y lleva a Orion (`m = 26 000 kg`) hasta `v_TLI = 10 900 m/s`. Después la ICPS se desacopla, los motores se apagan y la nave sigue una trayectoria libre hacia la Luna, a `D = 384 000 000 m`. Los desarrollos a mano están en [cálculos de referencia](calculos/README.md).
 
 El programa es un juego por consola: el jugador dirige la misión desde la inyección hasta el punto de equilibrio gravitatorio Tierra-Luna, y en el camino el programa responde las cuatro preguntas del Problema 3 con los valores que el jugador ingresa.
 
@@ -29,7 +29,7 @@ v(x) = √( v0² + 2·(U(r0)/m − U(x)/m) )
 
 Si el valor dentro de la raíz es negativo, la nave no alcanza esa distancia.
 
-**Consecuencia:** con estos supuestos y `v_TLI = 10900 m/s`, Orion no alcanza el punto de equilibrio: se detiene a unos 314 442 km del centro de la Tierra, antes de los 345 663 km del punto. La velocidad mínima para llegar es de unos 10 905,24 m/s, y el trabajo adicional mínimo es de unos 57 086 J/kg. En una misión real la diferencia se compensa porque la Luna se mueve y su gravedad atrae la nave a lo largo de una trayectoria que no es recta; además, las misiones aplican correcciones de trayectoria después de la TLI. El juego convierte esa diferencia en su desafío: el jugador debe aportar el trabajo que falta.
+**Consecuencia:** con estos supuestos y `v_TLI = 10 900 m/s`, Orion no alcanza el punto de equilibrio: se detiene a unos 314 442 km del centro de la Tierra, antes de los 345 663 km del punto. La velocidad mínima para llegar es de unos 10 905,24 m/s, y el trabajo adicional mínimo es de unos 57 086 J/kg. En una misión real la diferencia se compensa porque la Luna se mueve y su gravedad atrae la nave a lo largo de una trayectoria que no es recta; además, las misiones aplican correcciones de trayectoria después de la TLI. El juego convierte esa diferencia en su desafío: el jugador debe aportar el trabajo que falta.
 
 ## Datos, constantes y unidades
 
@@ -46,7 +46,7 @@ Si el valor dentro de la raíz es negativo, la nave no alcanza esa distancia.
 | $M_L$ | masa de la Luna | 7,346 × 10²² | kg | [NASA Moon Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html) |
 | $R_L$ | radio medio de la Luna | 1 737 400 | m | [NASA Moon Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html) |
 
-Los datos que el usuario debe ingresar son: masa de Orion ($m$), la velocidad de inyección ($v_{TLI}$) y la altitud de la órbita baja ($h$), los cuales utilizan los valores de la tabla como valores por defecto. El resto de los parámetros funcionan como constantes fijas en el programa.
+En la misión, el jugador ingresa la masa (`m`) y la velocidad de inyección (`v_TLI`); en las consultas también puede cambiar la altitud de la órbita baja (`h`). Los valores de la tabla son los valores por defecto; el resto de los parámetros son constantes fijas del programa.
 
 ## Dinámica del juego
 
@@ -126,7 +126,7 @@ El reporte final muestra:
 
 Todo valor del juego tiene que cumplir estas reglas; cada una se convierte en un caso de prueba.
 
-1. Sin correcciones, la misión por defecto (`v_TLI = 10900 m/s`) no alcanza el punto de equilibrio.
+1. Sin correcciones, la misión por defecto (`v_TLI = 10 900 m/s`) no alcanza el punto de equilibrio.
 2. Jugando bien, cada misión predefinida se puede ganar aun con el peor caso de eventos: la reserva que queda después de la peor fuga alcanza para aportar el trabajo que falta.
 3. Ningún evento modifica la velocidad ni la energía de la nave.
 

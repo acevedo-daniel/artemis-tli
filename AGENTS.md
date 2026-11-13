@@ -35,7 +35,7 @@ Consigna: `docs/catedra/consigna.pdf`; documentación: `docs/`; formularios de I
 - Los nombres de ramas y los identificadores de C usan solo ASCII, sin tildes ni `ñ`: `feat/menu-mision`, `calcular_energia_cinetica`.
 - Las etiquetas de planificación (números de etapa, tarea o milestone) nunca aparecen en ramas, commits, Pull Requests, archivos ni identificadores.
 - El código actual es la evidencia de lo que existe; `docs/DEVELOPMENT-ROADMAP.md` es el objetivo aprobado.
-- Todo cambio asistido por IA agrega una fila en README › Registro de uso de inteligencia artificial, en el mismo Pull Request.
+- Todo cambio asistido por IA agrega una línea en README › Registro de uso de inteligencia artificial, en el mismo Pull Request.
 - Cada integrante abre los Pull Requests de su propio trabajo; nunca hacer commits ni abrir Pull Requests en nombre de otro integrante.
 - `local-docs/` está ignorado por Git y nunca se enlaza desde archivos versionados: planes activos en `execution/`, borradores de Issues en `issues/`, material que conserva el coordinador en `keep/` y todo otro archivo generado por agentes (scripts, textos de PR, capturas, salidas de compilación) en `tmp/`. Borrar el contenido de `tmp/`, los planes cuyos Pull Requests ya se integraron y los borradores de Issues ya publicados no requiere confirmación; nunca borrar `keep/`.
 

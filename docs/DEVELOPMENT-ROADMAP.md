@@ -11,7 +11,7 @@ status: active
 
 Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C que represente correctamente el escenario Artemis asignado por la cátedra: Problema 3, inyección translunar (TLI). Construirlo de forma gradual, comprensible para cinco integrantes y verificable mediante GitHub, pruebas y una defensa técnica.
 
-**Current phase:** Definición del escenario y reglas
+**Current phase:** Estructura modular del programa
 
 ## Constraints
 
@@ -31,39 +31,10 @@ Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C q
 
 | Phase | Outcome | Depends on |
 | --- | --- | --- |
-| Definición del escenario y reglas | El problema asignado queda traducido a comportamientos y casos verificables | Ninguna |
-| Estructura modular del programa | Existe una aplicación base en C que compila y tiene interfaces entre módulos | Definición del escenario y reglas |
+| Estructura modular del programa | Existe una aplicación base en C que compila y tiene interfaces entre módulos | Ninguna |
 | Núcleo de cálculo y simulación | Los cálculos y cambios de estado del escenario producen resultados correctos | Estructura modular del programa |
 | Interacción, validaciones y reportes | El usuario puede completar una simulación sin fallas ante entradas comunes o erróneas | Núcleo de cálculo y simulación |
 | Integración, revisión y entrega | El proyecto cumple la consigna, está documentado y puede ser defendido por los cinco | Interacción, validaciones y reportes |
-
-## Phase: Definición del escenario y reglas
-
-### Objective
-
-Transformar la situación física asignada en una especificación sencilla: qué ingresa el usuario, qué sucede en cada paso y qué debe responder el programa.
-
-### In scope
-
-- Registrar en `docs/PROJECT.md` los datos, constantes físicas, restricciones, unidades y preguntas del Problema 3 que debe resolver la simulación, con la fuente de cada constante que no figure en la consigna (por ejemplo, la masa y el radio de la Luna).
-- Asegurar que el programa responda las cuatro preguntas del Problema 3 a partir de valores que ingresa el usuario, no de datos fijos: el comportamiento inercial según la 1.ª Ley de Newton, la energía cinética inicial, el trabajo mínimo por unidad de masa hasta el punto de equilibrio Tierra-Luna y la comparación energética entre la ida y el regreso.
-- Definir la dinámica del juego: opciones de menú, decisiones del usuario, turnos o eventos, condición de finalización y reporte.
-- Definir qué hace desafiante la simulación y cómo se mide el desempeño que muestra el reporte final.
-- Identificar entidades y estados que podrían requerir `struct`, arreglos y funciones; diseñar un flujo de consola en pseudocódigo o diagrama breve.
-- Establecer ejemplos calculados a mano, casos normales, límites y entradas inválidas que luego servirán como pruebas.
-- Resolver con la cátedra las ambigüedades físicas que cambien el comportamiento del juego antes de implementarlas.
-
-### Out of scope
-
-- Escribir todas las funciones o agregar mecánicas ajenas a la situación asignada.
-
-### Exit criteria
-
-- El escenario, las reglas, las entradas, los resultados y las condiciones de fin están documentados en `docs/PROJECT.md` de modo que cualquier integrante pueda explicarlos.
-- Cada una de las cuatro preguntas del Problema 3 tiene una opción del programa, sus datos de entrada y un resultado de referencia calculado a mano.
-- Hay ejemplos de cálculo esperados y casos de prueba concretos para las operaciones principales.
-- Se conocen los módulos y sus responsabilidades, sin definir de forma prematura detalles innecesarios.
-- El equipo aprueba la interpretación funcional antes de empezar la implementación completa.
 
 ## Phase: Estructura modular del programa
 
