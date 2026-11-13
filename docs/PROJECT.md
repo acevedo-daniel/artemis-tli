@@ -195,7 +195,48 @@ _Pendiente._
 
 ### Pregunta d — Comparación energética entre la ida y el regreso
 
-_Pendiente._
+#### Entradas
+
+| Entrada | Unidad | Valor por defecto | Rango válido |
+| --- | --- | --- | --- |
+| m (masa de la nave) | kg | 26 000 | 1 000 a 100 000 |
+| h (altitud de la órbita baja) | m | 192 000 | 160 000 a 2 000 000 |
+
+Rango de h: las órbitas bajas terrestres van desde los 160 km (mínimo estable antes de que el rozamiento atmosférico sea significativo) hasta los 2 000 km (límite superior convencional del LEO).
+
+#### Salida
+
+- Pozo gravitatorio terrestre: G·M_T / r0, con r0 = R_T + h, en MJ/kg.
+- Pozo gravitatorio lunar: G·M_L / R_L, en MJ/kg.
+- Razón Tierra / Luna (adimensional).
+- Energía total para salir del pozo terrestre: Pozo Tierra × m, en J.
+- Energía total para salir del pozo lunar: Pozo Luna × m, en J.
+- Conclusión de una o dos líneas sobre la diferencia entre la ida y el regreso.
+
+#### Fórmula
+
+Véase [calculos/energia-ida-vuelta.md](calculos/energia-ida-vuelta.md):
+
+```text
+Pozo Tierra = G · M_T / r0    (r0 = R_T + h)
+Pozo Luna   = G · M_L / R_L
+```
+
+#### Resultado de referencia
+
+Calculado con los valores por defecto (m = 26 000 kg, h = 192 000 m, r0 = 6 563 000 m):
+
+| Magnitud | Valor |
+| --- | --- |
+| Pozo Tierra | 60,73 MJ/kg |
+| Pozo Luna | 2,82 MJ/kg |
+| Razón Tierra / Luna | 21,52 |
+| Energía total ida (m = 26 000 kg) | 1,579 × 10¹² J |
+| Energía total regreso (m = 26 000 kg) | 7,332 × 10¹⁰ J |
+
+#### En la misión
+
+Etapa 4 del juego y parte del reporte final (véase `### Desempeño y reporte final`): el programa muestra la comparación energética después de que la nave alcanza (o no) el punto de equilibrio.
 
 ## Entidades, estados y módulos
 
