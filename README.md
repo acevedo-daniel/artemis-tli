@@ -32,10 +32,11 @@ A partir de valores ingresados por el usuario, el programa debe responder:
 - el trabajo adicional mínimo por unidad de masa para llevar la nave desde la órbita baja (`h = 192000 m`) hasta el punto de equilibrio gravitatorio Tierra-Luna;
 - por qué, desde el punto de vista energético, el viaje Tierra-Luna requiere mucho más combustible que el regreso.
 
-Las reglas del juego, el menú y las instrucciones de compilación se agregan a este documento a medida que el equipo las define e implementa.
+Las reglas del juego están en la [especificación funcional](docs/PROJECT.md); el menú y las instrucciones de compilación se agregan a este documento al implementarlos.
 
 ## Documentación
 
+- [Especificación funcional](docs/PROJECT.md): escenario, supuestos del modelo, reglas del juego, entradas, resultados y casos de prueba.
 - [Roadmap de desarrollo](docs/DEVELOPMENT-ROADMAP.md): etapas, alcance y criterios de finalización.
 - [Tablero del proyecto](https://github.com/users/acevedo-daniel/projects/4): seguimiento de tareas y estado del desarrollo.
 - [Guía de trabajo con GitHub](docs/DEVELOPMENT.md): cómo tomar una tarea, crear ramas, abrir Pull Requests y revisar.
@@ -54,3 +55,4 @@ La consigna exige registrar cada uso de herramientas de IA: herramienta, tarea, 
 | 12/11/2026 | Alan Quenardelle | Claude (Anthropic) | Cálculo y corrección del punto de equilibrio gravitatorio Tierra-Luna | Desarrollo paso a paso del cálculo y de su corrección (Pull Requests #12 y #17) | Revisión del coordinador contra valores recalculados; corrección del redondeo pedida en el Issue #7 |
 | 12/11/2026 | Mario Daniel Acevedo | Claude Code (Anthropic) | Auditoría de la etapa inicial contra el roadmap y plan correctivo | "Realiza una auditoría de la fase 1 y de ser necesario crea un plan correctivo" | Estado de Issues, Pull Requests y ruleset verificado con `gh`; valores físicos recalculados con Python |
 | 12/11/2026 | Mario Daniel Acevedo | Claude Code (Anthropic) | Normalización ligera del formato de los cálculos de referencia y guía de formato | "Agrega una normalización ligera, respetando las atribuciones de mis compañeros" | Diff revisado para conservar títulos y conclusiones de cada autor; se corrigió el redondeo del punto de equilibrio |
+| 12/11/2026 | Mario Daniel Acevedo | Claude Code (Anthropic) | Diseño de la idea inicial del juego y de los supuestos del modelo en `docs/PROJECT.md` | "Diseñemos la idea inicial del juego respetando la consigna: misión en cuatro etapas, correcciones, eventos y niveles" | Lectura de la consigna y la rúbrica; velocidades por tramo y trabajo mínimo recalculados con Python; ideas propuestas aceptadas o descartadas por el coordinador |
