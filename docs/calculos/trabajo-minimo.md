@@ -27,6 +27,17 @@ U(x_eq)/m = −3,9857128 × 10¹⁴ / 345 662 974 − 4,9027204 × 10¹² / 38 3
 
 W/m = −1 280 948 − (−60 743 034) = 59 462 086 J/kg ≈ 59,46 MJ/kg
 
+## Caso con la velocidad de la TLI
+
+v = 10 900 m/s → Ec/m = v² / 2 = 10 900² / 2 = 118 810 000 / 2 = 59 405 000 J/kg
+
+W/m = U(x_eq)/m − (Ec/m + U(r0)/m)
+    = −1 280 948 − (59 405 000 + (−60 743 034))
+    = −1 280 948 − (−1 338 034)
+    = 57 086 J/kg
+
+Con v = 10 900 m/s la nave ya tiene 59 405 000 J/kg de energía cinética; el trabajo adicional se reduce a 57 086 J/kg. Sin ese aporte, la nave se detiene a unos 314 442 km del centro de la Tierra, antes de los 345 663 km del punto de equilibrio. La velocidad mínima de inyección para llegar sin corrección es de unos 10 905,24 m/s.
+
 ## Conclusión
 
 Partiendo del reposo en la órbita baja, llevar cada kilogramo hasta el punto de equilibrio requiere unos 59,46 MJ. Casi toda esa energía se usa para salir del pozo gravitatorio de la Tierra; el aporte de la Luna es mínimo.

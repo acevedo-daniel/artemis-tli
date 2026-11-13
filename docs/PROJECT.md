@@ -191,7 +191,42 @@ _Pendiente._
 
 ### Pregunta c — Trabajo mínimo hasta el punto de equilibrio
 
-_Pendiente._
+#### Entradas
+
+| Entrada | Unidad | Valor por defecto | Rango válido |
+| --- | --- | --- | --- |
+| v (velocidad en la órbita baja) | m/s | 0 | 0 a 11 200 |
+| h (altitud de la órbita baja) | m | 192 000 | 160 000 a 2 000 000 |
+
+Rango de v: de 0 (caso de la consigna, partiendo del reposo) hasta el máximo de inyección del juego (11 200 m/s, de `### Reglas de equilibrio`). Rango de h: mismo que en las demás preguntas (LEO convencional).
+
+#### Salida
+
+- x_eq (punto de equilibrio): en m y en km.
+- U(r0)/m: energía potencial por kilogramo en la órbita baja, en J/kg.
+- U(x_eq)/m: energía potencial por kilogramo en el punto de equilibrio, en J/kg.
+- W/m: trabajo adicional mínimo por kilogramo, en J/kg.
+- Si v > 0 y W/m > 0: `Con esa velocidad, Orion no alcanza el punto de equilibrio sin trabajo adicional`.
+
+#### Fórmula
+
+Véase [calculos/punto-de-equilibrio.md](calculos/punto-de-equilibrio.md) y [calculos/trabajo-minimo.md](calculos/trabajo-minimo.md):
+
+```text
+U(x)/m = −G·M_T / x − G·M_L / (D − x)
+W/m    = U(x_eq)/m − (v²/2 + U(r0)/m)
+```
+
+#### Resultado de referencia
+
+| v | W/m | Notas |
+| --- | --- | --- |
+| 0 m/s | 59 462 086 J/kg | Respuesta de la consigna (partiendo del reposo) |
+| 10 900 m/s | 57 086 J/kg | Caso de la misión; nave se detiene a 314 442 km; v_min ≈ 10 905,24 m/s |
+
+#### En la misión
+
+Etapas 2 y 3: el trabajo W/m es la reserva de corrección que el jugador puede aplicar durante el vuelo sin propulsión (etapa 2) y el umbral que debe superar para alcanzar el punto de equilibrio (etapa 3); véase `### Corrección como trabajo adicional`.
 
 ### Pregunta d — Comparación energética entre la ida y el regreso
 
