@@ -9,6 +9,7 @@ Trabajo integrador en equipo (UTN FRRe, Algoritmos y Estructuras de Datos): un s
 - **Verificar y compilar:** `make` (en Windows, `mingw32-make`); compila con `-Werror`, así que una advertencia es un error.
 - **Ejecutar:** `./artemis_tli` (en Windows, `.\artemis_tli.exe`).
 - **Pruebas:** todavía no hay pruebas automáticas; los casos manuales están en `docs/PROJECT.md` › Casos de prueba.
+- **CI:** `.github/workflows/ci.yml` ejecuta `make`; el check obligatorio es `CI Gate`.
 
 ## Rutas clave
 

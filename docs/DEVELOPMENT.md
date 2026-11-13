@@ -32,11 +32,11 @@ Las tareas son Issues del repositorio y se siguen en el tablero [artemis-develop
 | In review | Hay un Pull Request abierto esperando revisión | El responsable, al abrir el PR |
 | Done | El Pull Request se integró y el Issue se cerró | Automático al integrar |
 
-Cada Issue tiene un único responsable (Assignees) y el milestone de la etapa del roadmap en curso. `Priority` (`P0` a `P2`) indica el orden y `Size` (`XS` a `XL`), el tamaño estimado.
+Cada Issue tiene el milestone de la etapa del roadmap en curso y, cuando alguien lo toma, un único responsable (Assignees). `Priority` (`P0` a `P2`) indica el orden y `Size` (`XS` a `XL`), el tamaño estimado.
 
 ## Cómo se trabaja con una tarea
 
-1. El responsable abre su Issue y lee Objetivo, Contexto, Pasos, Listo cuando y Fuera de alcance. Mueve la tarjeta a `In progress`.
+1. Elige en el tablero un Issue en `Backlog` sin responsable, se lo asigna en **Assignees** y mueve la tarjeta a `In progress`. Si el Issue ya tiene responsable, lo tomó otra persona. Cada integrante toma un solo Issue por vez y elige el siguiente cuando su Pull Request pasa a `In review`. Antes de empezar lee Objetivo, Contexto, Pasos, Listo cuando y Fuera de alcance.
 2. En GitHub Desktop selecciona `main`, usa **Fetch origin** y **Pull origin**, y crea una rama nueva desde esa versión actualizada.
 3. Implementa solo esa tarea, la compila y la prueba. Hace uno o más commits pequeños.
 4. Usa **Push origin** y crea un Pull Request hacia `main`. Completa `Resumen` y `Cambios` de la plantilla; el último punto de `Resumen` es `Closes #N`, con el número real del Issue. Mueve la tarjeta a `In review`.
@@ -78,6 +78,8 @@ Quedan en inglés solo las convenciones que no se traducen:
 - No integrar cambios sin compilar y probar.
 - Registrar commits reales durante todo el trabajo.
 - Registrar todo uso de IA en el README, en el mismo Pull Request.
+- Si `CI Gate` falla, revisar el detalle del check, corregir en la misma rama y volver a hacer push.
+- Si GitHub pide actualizar la rama antes de integrar, usar **Update branch** en el Pull Request.
 
 ## Cómo informar un bloqueo
 
@@ -87,7 +89,7 @@ Comentar en el Issue qué se intentó, qué falló (con el mensaje de error comp
 
 - **Roadmap:** etapa actual, alcance y criterios de finalización; archivo [DEVELOPMENT-ROADMAP.md](DEVELOPMENT-ROADMAP.md).
 - **Plan de etapa:** al comenzar cada etapa, el coordinador revisa el repositorio y arma un plan con decisiones y tareas. A partir de él crea los Issues; el equipo trabaja solo desde los Issues.
-- **Issue:** una tarea autocontenida, asignada a una persona y creada con el formulario Tarea. Los errores encontrados se informan con el formulario Reporte de error.
+- **Issue:** una tarea autocontenida, que toma un solo integrante y creada con el formulario Tarea. Los errores encontrados se informan con el formulario Reporte de error.
 - **Pull Request:** propuesta de cambios que revisa e integra el coordinador.
 - **README:** explicación pública del programa y registro obligatorio del uso de IA.
 
@@ -97,4 +99,4 @@ Las tareas de una etapa se distribuyen cuando ya están decididos los módulos y
 
 ## Qué no configuramos todavía
 
-No usamos Docker, bots ni herramientas de gestión adicionales. La verificación automática de compilación con GitHub Actions se agrega en la etapa de estructura modular, cuando exista código para compilar.
+No usamos Docker, bots ni herramientas de gestión adicionales. Cada Pull Request se compila automáticamente en GitHub Actions; si el check `CI Gate` falla, no se puede integrar.
