@@ -40,8 +40,8 @@ Cada Issue tiene un único responsable (Assignees) y el milestone de la etapa de
 2. En GitHub Desktop selecciona `main`, usa **Fetch origin** y **Pull origin**, y crea una rama nueva desde esa versión actualizada.
 3. Implementa solo esa tarea, la compila y la prueba. Hace uno o más commits pequeños.
 4. Usa **Push origin** y crea un Pull Request hacia `main`. Completa `Resumen` y `Cambios` de la plantilla; el último punto de `Resumen` es `Closes #N`, con el número real del Issue. Mueve la tarjeta a `In review`.
-5. Otro integrante revisa el Pull Request y aprueba o pide correcciones. `main` exige al menos una aprobación de otra persona, también para el coordinador.
-6. Con la aprobación, el autor integra con **Squash and merge**. La rama se borra sola y el Issue se cierra y pasa a `Done`.
+5. El coordinador revisa el Pull Request y lo aprueba o comenta qué corregir. El autor corrige en la misma rama y avisa en el Pull Request.
+6. El coordinador integra con **Squash and merge**, revisando que el título siga el formato de nombres. La rama se borra sola y el Issue pasa a `Done`.
 7. El autor vuelve a `main`, usa **Fetch origin** y **Pull origin**, y sigue con su próxima tarea.
 
 Con **Squash and merge**, cada Pull Request queda en `main` como un único commit a nombre de quien lo abrió. Por eso cada integrante abre los Pull Requests de su propio trabajo: así el historial refleja los aportes reales de los cinco.
@@ -88,7 +88,7 @@ Comentar en el Issue qué se intentó, qué falló (con el mensaje de error comp
 - **Roadmap:** etapa actual, alcance y criterios de finalización; archivo [DEVELOPMENT-ROADMAP.md](DEVELOPMENT-ROADMAP.md).
 - **Plan de etapa:** al comenzar cada etapa, el coordinador revisa el repositorio y arma un plan con decisiones y tareas. A partir de él crea los Issues; el equipo trabaja solo desde los Issues.
 - **Issue:** una tarea autocontenida, asignada a una persona y creada con el formulario Tarea. Los errores encontrados se informan con el formulario Reporte de error.
-- **Pull Request:** propuesta de cambios revisable antes de integrarla a `main`.
+- **Pull Request:** propuesta de cambios que revisa e integra el coordinador.
 - **README:** explicación pública del programa y registro obligatorio del uso de IA.
 
 Los cinco deben tener trabajo real de código y comprender el proyecto completo. Revisar Pull Requests, probar y documentar también suma, pero no reemplaza programar.
