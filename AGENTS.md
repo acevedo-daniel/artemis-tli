@@ -6,7 +6,9 @@ Trabajo integrador en equipo (UTN FRRe, Algoritmos y Estructuras de Datos): un s
 
 ## Comandos
 
-Todavía no hay código fuente. La etapa de estructura modular de [docs/DEVELOPMENT-ROADMAP.md](docs/DEVELOPMENT-ROADMAP.md) agrega el `Makefile` y completa esta sección con los comandos de verificación, compilación, ejecución y pruebas.
+- **Verificar y compilar:** `make` (en Windows, `mingw32-make`); compila con `-Werror`, así que una advertencia es un error.
+- **Ejecutar:** `./artemis_tli` (en Windows, `.\artemis_tli.exe`).
+- **Pruebas:** todavía no hay pruebas automáticas; los casos manuales están en `docs/PROJECT.md` › Casos de prueba.
 
 ## Rutas clave
 
