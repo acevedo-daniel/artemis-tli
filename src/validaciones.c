@@ -1,3 +1,5 @@
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,15 +38,46 @@ static int leer_linea(char *linea, int tamanio)
 int leer_entero(const char *mensaje, int minimo, int maximo, const char *aviso_rango)
 {
     char linea[TAMANIO_LINEA];
-    int valor;
+    char *fin;
+    long resultado;
 
     printf("%s", mensaje);
     while (1) {
-        if (leer_linea(linea, TAMANIO_LINEA) && sscanf(linea, "%d", &valor) == 1
-            && valor >= minimo && valor <= maximo) {
-            return valor;
+        if (!leer_linea(linea, TAMANIO_LINEA)) {
+            printf("Entrada inválida. Ingrese un número entre %d y %d: ", minimo, maximo);
+            continue;
         }
-        printf("%s ", aviso_rango);
+
+        /* Recorrer espacios iniciales manualmente para detectar línea vacía */
+        const char *inicio = linea;
+        while (*inicio == ' ' || *inicio == '\t') {
+            inicio++;
+        }
+        if (*inicio == '\0') {
+            printf("Entrada inválida. Ingrese un número entre %d y %d: ", minimo, maximo);
+            continue;
+        }
+
+        errno = 0;
+        resultado = strtol(inicio, &fin, 10);
+
+        /* fin apunta al primer carácter no convertido; debe ser solo espacios */
+        while (*fin == ' ' || *fin == '\t') {
+            fin++;
+        }
+
+        if (fin == inicio || *fin != '\0' || errno == ERANGE
+            || resultado < INT_MIN || resultado > INT_MAX) {
+            printf("Entrada inválida. Ingrese un número entre %d y %d: ", minimo, maximo);
+            continue;
+        }
+
+        if ((int)resultado < minimo || (int)resultado > maximo) {
+            printf("%s ", aviso_rango);
+            continue;
+        }
+
+        return (int)resultado;
     }
 }
 
