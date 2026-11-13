@@ -9,7 +9,7 @@
 | Cuenta de GitHub con acceso de colaborador | Ver Issues, crear ramas y abrir Pull Requests |
 | [GitHub Desktop](https://desktop.github.com/) | Clonar, crear ramas, hacer commits y push sin usar la consola |
 | VS Code u otro editor | Escribir el código C |
-| GCC | Compilar el programa; el comando exacto se documenta cuando exista el código base |
+| GCC | Compilar el programa; los comandos están en el README, sección Compilación y ejecución |
 
 ## Primera configuración
 

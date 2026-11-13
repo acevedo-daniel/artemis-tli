@@ -19,7 +19,7 @@ Simulador interactivo por consola, escrito en C, del escenario Artemis asignado 
 
 ## Estado del proyecto
 
-El repositorio contiene la especificación funcional del juego y los cálculos de referencia del Problema 3; todavía no hay código fuente. La etapa actual y las siguientes están en el [roadmap de desarrollo](docs/DEVELOPMENT-ROADMAP.md), y las tareas se siguen en el [tablero del proyecto](https://github.com/users/acevedo-daniel/projects/4).
+El programa tiene su estructura modular base: compila y separa el flujo principal, la simulación y las validaciones; las funcionalidades del juego se agregan por etapas. La etapa actual y las siguientes están en el [roadmap de desarrollo](docs/DEVELOPMENT-ROADMAP.md), y las tareas se siguen en el [tablero del proyecto](https://github.com/users/acevedo-daniel/projects/4).
 
 ## Escenario asignado
 
@@ -32,7 +32,22 @@ A partir de valores ingresados por el usuario, el programa debe responder:
 - el trabajo adicional mínimo por unidad de masa para llevar la nave desde la órbita baja (`h = 192000 m`) hasta el punto de equilibrio gravitatorio Tierra-Luna;
 - por qué, desde el punto de vista energético, el viaje Tierra-Luna requiere mucho más combustible que el regreso.
 
-Las reglas del juego están en la [especificación funcional](docs/PROJECT.md); el menú y las instrucciones de compilación se agregan a este documento al implementarlos.
+Las reglas del juego están en la [especificación funcional](docs/PROJECT.md).
+
+## Compilación y ejecución
+
+Requiere GCC. Desde la raíz del repositorio:
+
+| Sistema | Compilar | Ejecutar |
+| --- | --- | --- |
+| Linux o macOS | `make` | `./artemis_tli` |
+| Windows (WinLibs) | `mingw32-make` | `.\artemis_tli.exe` |
+
+Sin `make`, el mismo resultado se obtiene con:
+
+    gcc -std=c11 -Wall -Wextra -pedantic -Werror src/main.c src/simulador.c src/validaciones.c -o artemis_tli -lm
+
+Las advertencias se tratan como errores: el código tiene que compilar sin ninguna.
 
 ## Documentación
 
@@ -57,3 +72,4 @@ La consigna exige registrar cada uso de herramientas de IA: herramienta, tarea, 
 - 13/11/2026 · Alan Quenardelle · Claude Sonnet 4.6 (Anthropic) — Especificación de las preguntas a–d, entidades, flujo de consola y casos de entradas inválidas y recorridos (#30, #31, #32, #34 y #35). Consulta: desarrollo de las secciones pedidas en los Issues #24 a #27 y #29. Validación: auditoría del coordinador con valores recalculados en Python; ajustes integrados en #36.
 - 13/11/2026 · Mario Daniel Acevedo · Gemini (Google) — Casos de prueba de los cálculos y de las reglas de equilibrio (#37). Consulta: cálculo de los casos normales, límites y de reglas pedidos en el Issue #28. Validación: los 20 resultados esperados recalculados con Python.
 - 13/11/2026 · Mario Daniel Acevedo · Claude Code (Anthropic) — Auditoría de la etapa de definición del escenario y plan correctivo. Consulta: "Audita los PR integrados y genera un plan correctivo con solo las correcciones necesarias". Validación: valores de referencia recalculados con Python; correcciones aplicadas en #36.
+- 13/11/2026 · Mario Daniel Acevedo · Codex (OpenAI) — Preparación de la rama, commit y Pull Request de la estructura modular. Consulta: "Crea una rama y commitea todos los cambios y abre un PR". Validación: revisión de los cambios y compilación con `mingw32-make`.
