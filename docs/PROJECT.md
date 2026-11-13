@@ -427,4 +427,36 @@ _Pendiente._
 
 ### Entradas inválidas y recorridos del juego
 
-_Pendiente._
+#### Entradas inválidas
+
+Todos los casos se juegan con el programa corriendo; en ninguno debe cerrarse ni entrar en bucle infinito.
+
+| Caso | Dónde | Entrada | Comportamiento esperado |
+| --- | --- | --- | --- |
+| Letra donde se espera número | Menú principal | `a` | `Entrada inválida. Ingrese un número entre 0 y 4:` y vuelve a pedir |
+| Línea vacía (solo Enter) | Menú principal | *(vacío)* | `Entrada inválida. Ingrese un número entre 0 y 4:` y vuelve a pedir |
+| Número fuera del rango válido | Menú principal | `9` | `Opción inexistente. Ingrese un número entre 0 y 4:` y vuelve a pedir |
+| Decimal donde se espera entero | Menú principal | `1.5` | `Entrada inválida. Ingrese un número entre 0 y 4:` y vuelve a pedir |
+| Masa negativa o cero | Ingreso de masa (etapa 1 o consultas) | `0` o `-500` | `La masa debe estar entre 1 000 y 100 000 kg. Ingrese nuevamente:` y vuelve a pedir |
+| Masa fuera del rango superior | Ingreso de masa | `200000` | `La masa debe estar entre 1 000 y 100 000 kg. Ingrese nuevamente:` y vuelve a pedir |
+| Velocidad fuera del rango | Ingreso de velocidad de inyección | `9000` | `La velocidad debe estar entre 10 500 y 11 200 m/s. Ingrese nuevamente:` y vuelve a pedir |
+| Trabajo de corrección mayor que la reserva | Ingreso de W en corrección (etapa 2) | valor > reserva actual | `El trabajo no puede superar la reserva disponible (X J/kg). Ingrese nuevamente:` y vuelve a pedir |
+| Letra en ingreso de trabajo | Ingreso de W en corrección | `abc` | `Entrada inválida. Ingrese un número positivo:` y vuelve a pedir |
+
+#### Recorridos del juego
+
+Todos los recorridos se ejecutan con **eventos desactivados** para que sean repetibles.
+
+| Recorrido | Pasos | Resultado esperado |
+| --- | --- | --- |
+| Misión por defecto sin corregir (fracaso) | Elegir nivel `Misión tripulada` (m = 26 000 kg, v = 10 900 m/s); en cada turno elegir `Continuar` sin corregir | El programa informa que la nave no alcanza el punto 10 (se detiene alrededor del punto 9–10), muestra la distancia máxima (~314 442 km) y registra `Fracaso` en el reporte |
+| Misión por defecto corrigiendo a tiempo (éxito) | Igual que el anterior; al acercarse al punto 9 ingresar una corrección de al menos 57 086 J/kg | La nave alcanza el punto de equilibrio, el reporte muestra `Éxito` y el puntaje descontado por la corrección usada |
+| Inyección con v = 10 906 m/s sin correcciones (éxito) | Elegir nivel personalizado con m = 26 000 kg y v = 10 906 m/s; elegir `Continuar` en todos los turnos | La nave llega al punto de equilibrio sin correcciones, puntaje máximo (o mínimo descuento por exceso de energía) |
+| Abortar la misión | Iniciar cualquier misión; en el turno 1 elegir `Abortar` | El reporte muestra `Abortada`, distancia máxima = r0, puntaje = 0 |
+| Último reporte sin misiones jugadas | Desde el menú principal elegir la opción `4` antes de jugar ninguna misión | El programa muestra `Todavía no hay misiones jugadas` y vuelve al menú |
+| Consultar pregunta a con valores por defecto | Menú → opción `2` → submenú `a`; confirmar h = 192 000 m y r = 6 563 000 m | Muestra la explicación de la 1.ª Ley de Newton y la atracción terrestre ≈ 9,25 m/s² |
+| Consultar pregunta b con valores por defecto | Menú → opción `2` → submenú `b`; confirmar m = 26 000 kg y v = 10 900 m/s | Muestra Ec = 1,54453 × 10¹² J y Ec/m = 59 405 000 J/kg |
+| Consultar pregunta c con v = 0 | Menú → opción `2` → submenú `c`; v = 0, h = 192 000 m | Muestra W/m = 59 462 086 J/kg sin mensaje de advertencia |
+| Consultar pregunta c con v = 10 900 m/s | Menú → opción `2` → submenú `c`; v = 10 900 m/s, h = 192 000 m | Muestra W/m = 57 086 J/kg y el mensaje `Con esa velocidad, Orion no alcanza el punto de equilibrio sin trabajo adicional` |
+| Consultar pregunta d con valores por defecto | Menú → opción `2` → submenú `d`; confirmar m = 26 000 kg, h = 192 000 m | Muestra 60,73 MJ/kg, 2,82 MJ/kg, razón 21,52 y energías totales |
+| Salir del programa | Desde el menú principal elegir opción `0` | El programa termina limpiamente sin mensaje de error |
