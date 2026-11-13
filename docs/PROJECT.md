@@ -426,7 +426,28 @@ hasta opcion == 0
 
 ### Cálculos
 
-_Pendiente._
+| Caso | Pregunta o regla | Entradas | Resultado esperado | Tipo |
+| --- | --- | --- | --- | --- |
+| Atracción gravitatoria en órbita baja por defecto | Pregunta a | `h = 192 000 m`, `r = 6 563 000 m` | `a_T = 9,253 m/s²` (`9,25 m/s²` en referencia); `a_L = 3,442 × 10⁻⁵ m/s²` | normal |
+| Atracción gravitatoria en el punto 5 del recorrido | Pregunta a | `h = 192 000 m`, `r = 176 113 000 m` | `a_T = 0,01285 m/s²`; `a_L = 1,134 × 10⁻⁴ m/s²` | normal |
+| Atracción gravitatoria en el borde inferior | Pregunta a | `h = 160 000 m`, `r = 6 531 000 m` | `a_T = 9,344 m/s²`; `a_L = 3,441 × 10⁻⁵ m/s²` | límite |
+| Atracción gravitatoria en el borde superior | Pregunta a | `h = 2 000 000 m`, `r = 345 663 000 m` | `a_T = 3,3358 × 10⁻³ m/s²`; `a_L = 3,3358 × 10⁻³ m/s²` | límite |
+| Energía cinética inicial por defecto | Pregunta b | `m = 26 000 kg`, `v = 10 900 m/s` | `Ec = 1,54453 × 10¹² J`; `Ec/m = 59 405 000 J/kg` | normal |
+| Energía cinética inicial con valores intermedios | Pregunta b | `m = 50 000 kg`, `v = 11 000 m/s` | `Ec = 3,025 × 10¹² J`; `Ec/m = 60 500 000 J/kg` | normal |
+| Energía cinética inicial en el borde inferior | Pregunta b | `m = 1 000 kg`, `v = 10 500 m/s` | `Ec = 5,5125 × 10¹⁰ J`; `Ec/m = 55 125 000 J/kg` | límite |
+| Energía cinética inicial en el borde superior | Pregunta b | `m = 100 000 kg`, `v = 11 200 m/s` | `Ec = 6,272 × 10¹² J`; `Ec/m = 62 720 000 J/kg` | límite |
+| Trabajo mínimo partiendo del reposo (por defecto) | Pregunta c | `v = 0 m/s`, `h = 192 000 m` | `x_eq = 345 662 974 m` (`345 663 km`); `U(r0)/m = −60 743 034 J/kg`; `U(x_eq)/m = −1 280 948 J/kg`; `W/m = 59 462 086 J/kg` | normal |
+| Trabajo mínimo con velocidad TLI de la consigna | Pregunta c | `v = 10 900 m/s`, `h = 192 000 m` | `W/m = 57 086 J/kg`; muestra `Con esa velocidad, Orion no alcanza el punto de equilibrio sin trabajo adicional` | normal |
+| Trabajo mínimo con velocidad suficiente para llegar | Pregunta c | `v = 10 906 m/s`, `h = 192 000 m` | `W/m = 0 J/kg` (cálculo sin acotar: `−8 332 J/kg`); la nave llega y muestra `Con esa velocidad, Orion alcanza el punto de equilibrio sin trabajo adicional` | normal |
+| Trabajo mínimo en límite superior de velocidad e inferior de altitud | Pregunta c | `v = 11 200 m/s`, `h = 160 000 m` | `U(r0)/m = −61 040 592 J/kg`; `W/m = 0 J/kg` (cálculo sin acotar: `−2 960 356 J/kg`); llega sin trabajo adicional | límite |
+| Trabajo mínimo en límite inferior de velocidad y superior de altitud | Pregunta c | `v = 0 m/s`, `h = 2 000 000 m` | `U(r0)/m = −47 626 393 J/kg`; `U(x_eq)/m = −1 280 948 J/kg`; `W/m = 46 345 445 J/kg` | límite |
+| Comparación energética ida y regreso por defecto | Pregunta d | `m = 26 000 kg`, `h = 192 000 m` | `Pozo Tierra = 60,73 MJ/kg`; `Pozo Luna = 2,822 MJ/kg` (`2,82 MJ/kg` en referencia); `razón = 21,52`; `energía ida = 1,579 × 10¹² J`; `energía regreso = 7,337 × 10¹⁰ J` | normal |
+| Comparación energética con valores intermedios | Pregunta d | `m = 50 000 kg`, `h = 500 000 m` | `Pozo Tierra = 58,01 MJ/kg`; `Pozo Luna = 2,822 MJ/kg`; `razón = 20,56`; `energía ida = 2,900 × 10¹² J`; `energía regreso = 1,411 × 10¹¹ J` | normal |
+| Comparación energética en el borde inferior | Pregunta d | `m = 1 000 kg`, `h = 160 000 m` | `Pozo Tierra = 61,03 MJ/kg`; `Pozo Luna = 2,822 MJ/kg`; `razón = 21,63`; `energía ida = 6,103 × 10¹⁰ J`; `energía regreso = 2,822 × 10⁹ J` | límite |
+| Comparación energética en el borde superior | Pregunta d | `m = 100 000 kg`, `h = 2 000 000 m` | `Pozo Tierra = 47,61 MJ/kg`; `Pozo Luna = 2,822 MJ/kg`; `razón = 16,87`; `energía ida = 4,761 × 10¹² J`; `energía regreso = 2,822 × 10¹¹ J` | límite |
+| Misión por defecto sin correcciones no alcanza el equilibrio | Regla 1 | `m = 26 000 kg`, `v_TLI = 10 900 m/s`, `h = 192 000 m`, sin correcciones | Alcanza `128,9 m/s` en el punto 9 (`311 753 km`) y fracasa entre los puntos 9 y 10 al detenerse en `314 442 km`, antes del equilibrio (`345 663 km`) | regla |
+| Reserva suficiente tras la peor fuga en misión predefinida | Regla 2 | Misión tripulada (`v_TLI = 10 900 m/s`, `h = 192 000 m`, reserva `150 000 J/kg`) con fuga máxima del `25 %` | La reserva restante es `112 500 J/kg`, superior a los `57 086 J/kg` faltantes; la misión se puede ganar | regla |
+| Los eventos no alteran velocidad ni energía de la nave | Regla 3 | `v_TLI = 10 900 m/s`, `h = 192 000 m`, sin correcciones, con evento en el turno (fuga del `25 %`, pérdida de señal o falla de sensor) | La energía mecánica por kilogramo (`−1 338 034 J/kg`) y la velocidad en cada punto (p. ej. `1 377,5 m/s` en el punto 5 a `176 113 km`) permanecen iguales al recorrido sin eventos | regla |
 
 ### Entradas inválidas y recorridos del juego
 
