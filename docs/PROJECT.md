@@ -183,11 +183,77 @@ Cada pregunta tiene una opción en el submenú de consultas, donde el usuario in
 
 ### Pregunta a — Vuelo sin propulsión y 1.ª Ley de Newton
 
-_Pendiente._
+#### Entradas
+
+| Entrada | Unidad | Valor por defecto | Rango válido |
+| --- | --- | --- | --- |
+| h (altitud de la órbita baja) | m | 192 000 | 160 000 a 2 000 000 |
+| r (distancia al centro de la Tierra donde se evalúa) | m | 6 563 000 | 6 531 000 a 345 663 000 |
+
+Rango de h: mismo que en la Pregunta d (160 km a 2 000 km, límites convencionales del LEO). Rango de r: desde r0 (órbita baja) hasta el punto de equilibrio Tierra-Luna, que es el tramo que recorre la nave.
+
+#### Salida
+
+- Explicación breve de la 1.ª Ley de Newton: sin fuerza neta la nave seguiría a velocidad constante en línea recta; la gravedad terrestre la frena con una aceleración que disminuye con 1/r² a medida que se aleja.
+- Atracción de la Tierra: G·M_T / r², en m/s².
+- Atracción de la Luna: G·M_L / (D − r)², en m/s².
+
+#### Fórmula
+
+Véase [calculos/primera-ley-newton.md](calculos/primera-ley-newton.md):
+
+```text
+a_T = G · M_T / r²
+a_L = G · M_L / (D − r)²
+```
+
+#### Resultado de referencia
+
+Calculado con r = r0 = 6 563 000 m:
+
+| Magnitud | Valor |
+| --- | --- |
+| Atracción de la Tierra en r0 | 9,25 m/s² |
+
+#### En la misión
+
+Etapa 2 — vuelo sin propulsión: la explicación y las atracciones acompañan la telemetría en cada turno (véase `### Misión en cuatro etapas`).
 
 ### Pregunta b — Energía cinética inicial
 
-_Pendiente._
+#### Entradas
+
+| Entrada | Unidad | Valor por defecto | Rango válido |
+| --- | --- | --- | --- |
+| m (masa de la nave) | kg | 26 000 | 1 000 a 100 000 |
+| v (velocidad de inyección) | m/s | 10 900 | 10 500 a 11 200 |
+
+#### Salida
+
+- Energía cinética total: Ec = ½·m·v², en J.
+- Energía cinética por kilogramo: Ec/m = ½·v², en J/kg.
+
+#### Fórmula
+
+Véase [calculos/energia-cinetica-inicial.md](calculos/energia-cinetica-inicial.md):
+
+```text
+Ec   = ½ · m · v²
+Ec/m = ½ · v²
+```
+
+#### Resultado de referencia
+
+Calculado con los valores por defecto (m = 26 000 kg, v = 10 900 m/s):
+
+| Magnitud | Valor |
+| --- | --- |
+| Ec | 1,54453 × 10¹² J |
+| Ec/m | 59 405 000 J/kg |
+
+#### En la misión
+
+Etapa 1 — inyección: el programa muestra Ec y Ec/m después de que el jugador ingresa la masa y la velocidad de inyección (véase `### Misión en cuatro etapas`).
 
 ### Pregunta c — Trabajo mínimo hasta el punto de equilibrio
 
