@@ -33,10 +33,10 @@ Si el valor dentro de la raíz es negativo, la nave no alcanza esa distancia.
 
 ## Datos, constantes y unidades
 
-| Simbolo | Descripción | Valor | Unidad | Fuente |
+| Símbolo | Descripción | Valor | Unidad | Fuente |
 | --- | --- | --- | --- | --- |
 | $m$ | masa de Orion | 26 000 | kg | Consigna, Problema 3 |
-| $v_TLI$ | velocidad de inyección | 10 900 | m/s | Consigna, Problema 3 |
+| $v_{TLI}$ | velocidad de inyección | 10 900 | m/s | Consigna, Problema 3 |
 | $h$ | altitud de la órbita baja | 192 000 | m | Consigna, Problema 3 |
 | $D$ | distancia media Tierra-Luna | 384 000 000 | m | Consigna, Problema 3 |
 | $G$ | constante de gravitación universal | 6,674 × 10⁻¹¹ | N·m²/kg² | Consigna, Problema 2 |
@@ -46,7 +46,7 @@ Si el valor dentro de la raíz es negativo, la nave no alcanza esa distancia.
 | $M_L$ | masa de la Luna | 7,346 × 10²² | kg | [NASA Moon Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html) |
 | $R_L$ | radio medio de la Luna | 1 737 400 | m | [NASA Moon Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html) |
 
-Los datos que el usuario debe ingresar son: masa de Orion ($m$), la velocidad de inyección ($v_TLI$) y la altitud de la órbita baja ($h$), los cuales utilizan los valores de la tabla como valores por defecto. El resto de los parámetros funcionan como constantes fijas en el programa.
+Los datos que el usuario debe ingresar son: masa de Orion ($m$), la velocidad de inyección ($v_{TLI}$) y la altitud de la órbita baja ($h$), los cuales utilizan los valores de la tabla como valores por defecto. El resto de los parámetros funcionan como constantes fijas en el programa.
 
 ## Dinámica del juego
 
@@ -227,6 +227,7 @@ Calculado con r = r0 = 6 563 000 m:
 | Magnitud | Valor |
 | --- | --- |
 | Atracción de la Tierra en r0 | 9,25 m/s² |
+| Atracción de la Luna en r0 | 3,442 × 10⁻⁵ m/s² |
 
 #### En la misión
 
@@ -286,6 +287,7 @@ Rango de v: de 0 (caso de la consigna, partiendo del reposo) hasta el máximo de
 - U(x_eq)/m: energía potencial por kilogramo en el punto de equilibrio, en J/kg.
 - W/m: trabajo adicional mínimo por kilogramo, en J/kg.
 - Si v > 0 y W/m > 0: `Con esa velocidad, Orion no alcanza el punto de equilibrio sin trabajo adicional`.
+- Si `W/m ≤ 0`: mostrar `W/m = 0` y el mensaje `Con esa velocidad, Orion alcanza el punto de equilibrio sin trabajo adicional`.
 
 #### Fórmula
 
@@ -305,7 +307,7 @@ W/m    = U(x_eq)/m − (v²/2 + U(r0)/m)
 
 #### En la misión
 
-Etapas 2 y 3: el trabajo W/m es la reserva de corrección que el jugador puede aplicar durante el vuelo sin propulsión (etapa 2) y el umbral que debe superar para alcanzar el punto de equilibrio (etapa 3); véase `### Corrección como trabajo adicional`.
+Etapas 2 y 3: W/m es el trabajo mínimo que el jugador debe tomar de la reserva de corrección durante el vuelo (etapa 2) para alcanzar el punto de equilibrio (etapa 3); el reporte lo compara con el trabajo aplicado.
 
 ### Pregunta d — Comparación energética entre la ida y el regreso
 
@@ -346,7 +348,7 @@ Calculado con los valores por defecto (m = 26 000 kg, h = 192 000 m, r0 = 6 563 
 | Pozo Luna | 2,82 MJ/kg |
 | Razón Tierra / Luna | 21,52 |
 | Energía total ida (m = 26 000 kg) | 1,579 × 10¹² J |
-| Energía total regreso (m = 26 000 kg) | 7,332 × 10¹⁰ J |
+| Energía total regreso (m = 26 000 kg) | 7,337 × 10¹⁰ J |
 
 #### En la misión
 
@@ -401,14 +403,15 @@ repetir
           inicializar estado_nave y mision
           repetir para turno 1..10:
             generar evento del turno
-            mostrar telemetria(estado, turno)       // etapa 2
-            si evento != PERDIDA_SENAL:
-              mostrar prediccion_siguiente(estado) si evento != FALLA_SENSOR
-              leer decision (continuar / corregir / abortar)
+            mostrar telemetria(estado, turno)            // etapa 2
+            repetir
+              si evento != FALLA_SENSOR: mostrar prediccion_siguiente(estado)
+              leer decision (continuar / corregir* / abortar)   // *no si PERDIDA_SENAL
               si corregir: leer W, aplicar_correccion(&estado, W)
-              si abortar:  registrar ABORTADA; salir del bucle
+            hasta decision == continuar o decision == abortar
+            si abortar: registrar ABORTADA; salir del bucle
+            si nave_no_alcanza_siguiente(estado): registrar FRACASO; salir del bucle
             avanzar_nave(&estado)
-            si nave_no_alcanza_siguiente: registrar FRACASO; salir
           si nave llego al equilibrio: registrar EXITO    // etapa 3
           comparar_energia_ida_regreso(mision)             // etapa 4
           mostrar_reporte(estado, mision)
@@ -449,9 +452,9 @@ Todos los recorridos se ejecutan con **eventos desactivados** para que sean repe
 
 | Recorrido | Pasos | Resultado esperado |
 | --- | --- | --- |
-| Misión por defecto sin corregir (fracaso) | Elegir nivel `Misión tripulada` (m = 26 000 kg, v = 10 900 m/s); en cada turno elegir `Continuar` sin corregir | El programa informa que la nave no alcanza el punto 10 (se detiene alrededor del punto 9–10), muestra la distancia máxima (~314 442 km) y registra `Fracaso` en el reporte |
+| Misión por defecto sin corregir (fracaso) | Iniciar misión con valores por defecto (m = 26 000 kg, v = 10 900 m/s); en cada turno elegir `Continuar` sin corregir | El programa informa que la nave no alcanza el punto 10 (se detiene alrededor del punto 9–10), muestra la distancia máxima (~314 442 km) y registra `Fracaso` en el reporte |
 | Misión por defecto corrigiendo a tiempo (éxito) | Igual que el anterior; al acercarse al punto 9 ingresar una corrección de al menos 57 086 J/kg | La nave alcanza el punto de equilibrio, el reporte muestra `Éxito` y el puntaje descontado por la corrección usada |
-| Inyección con v = 10 906 m/s sin correcciones (éxito) | Elegir nivel personalizado con m = 26 000 kg y v = 10 906 m/s; elegir `Continuar` en todos los turnos | La nave llega al punto de equilibrio sin correcciones, puntaje máximo (o mínimo descuento por exceso de energía) |
+| Inyección con v = 10 906 m/s sin correcciones (éxito) | Iniciar misión ingresando m = 26 000 kg y v = 10 906 m/s; elegir `Continuar` en todos los turnos | La nave llega al punto de equilibrio sin correcciones; el reporte registra `Éxito`, 0 correcciones y puntaje ≈ 99,6 (exceso 8 332 J/kg × 0,05 puntos por kJ/kg) |
 | Abortar la misión | Iniciar cualquier misión; en el turno 1 elegir `Abortar` | El reporte muestra `Abortada`, distancia máxima = r0, puntaje = 0 |
 | Último reporte sin misiones jugadas | Desde el menú principal elegir la opción `4` antes de jugar ninguna misión | El programa muestra `Todavía no hay misiones jugadas` y vuelve al menú |
 | Consultar pregunta a con valores por defecto | Menú → opción `2` → submenú `a`; confirmar h = 192 000 m y r = 6 563 000 m | Muestra la explicación de la 1.ª Ley de Newton y la atracción terrestre ≈ 9,25 m/s² |
