@@ -199,11 +199,70 @@ _Pendiente._
 
 ## Entidades, estados y módulos
 
-_Pendiente._
+### Entidades candidatas a struct
+
+**Estado de la nave** — distancia al centro de la Tierra (m), velocidad (m/s) y reserva de corrección disponible (J/kg). La necesitan todas las funciones de la etapa 2: calcular telemetría, aplicar correcciones y decidir si la nave avanza o se detiene.
+
+**Parámetros de misión** — masa (kg), velocidad de inyección (m/s), índice de nivel y resultado final (éxito / fracaso / abortada). La inicializa la etapa 1 y la consume el reporte final para calcular el puntaje.
+
+**Telemetría de un turno** — distancia, velocidad, atracción terrestre (m/s²), atracción lunar (m/s²), desaceleración neta y energía cinética. Se genera en cada turno de la etapa 2 para mostrar la barra de progreso y los datos al jugador.
+
+**Evento** — tipo (fuga de propulsión, pérdida de señal, falla de sensor) y magnitud (porcentaje de reserva afectada). Se genera una vez por turno y condiciona la decisión del jugador.
+
+**Reporte final** — masa, v_TLI, energía cinética inicial, resultado, distancia máxima alcanzada, trabajo aplicado en correcciones, trabajo mínimo de referencia, comparación energética ida/regreso y puntaje. Lo arma el final de la misión y lo muestra también la opción 4 del menú.
+
+### Arreglos y punteros
+
+**Arreglos:**
+- Niveles predefinidos: arreglo de structs de parámetros de misión; permite recorrer las opciones con un índice y agregar niveles sin cambiar la lógica del menú.
+- Turnos del recorrido: arreglo de structs de telemetría; guarda el historial de la misión para mostrarlo en el reporte.
+- Tipos de evento: arreglo de structs de evento; facilita seleccionar uno aleatoriamente con un índice.
+
+**Punteros:**
+- Las funciones que modifican el estado de la nave (aplicar corrección, avanzar al tramo siguiente) reciben un puntero a la struct de estado: los cambios son visibles fuera de la función sin copiar la struct.
+- El reporte recibe un puntero a la struct de misión para leer sus datos de solo lectura sin copiarlos.
+
+### Módulos
+
+| Módulo | Responsabilidad |
+| --- | --- |
+| `main.c` | Únicamente `main()`, el menú principal y la inicialización del flujo general del programa |
+| `simulador.h` | Constantes (`#define`), definiciones `struct`/`typedef` y prototipos de las funciones públicas de simulación |
+| `simulador.c` | Lógica de simulación: cálculos físicos, actualización del estado de la nave, eventos, reporte y puntaje |
+| `validaciones.h` | Prototipos de las funciones de ingreso seguro de enteros, reales y caracteres |
+| `validaciones.c` | Implementación del ingreso validado por tipo y rango; mensajes de advertencia y reintento sin cerrar el programa |
 
 ## Flujo de consola
 
-_Pendiente._
+```text
+mostrar_bienvenida()
+repetir
+  mostrar_menu_principal()              // opciones 0–4
+  leer opcion (validada)
+  segun opcion:
+    1 → nueva_mision():
+          leer masa, velocidad_inyeccion (con validacion de rango)
+          mostrar energia_cinetica(masa, v)         // etapa 1
+          inicializar estado_nave y mision
+          repetir para turno 1..10:
+            generar evento del turno
+            mostrar telemetria(estado, turno)       // etapa 2
+            si evento != PERDIDA_SENAL:
+              mostrar prediccion_siguiente(estado) si evento != FALLA_SENSOR
+              leer decision (continuar / corregir / abortar)
+              si corregir: leer W, aplicar_correccion(&estado, W)
+              si abortar:  registrar ABORTADA; salir del bucle
+            avanzar_nave(&estado)
+            si nave_no_alcanza_siguiente: registrar FRACASO; salir
+          si nave llego al equilibrio: registrar EXITO    // etapa 3
+          comparar_energia_ida_regreso(mision)             // etapa 4
+          mostrar_reporte(estado, mision)
+    2 → submenu_consultas()             // preguntas a, b, c y d por separado
+    3 → mostrar_datos_y_supuestos()
+    4 → mostrar_ultimo_reporte()
+    0 → salir
+hasta opcion == 0
+```
 
 ## Casos de prueba
 
