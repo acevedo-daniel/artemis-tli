@@ -33,7 +33,20 @@ Si el valor dentro de la raíz es negativo, la nave no alcanza esa distancia.
 
 ## Datos, constantes y unidades
 
-_Pendiente._
+| Simbolo | Descripción | Valor | Unidad | Fuente |
+| --- | --- | --- | --- | --- |
+| $m$ | masa de Orion | 26 000 | kg | Consigna, Problema 3 |
+| $v_TLI$ | velocidad de inyección | 10 900 | m/s | Consigna, Problema 3 |
+| $h$ | altitud de la órbita baja | 192 000 | m | Consigna, Problema 3 |
+| $D$ | distancia media Tierra-Luna | 384 000 000 | m | Consigna, Problema 3 |
+| $G$ | constante de gravitación universal | 6,674 × 10⁻¹¹ | N·m²/kg² | Consigna, Problema 2 |
+| $M_T$ | masa de Tierra | 5,972 × 10²⁴ | kg | Consigna, Problema 2 |
+| $R_T$ | radio medio de la Tierra | 6 371 000 | m | Consigna, Problema 2 |
+| $r0 = R_T + h$ | radio de la órbita baja | 6 563 000 | m | Consigna, Problema 2 y 3 |
+| $M_L$ | masa de la Luna | 7,346 × 10²² | kg | [NASA Moon Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html) |
+| $R_L$ | radio medio de la Luna | 1 737 400 | m | [NASA Moon Fact Sheet](https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html) |
+
+Los datos que el usuario debe ingresar son: masa de Orion ($m$), la velocidad de inyección ($v_TLI$) y la altitud de la órbita baja ($h$), los cuales utilizan los valores de la tabla como valores por defecto. El resto de los parámetros funcionan como constantes fijas en el programa.
 
 ## Dinámica del juego
 
