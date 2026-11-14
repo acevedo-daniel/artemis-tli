@@ -28,6 +28,8 @@
 #define PUNTAJE_MAXIMO 100.0
 #define DESCUENTO_POR_KJ_EXCESO 0.05
 #define DESCUENTO_POR_CORRECCION 5.0
+#define FUGA_MINIMA 10                     /* % de reserva que se pierde */
+#define FUGA_MAXIMA 25
 
 /* Menú principal */
 #define OPCION_SALIR 0
@@ -49,9 +51,12 @@ typedef enum {
 
 /* Estado de la nave durante el vuelo */
 typedef struct {
-    double distancia;  /* m, desde el centro de la Tierra */
-    double velocidad;  /* m/s */
-    double reserva;    /* J/kg de corrección disponible */
+    int punto;                 /* 0 (órbita baja) a CANTIDAD_TRAMOS (equilibrio) */
+    double distancia;          /* m, desde el centro de la Tierra */
+    double velocidad;          /* m/s */
+    double reserva;            /* J/kg de corrección disponible */
+    double trabajo_aplicado;   /* J/kg sumado en correcciones */
+    int correcciones;          /* correcciones aplicadas */
 } EstadoNave;
 
 /* Datos de la misión elegidos en la inyección */
@@ -99,7 +104,7 @@ void submenu_consultas(void);
 void mostrar_datos_y_supuestos(void);
 void mostrar_ultimo_reporte(const ReporteFinal *reporte);
 
-/* Cálculos físicos: declarados como contrato, todavía sin implementar */
+/* Cálculos físicos. Una distancia fuera de (0, DISTANCIA_TIERRA_LUNA) devuelve 0. */
 double calcular_atraccion_tierra(double distancia);
 double calcular_atraccion_luna(double distancia);
 double calcular_energia_cinetica(double masa, double velocidad);
@@ -110,5 +115,20 @@ double calcular_pozo_tierra(double altitud);
 double calcular_pozo_luna(void);
 int calcular_velocidad_en(double distancia_inicial, double velocidad_inicial,
                           double distancia, double *velocidad);
+double calcular_distancia_maxima(double distancia_inicial, double velocidad_inicial);
+
+/* Estado de la nave */
+double calcular_distancia_punto(int punto);
+void inicializar_nave(EstadoNave *nave, double velocidad_inyeccion, double reserva);
+void calcular_telemetria(const EstadoNave *nave, Telemetria *telemetria);
+int aplicar_correccion(EstadoNave *nave, double trabajo);
+int avanzar_nave(EstadoNave *nave);
+int recorrer_sin_correcciones(EstadoNave *nave, double velocidades[]);
+
+/* Eventos y puntaje */
+void generar_evento(Evento *evento, int probabilidad, int nave_alcanza_siguiente);
+void aplicar_evento(EstadoNave *nave, const Evento *evento);
+double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion,
+                        double trabajo_aplicado, int correcciones);
 
 #endif

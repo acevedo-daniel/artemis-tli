@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <math.h>
+#include <stdlib.h>
 #include "simulador.h"
 
 int nueva_mision(ReporteFinal *reporte)
@@ -42,4 +44,178 @@ void mostrar_ultimo_reporte(const ReporteFinal *reporte)
         return;
     }
     printf("El reporte detallado todavía no está disponible.\n");
+}
+
+/* Devuelve 1 si la distancia está entre la Tierra y la Luna, donde las fórmulas no dividen por cero. */
+static int distancia_valida(double distancia)
+{
+    return distancia > 0.0 && distancia < DISTANCIA_TIERRA_LUNA;
+}
+
+/* U(x)/m = -G·M_T / x - G·M_L / (D - x), en J/kg */
+double calcular_energia_potencial_por_kg(double distancia)
+{
+    if (!distancia_valida(distancia)) {
+        return 0.0;
+    }
+    return -CONSTANTE_G * MASA_TIERRA / distancia
+           - CONSTANTE_G * MASA_LUNA / (DISTANCIA_TIERRA_LUNA - distancia);
+}
+
+/* Punto donde las dos atracciones son iguales: x = D / (1 + raíz(M_L / M_T)), en m */
+double calcular_punto_equilibrio(void)
+{
+    return DISTANCIA_TIERRA_LUNA / (1.0 + sqrt(MASA_LUNA / MASA_TIERRA));
+}
+
+/* Conservación de la energía: v² = v0² + 2·(U(r0)/m - U(x)/m).
+   Devuelve 1 y guarda la velocidad si la nave llega a esa distancia; 0 si no llega. */
+int calcular_velocidad_en(double distancia_inicial, double velocidad_inicial,
+                          double distancia, double *velocidad)
+{
+    double radicando;
+
+    if (!distancia_valida(distancia_inicial) || !distancia_valida(distancia)) {
+        return 0;
+    }
+    radicando = velocidad_inicial * velocidad_inicial
+                + 2.0 * (calcular_energia_potencial_por_kg(distancia_inicial)
+                         - calcular_energia_potencial_por_kg(distancia));
+    if (radicando < 0.0) {
+        return 0;
+    }
+    *velocidad = sqrt(radicando);
+    return 1;
+}
+
+/* Atracciones y telemetría */
+
+double calcular_atraccion_tierra(double distancia)
+{
+    (void)distancia;
+    /* Pendiente: se implementa en esta etapa. */
+    return 0.0;
+}
+
+double calcular_atraccion_luna(double distancia)
+{
+    (void)distancia;
+    /* Pendiente: se implementa en esta etapa. */
+    return 0.0;
+}
+
+void calcular_telemetria(const EstadoNave *nave, Telemetria *telemetria)
+{
+    (void)nave;
+    (void)telemetria;
+    /* Pendiente: se implementa en esta etapa. */
+}
+
+/* Energía cinética y pozos gravitatorios */
+
+double calcular_energia_cinetica(double masa, double velocidad)
+{
+    (void)masa;
+    (void)velocidad;
+    /* Pendiente: se implementa en esta etapa. */
+    return 0.0;
+}
+
+double calcular_pozo_tierra(double altitud)
+{
+    (void)altitud;
+    /* Pendiente: se implementa en esta etapa. */
+    return 0.0;
+}
+
+double calcular_pozo_luna(void)
+{
+    /* Pendiente: se implementa en esta etapa. */
+    return 0.0;
+}
+
+/* Trabajo mínimo y distancia máxima */
+
+double calcular_trabajo_minimo(double velocidad, double altitud)
+{
+    (void)velocidad;
+    (void)altitud;
+    /* Pendiente: se implementa en esta etapa. */
+    return 0.0;
+}
+
+double calcular_distancia_maxima(double distancia_inicial, double velocidad_inicial)
+{
+    (void)distancia_inicial;
+    (void)velocidad_inicial;
+    /* Pendiente: se implementa en esta etapa. */
+    return 0.0;
+}
+
+/* Estado de la nave */
+
+double calcular_distancia_punto(int punto)
+{
+    (void)punto;
+    /* Pendiente: se implementa en esta etapa. */
+    return 0.0;
+}
+
+void inicializar_nave(EstadoNave *nave, double velocidad_inyeccion, double reserva)
+{
+    (void)nave;
+    (void)velocidad_inyeccion;
+    (void)reserva;
+    /* Pendiente: se implementa en esta etapa. */
+}
+
+int aplicar_correccion(EstadoNave *nave, double trabajo)
+{
+    (void)nave;
+    (void)trabajo;
+    /* Pendiente: se implementa en esta etapa. */
+    return 0;
+}
+
+int avanzar_nave(EstadoNave *nave)
+{
+    (void)nave;
+    /* Pendiente: se implementa en esta etapa. */
+    return 0;
+}
+
+int recorrer_sin_correcciones(EstadoNave *nave, double velocidades[])
+{
+    (void)nave;
+    (void)velocidades;
+    /* Pendiente: se implementa en esta etapa. */
+    return 0;
+}
+
+/* Eventos y puntaje */
+
+void generar_evento(Evento *evento, int probabilidad, int nave_alcanza_siguiente)
+{
+    (void)evento;
+    (void)probabilidad;
+    (void)nave_alcanza_siguiente;
+    /* Pendiente: se implementa en esta etapa. */
+}
+
+void aplicar_evento(EstadoNave *nave, const Evento *evento)
+{
+    (void)nave;
+    (void)evento;
+    /* Pendiente: se implementa en esta etapa. */
+}
+
+double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion,
+                        double trabajo_aplicado, int correcciones)
+{
+    (void)resultado;
+    (void)velocidad_inyeccion;
+    (void)trabajo_aplicado;
+    (void)correcciones;
+    /* Pendiente: se implementa en esta etapa. */
+    return 0.0;
 }

@@ -6,3 +6,16 @@ EJECUTABLE = artemis_tli
 
 $(EJECUTABLE): $(FUENTES) $(CABECERAS)
 	$(CC) $(CFLAGS) $(FUENTES) -o $(EJECUTABLE) -lm
+
+PRUEBAS = pruebas/pruebas_simulador.c
+
+ifeq ($(OS),Windows_NT)
+    EJECUTAR_PRUEBAS = pruebas_simulador.exe
+else
+    EJECUTAR_PRUEBAS = ./pruebas_simulador
+endif
+
+.PHONY: pruebas
+pruebas: $(PRUEBAS) src/simulador.c $(CABECERAS)
+	$(CC) $(CFLAGS) -Isrc $(PRUEBAS) src/simulador.c -o pruebas_simulador -lm
+	$(EJECUTAR_PRUEBAS)

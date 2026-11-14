@@ -8,9 +8,10 @@
 | --- | --- | --- |
 | `src/main.c` | Únicamente `main()`, bienvenida, menú principal, almacenamiento del último reporte y despacho de opciones | `"simulador.h"`, `"validaciones.h"`, `<stdio.h>` (y `<windows.h>` en Windows) |
 | `src/simulador.h` | Constantes del escenario y reglas (`#define`), definiciones `typedef` (`enum` y `struct`) y prototipos públicos de simulación y física | — |
-| `src/simulador.c` | Implementación de las opciones de simulación, presentación de datos y supuestos, y lógica física | `"simulador.h"`, `<stdio.h>` |
+| `src/simulador.c` | Implementación de las opciones de simulación, presentación de datos y supuestos, y lógica física | `"simulador.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>` |
 | `src/validaciones.h` | Prototipos públicos para la lectura validada de enteros, reales y caracteres | — |
 | `src/validaciones.c` | Lectura segura por línea (`leer_linea`) y validación por tipo y rango con reintento ante entradas inválidas | `"validaciones.h"`, `<ctype.h>`, `<errno.h>`, `<limits.h>`, `<stdio.h>`, `<stdlib.h>`, `<string.h>` |
+| `pruebas/pruebas_simulador.c` | Pruebas automáticas de los cálculos físicos, el estado de la nave, eventos y puntaje contra los casos de referencia | `"simulador.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>` |
 
 ## Dependencias entre archivos
 
@@ -28,7 +29,7 @@ Las reglas de negocio y el diseño conceptual de estas entidades se detallan en 
 
 - `ResultadoMision`: enumera los estados posibles de una misión (en curso, éxito, fracaso o abortada); forma parte de `ParametrosMision` y `ReporteFinal`, y todavía no es usado directamente por funciones implementadas.
 - `TipoEvento`: enumera los tipos de incidente de turno (ninguno, fuga de propulsión, pérdida de señal o falla de sensor); integra la estructura `Evento` y aún no tiene funciones implementadas que lo consuman.
-- `EstadoNave`: agrupa distancia, velocidad y reserva de corrección de la nave durante el vuelo; está declarada como contrato y aún no la utilizan funciones implementadas.
+- `EstadoNave`: agrupa punto actual (`0` a `CANTIDAD_TRAMOS`), distancia, velocidad, reserva de corrección, trabajo aplicado y cantidad de correcciones aplicadas de la nave durante el vuelo; está declarada como contrato y aún no la utilizan funciones implementadas.
 - `ParametrosMision`: reúne masa, velocidad de inyección, índice de nivel y resultado de una misión; definida como contrato, todavía sin funciones implementadas que la reciban.
 - `Telemetria`: concentra distancia, velocidad, atracciones gravitatorias, desaceleración neta y energía cinética de un turno; aún no la generan ni imprimen funciones implementadas.
 - `Evento`: combina un `TipoEvento` con el porcentaje de reserva afectado; declarada en el encabezado, todavía sin funciones implementadas que la procesen.
@@ -45,12 +46,22 @@ Las reglas de negocio y el diseño conceptual de estas entidades se detallan en 
 | `double calcular_atraccion_tierra(double distancia);` | `simulador` | sin implementar |
 | `double calcular_atraccion_luna(double distancia);` | `simulador` | sin implementar |
 | `double calcular_energia_cinetica(double masa, double velocidad);` | `simulador` | sin implementar |
-| `double calcular_energia_potencial_por_kg(double distancia);` | `simulador` | sin implementar |
-| `double calcular_punto_equilibrio(void);` | `simulador` | sin implementar |
+| `double calcular_energia_potencial_por_kg(double distancia);` | `simulador` | implementada |
+| `double calcular_punto_equilibrio(void);` | `simulador` | implementada |
 | `double calcular_trabajo_minimo(double velocidad, double altitud);` | `simulador` | sin implementar |
 | `double calcular_pozo_tierra(double altitud);` | `simulador` | sin implementar |
 | `double calcular_pozo_luna(void);` | `simulador` | sin implementar |
-| `int calcular_velocidad_en(double distancia_inicial, double velocidad_inicial, double distancia, double *velocidad);` | `simulador` | sin implementar |
+| `int calcular_velocidad_en(double distancia_inicial, double velocidad_inicial, double distancia, double *velocidad);` | `simulador` | implementada |
+| `double calcular_distancia_maxima(double distancia_inicial, double velocidad_inicial);` | `simulador` | sin implementar |
+| `double calcular_distancia_punto(int punto);` | `simulador` | sin implementar |
+| `void inicializar_nave(EstadoNave *nave, double velocidad_inyeccion, double reserva);` | `simulador` | sin implementar |
+| `void calcular_telemetria(const EstadoNave *nave, Telemetria *telemetria);` | `simulador` | sin implementar |
+| `int aplicar_correccion(EstadoNave *nave, double trabajo);` | `simulador` | sin implementar |
+| `int avanzar_nave(EstadoNave *nave);` | `simulador` | sin implementar |
+| `int recorrer_sin_correcciones(EstadoNave *nave, double velocidades[]);` | `simulador` | sin implementar |
+| `void generar_evento(Evento *evento, int probabilidad, int nave_alcanza_siguiente);` | `simulador` | sin implementar |
+| `void aplicar_evento(EstadoNave *nave, const Evento *evento);` | `simulador` | sin implementar |
+| `double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion, double trabajo_aplicado, int correcciones);` | `simulador` | sin implementar |
 | `int leer_entero(const char *mensaje, int minimo, int maximo, const char *aviso_rango);` | `validaciones` | implementada |
 | `double leer_real(const char *mensaje, double minimo, double maximo, const char *aviso_rango);` | `validaciones` | implementada |
 | `char leer_caracter(const char *mensaje, const char *opciones_validas, const char *aviso_invalido);` | `validaciones` | implementada |
