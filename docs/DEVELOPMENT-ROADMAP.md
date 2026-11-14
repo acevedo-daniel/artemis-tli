@@ -11,7 +11,7 @@ status: active
 
 Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C que represente correctamente el escenario Artemis asignado por la cátedra: Problema 3, inyección translunar (TLI). Construirlo de forma gradual, comprensible para cinco integrantes y verificable mediante GitHub, pruebas y una defensa técnica.
 
-**Current phase:** Núcleo de cálculo y simulación
+**Current phase:** Interacción, validaciones y reportes
 
 ## Constraints
 
@@ -31,34 +31,8 @@ Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C q
 
 | Phase | Outcome | Depends on |
 | --- | --- | --- |
-| Núcleo de cálculo y simulación | Los cálculos y cambios de estado del escenario producen resultados correctos | Ninguna |
-| Interacción, validaciones y reportes | El usuario puede completar una simulación sin fallas ante entradas comunes o erróneas | Núcleo de cálculo y simulación |
+| Interacción, validaciones y reportes | El usuario puede completar una simulación sin fallas ante entradas comunes o erróneas | Ninguna |
 | Integración, revisión y entrega | El proyecto cumple la consigna, está documentado y puede ser defendido por los cinco | Interacción, validaciones y reportes |
-
-## Phase: Núcleo de cálculo y simulación
-
-### Objective
-
-Lograr que el sistema resuelva correctamente la parte física y actualice su estado de acuerdo con las decisiones y eventos definidos.
-
-### In scope
-
-- Implementar funciones de cálculo por responsabilidad, respetando fórmulas, unidades, constantes y restricciones del escenario.
-- Representar el estado de la misión con estructuras apropiadas y usar arreglos y punteros con un propósito claro, no solamente para cumplir una lista.
-- Definir y procesar los cambios de estado propios de los turnos o eventos.
-- Comparar resultados contra ejercicios resueltos manualmente y probar casos límite relevantes; registrar los casos y cómo ejecutarlos en `docs/TESTING.md`.
-- Integrar los cálculos progresivamente, evitando esperar al final para unir el trabajo de cada integrante.
-
-### Out of scope
-
-- Embellecer toda la consola, preparar el video o incorporar escenarios Artemis no asignados.
-
-### Exit criteria
-
-- Las operaciones centrales del escenario entregan resultados consistentes con los casos de referencia.
-- La misión evoluciona de un estado inicial a estados posteriores de manera predecible.
-- El programa no divide por cero ni procesa estados físicamente inválidos sin control.
-- Cada función relevante y el uso de estructuras/punteros pueden ser explicados por más de una persona del equipo.
 
 ## Phase: Interacción, validaciones y reportes
 
