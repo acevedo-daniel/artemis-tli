@@ -47,12 +47,13 @@ Sin `make`, el mismo resultado se obtiene con:
 
     gcc -std=c11 -Wall -Wextra -pedantic -Werror src/main.c src/simulador.c src/validaciones.c -o artemis_tli -lm
 
-Las advertencias se tratan como errores: el código tiene que compilar sin ninguna.
+Las advertencias se tratan como errores: el código tiene que compilar sin ninguna. Para ejecutar las pruebas de cálculo: `make pruebas` (en Windows, `mingw32-make pruebas`). El detalle está en [docs/TESTING.md](docs/TESTING.md).
 
 ## Documentación
 
 - [Especificación funcional](docs/PROJECT.md): escenario, supuestos del modelo, reglas del juego, entradas, resultados y casos de prueba.
 - [Arquitectura](docs/ARCHITECTURE.md): módulos, estructuras, funciones públicas y flujo entre archivos.
+- [Pruebas](docs/TESTING.md): cómo se comprueban los cálculos contra los casos de referencia.
 - [Roadmap de desarrollo](docs/DEVELOPMENT-ROADMAP.md): etapas, alcance y criterios de finalización.
 - [Tablero del proyecto](https://github.com/users/acevedo-daniel/projects/4): seguimiento de tareas y estado del desarrollo.
 - [Guía de trabajo con GitHub](docs/DEVELOPMENT.md): cómo tomar una tarea, crear ramas, abrir Pull Requests y revisar.
@@ -75,5 +76,6 @@ La consigna exige registrar cada uso de herramientas de IA: herramienta, tarea, 
 - 13/11/2026 · Mario Daniel Acevedo · Claude Code (Anthropic) — Auditoría de la etapa de definición del escenario y plan correctivo. Consulta: "Audita los PR integrados y genera un plan correctivo con solo las correcciones necesarias". Validación: valores de referencia recalculados con Python; correcciones aplicadas en #36.
 - 13/11/2026 · Vaz Maria Luna · Claude Code (Anthropic) — Documentar los datos y constantes del escenario. Consulta: Desarrollo paso a paso de cómo documentar los datos y constante. Validación: revisión de los datos y constantes; correcciones aplicadas en #23.
 - 13/11/2026 · Fernando Germán Ojeda · Meta AI — Menú principal (#41). Consulta: "Armame el menú principal en src/main.c según el Issue #41, con bienvenida, menú, switch y llamada a leer_entero". Validación: compilación con mingw32-make sin advertencias; pruebas con printf '1\n2\n3\n4\n0\n' y printf '' según el Issue.
-
+- 13/11/2026 · Mario Daniel Acevedo · Claude Code (Anthropic) — Análisis y auditoría de cierre de la estructura modular, y creación del plan de corrección de cierre de etapa. Consulta: análisis y auditoría de cierre de etapa y creación del plan de corrección. Validación: verificación de los archivos de la etapa contra los criterios de cierre; plan ejecutado en #51.
 - 13/11/2026 · Mario Daniel Acevedo · Codex (OpenAI) — Cierre de la estructura modular: ajustes de presentación y actualización de la documentación. Consulta: implementar la tarea de cierre planificada. Validación: compilación y recorridos del menú.
+- 14/11/2026 · Mario Daniel Acevedo · Gemini 4 Hydrogen / Antigravity (Google) — Creación de la base del núcleo de cálculo y pruebas automáticas (contrato en `simulador.h`, base física en `simulador.c`, esqueletos y `pruebas/pruebas_simulador.c`). Consulta: "crea una nueva rama e implementa nucleo-calculo-simulacion tasl 1". Validación: compilación sin advertencias y ejecución de pruebas con `mingw32-make && mingw32-make pruebas` (9 pruebas, 0 fallas).

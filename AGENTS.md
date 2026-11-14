@@ -6,14 +6,14 @@ Trabajo integrador en equipo (UTN FRRe, Algoritmos y Estructuras de Datos): un s
 
 ## Comandos
 
-- **Verificar y compilar:** `make` (en Windows, `mingw32-make`); compila con `-Werror`, así que una advertencia es un error.
+- **Verificar y compilar:** `make && make pruebas` (en Windows, `mingw32-make && mingw32-make pruebas`); compila con `-Werror`, así que una advertencia es un error.
 - **Ejecutar:** `./artemis_tli` (en Windows, `.\artemis_tli.exe`).
-- **Pruebas:** todavía no hay pruebas automáticas; los casos manuales están en `docs/PROJECT.md` › Casos de prueba.
-- **CI:** `.github/workflows/ci.yml` ejecuta `make`; el check obligatorio es `CI Gate`.
+- **Pruebas:** `make pruebas` (en Windows, `mingw32-make pruebas`) compila y ejecuta `pruebas/pruebas_simulador.c`; los casos están en `docs/TESTING.md`.
+- **CI:** `.github/workflows/ci.yml` ejecuta `make` y `make pruebas`; el check obligatorio es `CI Gate`.
 
 ## Rutas clave
 
-Consigna: `docs/catedra/consigna.pdf`; documentación: `docs/`; formularios de Issues y plantilla de Pull Request: `.github/`.
+Consigna: `docs/catedra/consigna.pdf`; documentación: `docs/`; pruebas: `pruebas/`; formularios de Issues y plantilla de Pull Request: `.github/`.
 
 ## Tecnología
 

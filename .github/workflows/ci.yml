@@ -28,6 +28,9 @@ jobs:
       - name: Compilar con advertencias como errores
         run: make
 
+      - name: Ejecutar las pruebas de cálculo
+        run: make pruebas
+
   ci-gate:
     name: CI Gate
     if: always()

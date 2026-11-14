@@ -99,4 +99,4 @@ Las tareas de una etapa se distribuyen cuando ya están decididos los módulos y
 
 ## Qué no configuramos todavía
 
-No usamos Docker, bots ni herramientas de gestión adicionales. Cada Pull Request se compila automáticamente en GitHub Actions; si el check `CI Gate` falla, no se puede integrar.
+No usamos Docker, bots ni herramientas de gestión adicionales. Cada Pull Request se compila y ejecuta las pruebas automáticamente en GitHub Actions; si el check `CI Gate` falla, no se puede integrar.

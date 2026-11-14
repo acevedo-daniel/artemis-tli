@@ -8,6 +8,7 @@ local-docs/
 *.exe
 *.out
 artemis_tli
+pruebas_simulador
 *.dSYM/
 
 # Editores y sistemas operativos
