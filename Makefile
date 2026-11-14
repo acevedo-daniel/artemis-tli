@@ -16,6 +16,6 @@ else
 endif
 
 .PHONY: pruebas
-pruebas: $(PRUEBAS) src/simulador.c $(CABECERAS)
-	$(CC) $(CFLAGS) -Isrc $(PRUEBAS) src/simulador.c -o pruebas_simulador -lm
+pruebas: $(PRUEBAS) src/simulador.c src/validaciones.c $(CABECERAS)
+	$(CC) $(CFLAGS) -Isrc $(PRUEBAS) src/simulador.c src/validaciones.c -o pruebas_simulador -lm
 	$(EJECUTAR_PRUEBAS)
