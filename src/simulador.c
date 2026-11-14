@@ -237,28 +237,55 @@ int recorrer_sin_correcciones(EstadoNave *nave, double velocidades[])
 
 /* Eventos y puntaje */
 
+/* Sortea un incidente con la probabilidad dada (0–100). La pérdida de señal
+   se suprime si la nave no alcanza el siguiente tramo, para no bloquear correcciones. */
 void generar_evento(Evento *evento, int probabilidad, int nave_alcanza_siguiente)
 {
-    (void)evento;
-    (void)probabilidad;
-    (void)nave_alcanza_siguiente;
-    /* Pendiente: se implementa en esta etapa. */
+    if (rand() % 100 >= probabilidad) {
+        evento->tipo = EVENTO_NINGUNO;
+        evento->porcentaje_reserva = 0;
+        return;
+    }
+    evento->tipo = 1 + rand() % 3;
+    if (evento->tipo == EVENTO_FUGA_PROPULSION) {
+        evento->porcentaje_reserva = FUGA_MINIMA + rand() % (FUGA_MAXIMA - FUGA_MINIMA + 1);
+    } else {
+        evento->porcentaje_reserva = 0;
+    }
+    if (evento->tipo == EVENTO_PERDIDA_SENAL && !nave_alcanza_siguiente) {
+        evento->tipo = EVENTO_NINGUNO;
+        evento->porcentaje_reserva = 0;
+    }
 }
 
+/* Solo la fuga de propulsión reduce la reserva; ningún evento toca velocidad, distancia ni punto. */
 void aplicar_evento(EstadoNave *nave, const Evento *evento)
 {
-    (void)nave;
-    (void)evento;
-    /* Pendiente: se implementa en esta etapa. */
+    if (evento->tipo == EVENTO_FUGA_PROPULSION) {
+        nave->reserva -= nave->reserva * evento->porcentaje_reserva / 100.0;
+    }
 }
 
+/* Puntaje de 0 a 100; 0 si la misión no fue exitosa.
+   Se descuenta por energía en exceso (J/kg) y por correcciones usadas. */
 double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion,
                         double trabajo_aplicado, int correcciones)
 {
-    (void)resultado;
-    (void)velocidad_inyeccion;
-    (void)trabajo_aplicado;
-    (void)correcciones;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0.0;
+    double r0, exceso, puntaje, u_eq, u_r0;
+
+    if (resultado != RESULTADO_EXITO) {
+        return 0.0;
+    }
+    r0 = RADIO_TIERRA + ALTITUD_DEFECTO;
+    u_r0 = calcular_energia_potencial_por_kg(r0);
+    u_eq = calcular_energia_potencial_por_kg(calcular_punto_equilibrio());
+    exceso = velocidad_inyeccion * velocidad_inyeccion / 2.0 + trabajo_aplicado
+             - (u_eq - u_r0);
+    if (exceso < 0.0) {
+        exceso = 0.0;
+    }
+    puntaje = PUNTAJE_MAXIMO
+              - DESCUENTO_POR_KJ_EXCESO * exceso / 1000.0
+              - DESCUENTO_POR_CORRECCION * correcciones;
+    return puntaje > 0.0 ? puntaje : 0.0;
 }
