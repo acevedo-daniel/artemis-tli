@@ -11,7 +11,7 @@ status: active
 
 Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C que represente correctamente el escenario Artemis asignado por la cátedra: Problema 3, inyección translunar (TLI). Construirlo de forma gradual, comprensible para cinco integrantes y verificable mediante GitHub, pruebas y una defensa técnica.
 
-**Current phase:** Estructura modular del programa
+**Current phase:** Núcleo de cálculo y simulación
 
 ## Constraints
 
@@ -31,38 +31,9 @@ Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C q
 
 | Phase | Outcome | Depends on |
 | --- | --- | --- |
-| Estructura modular del programa | Existe una aplicación base en C que compila y tiene interfaces entre módulos | Ninguna |
-| Núcleo de cálculo y simulación | Los cálculos y cambios de estado del escenario producen resultados correctos | Estructura modular del programa |
+| Núcleo de cálculo y simulación | Los cálculos y cambios de estado del escenario producen resultados correctos | Ninguna |
 | Interacción, validaciones y reportes | El usuario puede completar una simulación sin fallas ante entradas comunes o erróneas | Núcleo de cálculo y simulación |
 | Integración, revisión y entrega | El proyecto cumple la consigna, está documentado y puede ser defendido por los cinco | Interacción, validaciones y reportes |
-
-## Phase: Estructura modular del programa
-
-### Objective
-
-Disponer de una base compilable y navegable para que distintos integrantes puedan trabajar sobre responsabilidades separadas.
-
-### In scope
-
-- Crear `src/main.c`, `src/simulador.c`, `src/simulador.h`, `src/validaciones.c` y `src/validaciones.h`, ajustando nombres si el equipo aprueba una alternativa consistente.
-- Definir `struct`, `typedef`, constantes y prototipos públicos alineados con las reglas del escenario.
-- Implementar un menú mínimo y un flujo de salida correcto, aunque algunas opciones todavía sean provisionales.
-- Añadir `Makefile` o scripts simples para compilar todo el proyecto y documentar cómo ejecutarlo.
-- Acordar contratos entre funciones y parámetros para evitar que varios desarrolladores modifiquen el mismo bloque a la vez.
-- Documentar módulos, estructuras y flujo entre archivos en `docs/ARCHITECTURE.md`, con el diagrama que luego usará el README.
-- Agregar una verificación automática en GitHub Actions que compile el proyecto con advertencias tratadas como errores y sea obligatoria para integrar Pull Requests en `main`.
-
-### Out of scope
-
-- Completar todos los cálculos físicos, todas las mecánicas o añadir dependencias complejas.
-
-### Exit criteria
-
-- El programa completo compila sin errores usando el comando documentado.
-- Al iniciarlo, el menú aparece, permite una elección básica y se puede salir correctamente.
-- Los módulos se comunican mediante cabeceras y llamadas a funciones; `main.c` contiene únicamente `main()`, el menú principal y la inicialización del flujo, los cálculos viven en `simulador.c` y el ingreso seguro de datos en `validaciones.c`.
-- Dos integrantes diferentes pueden trabajar sobre módulos distintos y fusionar sus cambios mediante Pull Requests.
-- La verificación automática de compilación se ejecuta en cada Pull Request y bloquea la integración si falla.
 
 ## Phase: Núcleo de cálculo y simulación
 
