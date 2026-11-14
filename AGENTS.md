@@ -2,7 +2,7 @@
 
 ## Proyecto
 
-Trabajo integrador en equipo (UTN FRRe, Algoritmos y Estructuras de Datos): un simulador interactivo por consola, escrito en C, del escenario Artemis de inyección translunar (Problema 3 de la consigna). El repositorio contiene la documentación y la organización del equipo; todavía no hay código fuente.
+Trabajo integrador en equipo (UTN FRRe, Algoritmos y Estructuras de Datos): un simulador interactivo por consola, escrito en C, del escenario Artemis de inyección translunar (Problema 3 de la consigna). El repositorio contiene los módulos en `src/`, la documentación, un `Makefile` y verificación continua en GitHub Actions.
 
 ## Comandos
 
@@ -18,7 +18,7 @@ Consigna: `docs/catedra/consigna.pdf`; documentación: `docs/`; formularios de I
 ## Tecnología
 
 - **Lenguaje:** C, compilado con GCC y ejecutado nativamente en consola
-- **Compilación:** GCC y un `Makefile`, que se agrega en la etapa de estructura modular
+- **Compilación:** GCC y un `Makefile`
 
 ## Reglas de código
 
