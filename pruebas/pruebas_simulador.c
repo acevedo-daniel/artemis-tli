@@ -44,6 +44,57 @@ static void probar_atracciones_y_telemetria(void)
 
 static void probar_energia_y_pozos(void)
 {
+    comprobar("Ec por defecto",
+              calcular_energia_cinetica(26000.0, 10900.0),
+              1.54453e12, 1.0);
+
+    comprobar("Ec intermedia",
+              calcular_energia_cinetica(50000.0, 11000.0),
+              3.025e12, 1.0);
+
+    comprobar("Ec borde inferior",
+              calcular_energia_cinetica(1000.0, 10500.0),
+              5.5125e10, 1.0);
+
+    comprobar("Ec borde superior",
+              calcular_energia_cinetica(100000.0, 11200.0),
+              6.272e12, 1.0);
+
+    comprobar("Ec por kg",
+              calcular_energia_cinetica(1.0, 10900.0),
+              59405000.0, 1e-6);
+
+    comprobar("pozo Tierra por defecto",
+              calcular_pozo_tierra(192000.0),
+              60730044.0, 1.0);
+
+    comprobar("pozo Tierra 160 km",
+              calcular_pozo_tierra(160000.0),
+              61027604.0, 1.0);
+
+    comprobar("pozo Tierra 500 km",
+              calcular_pozo_tierra(500000.0),
+              58007754.0, 1.0);
+
+    comprobar("pozo Tierra 2000 km",
+              calcular_pozo_tierra(2000000.0),
+              47613341.0, 1.0);
+
+    comprobar("pozo Luna",
+              calcular_pozo_luna(),
+              2821872.0, 1.0);
+
+    comprobar("razón Tierra / Luna",
+              calcular_pozo_tierra(192000.0) / calcular_pozo_luna(),
+              21.5212, 1e-4);
+
+    comprobar("energía de regreso",
+              calcular_pozo_luna() * 26000.0,
+              7.337e10, 1e7);
+
+    comprobar("pozo Tierra con altitud negativa",
+              calcular_pozo_tierra(-1.0),
+              0.0, 0.0);
 }
 
 static void probar_trabajo_minimo_y_distancia_maxima(void)
