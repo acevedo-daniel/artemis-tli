@@ -48,6 +48,41 @@ static void probar_energia_y_pozos(void)
 
 static void probar_trabajo_minimo_y_distancia_maxima(void)
 {
+    comprobar("W/m desde el reposo",
+              calcular_trabajo_minimo(0.0, 192000.0),
+              59462086.0, 1.0);
+
+    comprobar("W/m con 10 900 m/s",
+              calcular_trabajo_minimo(10900.0, 192000.0),
+              57086.0, 1.0);
+
+    comprobar("W/m con 10 906 m/s",
+              calcular_trabajo_minimo(10906.0, 192000.0),
+              -8332.0, 1.0);
+
+    comprobar("W/m borde 11 200 m/s y 160 km",
+              calcular_trabajo_minimo(11200.0, 160000.0),
+              -2960356.0, 1.0);
+
+    comprobar("W/m borde 0 m/s y 2000 km",
+              calcular_trabajo_minimo(0.0, 2000000.0),
+              46345445.0, 1.0);
+
+    comprobar("distancia máxima con 10 900 m/s",
+              calcular_distancia_maxima(6563000.0, 10900.0),
+              314442415.0, 10.0);
+
+    comprobar("distancia máxima con 10 906 m/s",
+              calcular_distancia_maxima(6563000.0, 10906.0),
+              calcular_punto_equilibrio(), 1.0);
+
+    comprobar("distancia máxima sin velocidad",
+              calcular_distancia_maxima(6563000.0, 0.0),
+              6563000.0, 10.0);
+
+    comprobar("distancia máxima con distancia 0",
+              calcular_distancia_maxima(0.0, 10900.0),
+              0.0, 0.0);
 }
 
 static void probar_estado_nave(void)
