@@ -352,9 +352,9 @@ double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion,
 /* Niveles */
 
 static const Nivel niveles[CANTIDAD_NIVELES_PREDEFINIDOS] = {
-    {"Prueba sin tripulacion", 26000.0, 300000.0,                 10},
-    {"Mision tripulada",       26000.0, RESERVA_CORRECCION_DEFECTO, 25},
-    {"Mision con carga",       60000.0, 80000.0,                  50}
+    {"Prueba sin tripulación", 26000.0, 300000.0,                 10},
+    {"Misión tripulada",       26000.0, RESERVA_CORRECCION_DEFECTO, 25},
+    {"Misión con carga",       60000.0, 80000.0,                  50}
 };
 
 /* Copia el nivel en *nivel; devuelve 1 si el índice es válido y nivel != NULL. */
