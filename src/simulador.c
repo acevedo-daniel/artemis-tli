@@ -197,42 +197,96 @@ double calcular_distancia_maxima(double distancia_inicial, double velocidad_inic
 
 /* Estado de la nave */
 
+/* Calcula la distancia correspondiente a un punto de la trayectoria. */
 double calcular_distancia_punto(int punto)
 {
-    (void)punto;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0.0;
+    double distancia_inicial = RADIO_TIERRA + ALTITUD_DEFECTO;
+
+    if (punto < 0 || punto > CANTIDAD_TRAMOS) {
+        return 0.0;
+    }
+
+    return distancia_inicial
+           + punto * (calcular_punto_equilibrio() - distancia_inicial) / CANTIDAD_TRAMOS;
 }
 
+/* Inicializa todos los datos de la nave en la órbita baja. */
 void inicializar_nave(EstadoNave *nave, double velocidad_inyeccion, double reserva)
 {
-    (void)nave;
-    (void)velocidad_inyeccion;
-    (void)reserva;
-    /* Pendiente: se implementa en esta etapa. */
+    if (nave == NULL) {
+        return;
+    }
+
+    nave->punto = 0;
+    nave->distancia = calcular_distancia_punto(0);
+    nave->velocidad = velocidad_inyeccion;
+    nave->reserva = reserva;
+    nave->trabajo_aplicado = 0.0;
+    nave->correcciones = 0;
 }
 
+/* Aplica trabajo adicional a la nave y descuenta ese trabajo de la reserva. */
 int aplicar_correccion(EstadoNave *nave, double trabajo)
 {
-    (void)nave;
-    (void)trabajo;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0;
+    double nueva_velocidad;
+
+    if (nave == NULL || !isfinite(trabajo) || trabajo <= 0.0 ||
+        trabajo > nave->reserva) {
+        return 0;
+    }
+
+    nueva_velocidad = sqrt(nave->velocidad * nave->velocidad + 2.0 * trabajo);
+    if (!isfinite(nueva_velocidad)) {
+        return 0;
+    }
+
+    nave->velocidad = nueva_velocidad;
+    nave->reserva -= trabajo;
+    nave->trabajo_aplicado += trabajo;
+    nave->correcciones++;
+    return 1;
 }
 
+/* Intenta avanzar un tramo; solo actualiza el estado si puede llegar. */
 int avanzar_nave(EstadoNave *nave)
 {
-    (void)nave;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0;
+    double velocidad_siguiente;
+    int siguiente_punto;
+    double siguiente_distancia;
+
+    if (nave == NULL || nave->punto < 0 || nave->punto >= CANTIDAD_TRAMOS) {
+        return 0;
+    }
+
+    siguiente_punto = nave->punto + 1;
+    siguiente_distancia = calcular_distancia_punto(siguiente_punto);
+
+    if (!calcular_velocidad_en(nave->distancia, nave->velocidad,
+                               siguiente_distancia, &velocidad_siguiente)) {
+        return 0;
+    }
+
+    nave->punto = siguiente_punto;
+    nave->distancia = siguiente_distancia;
+    nave->velocidad = velocidad_siguiente;
+    return 1;
 }
 
+/* Recorre todos los puntos alcanzables sin correcciones y registra las velocidades. */
 int recorrer_sin_correcciones(EstadoNave *nave, double velocidades[])
 {
-    (void)nave;
-    (void)velocidades;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0;
+    if (nave == NULL || velocidades == NULL || nave->punto < 0 ||
+        nave->punto > CANTIDAD_TRAMOS) {
+        return 0;
+    }
+
+    velocidades[nave->punto] = nave->velocidad;
+
+    while (avanzar_nave(nave)) {
+        velocidades[nave->punto] = nave->velocidad;
+    }
+
+    return nave->punto;
 }
 
 /* Eventos y puntaje */

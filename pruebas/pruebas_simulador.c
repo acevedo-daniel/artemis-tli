@@ -153,6 +153,36 @@ static void probar_trabajo_minimo_y_distancia_maxima(void)
 
 static void probar_estado_nave(void)
 {
+    EstadoNave nave;
+    double velocidades[CANTIDAD_TRAMOS + 1];
+
+    comprobar("distancia del punto 0", calcular_distancia_punto(0), 6563000.0, 1.0);
+    comprobar("distancia del punto 5", calcular_distancia_punto(5), 176112987.0, 1.0);
+    comprobar("distancia del punto 10", calcular_distancia_punto(10), calcular_punto_equilibrio(), 1.0);
+    comprobar("punto inexistente", calcular_distancia_punto(11), 0.0, 0.0);
+
+    inicializar_nave(&nave, 10900.0, 150000.0);
+    comprobar("último punto con 10 900 m/s", recorrer_sin_correcciones(&nave, velocidades), 9, 0);
+    comprobar("velocidad en el punto 5 con 10 900 m/s", velocidades[5], 1377.47, 0.01);
+    comprobar("velocidad en el punto 9 con 10 900 m/s", velocidades[9], 128.93, 0.01);
+
+    inicializar_nave(&nave, 10906.0, 150000.0);
+    comprobar("último punto con 10 906 m/s", recorrer_sin_correcciones(&nave, velocidades), 10, 0);
+    comprobar("velocidad en el equilibrio con 10 906 m/s", velocidades[10], 129.09, 0.01);
+
+    inicializar_nave(&nave, 10900.0, 150000.0);
+    comprobar("corrección mayor que la reserva", aplicar_correccion(&nave, 200000.0), 0, 0);
+    comprobar("corrección negativa", aplicar_correccion(&nave, -5.0), 0, 0);
+
+    inicializar_nave(&nave, 10900.0, 150000.0);
+    recorrer_sin_correcciones(&nave, velocidades);
+    comprobar("corrección a tiempo", aplicar_correccion(&nave, 57100.0), 1, 0);
+    comprobar("reserva tras la corrección", nave.reserva, 92900.0, 1e-6);
+    comprobar("trabajo aplicado", nave.trabajo_aplicado, 57100.0, 1e-6);
+    comprobar("correcciones usadas", nave.correcciones, 1, 0);
+    comprobar("avanza al equilibrio tras corregir", avanzar_nave(&nave), 1, 0);
+    comprobar("velocidad al llegar tras corregir", nave.velocidad, 5.35, 0.01);
+    comprobar("no avanza más allá del equilibrio", avanzar_nave(&nave), 0, 0);
 }
 
 static void probar_eventos_y_puntaje(void)
