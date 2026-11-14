@@ -52,6 +52,7 @@ Las advertencias se tratan como errores: el código tiene que compilar sin ningu
 ## Documentación
 
 - [Especificación funcional](docs/PROJECT.md): escenario, supuestos del modelo, reglas del juego, entradas, resultados y casos de prueba.
+- [Arquitectura](docs/ARCHITECTURE.md): módulos, estructuras, funciones públicas y flujo entre archivos.
 - [Roadmap de desarrollo](docs/DEVELOPMENT-ROADMAP.md): etapas, alcance y criterios de finalización.
 - [Tablero del proyecto](https://github.com/users/acevedo-daniel/projects/4): seguimiento de tareas y estado del desarrollo.
 - [Guía de trabajo con GitHub](docs/DEVELOPMENT.md): cómo tomar una tarea, crear ramas, abrir Pull Requests y revisar.
