@@ -366,11 +366,62 @@ void elegir_nivel(Nivel *nivel)
 
 /* Turno en pantalla */
 
+static void mostrar_barra_progreso(int punto)
+{
+    int i;
+    printf("Tierra \xe2\x97\x8f");
+    for (i = 0; i < punto; i++) {
+        printf("\xe2\x94\x80");
+    }
+    printf("\xe2\x96\xb6");
+    for (i = punto; i < CANTIDAD_TRAMOS; i++) {
+        printf("\xe2\x94\x80");
+    }
+    printf(" \xe2\x97\x8b Luna\n");
+}
+
 void mostrar_turno(const EstadoNave *nave, const Evento *evento)
 {
-    (void)nave;
-    (void)evento;
-    /* Pendiente: se implementa en esta etapa. */
+    Telemetria tel;
+    double velocidad_siguiente;
+    int alcanza;
+
+    printf("\nTRAMO %d de %d\n", nave->punto + 1, CANTIDAD_TRAMOS);
+    mostrar_barra_progreso(nave->punto);
+
+    calcular_telemetria(nave, &tel);
+    printf("\n");
+    printf("  Distancia:          %.0f km\n", tel.distancia / 1000.0);
+    printf("  Velocidad:          %.1f m/s\n", tel.velocidad);
+    printf("  Atracci\xc3\xb3n Tierra:   %.5g m/s\xc2\xb2\n", tel.atraccion_tierra);
+    printf("  Atracci\xc3\xb3n Luna:     %.5g m/s\xc2\xb2\n", tel.atraccion_luna);
+    printf("  Desaceleraci\xc3\xb3n:     %.5g m/s\xc2\xb2\n", tel.desaceleracion_neta);
+    printf("  Energ\xc3\xad" "a cin\xc3\xa9tica:   %.0f J/kg\n", tel.energia_cinetica);
+    printf("\n  1.\xc2\xaa Ley de Newton: la nave conserva su movimiento por inercia;\n"
+           "  solo la frena la gravedad terrestre, cada vez menos a medida que se aleja.\n");
+
+    printf("\n");
+    if (evento->tipo == EVENTO_FALLA_SENSOR) {
+        printf("  Falla de sensor: predicci\xc3\xb3n no disponible en este turno\n");
+    } else {
+        alcanza = calcular_velocidad_en(nave->distancia, nave->velocidad,
+                                        calcular_distancia_punto(nave->punto + 1),
+                                        &velocidad_siguiente);
+        if (alcanza) {
+            printf("  Velocidad al final del tramo: %.1f m/s\n", velocidad_siguiente);
+        } else {
+            printf("  La nave no alcanza el pr\xc3\xb3ximo punto\n");
+        }
+    }
+
+    printf("  Reserva disponible: %.0f J/kg\n", nave->reserva);
+
+    if (evento->tipo == EVENTO_FUGA_PROPULSION) {
+        printf("\n  Fuga de propulsi\xc3\xb3n: se perdi\xc3\xb3 el %.0f %% de la reserva.\n",
+               evento->porcentaje_reserva);
+    } else if (evento->tipo == EVENTO_PERDIDA_SENAL) {
+        printf("\n  En este turno no se puede corregir\n");
+    }
 }
 
 /* Reporte */
