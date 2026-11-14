@@ -21,6 +21,8 @@ El comando compila `pruebas/pruebas_simulador.c` junto con `src/simulador.c` usa
 | `probar_trabajo_minimo_y_distancia_maxima` | `calcular_trabajo_minimo`, `calcular_distancia_maxima` | Pregunta c, Regla 1 |
 | `probar_estado_nave` | `calcular_distancia_punto`, `inicializar_nave`, `aplicar_correccion`, `avanzar_nave`, `recorrer_sin_correcciones` | Recorrido de referencia, corrección |
 | `probar_eventos_y_puntaje` | `generar_evento`, `aplicar_evento`, `calcular_puntaje` | Reglas 2 y 3, Eventos, Desempeño |
+| `probar_niveles` | `obtener_nivel` | Regla 2, Niveles |
+| `probar_reporte` | `armar_reporte` | Desempeño y reporte final |
 
 ## Cómo agregar una prueba
 

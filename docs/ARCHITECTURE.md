@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | `src/main.c` | Únicamente `main()`, bienvenida, menú principal, almacenamiento del último reporte y despacho de opciones | `"simulador.h"`, `"validaciones.h"`, `<stdio.h>` (y `<windows.h>` en Windows) |
 | `src/simulador.h` | Constantes del escenario y reglas (`#define`), definiciones `typedef` (`enum` y `struct`) y prototipos públicos de simulación y física | — |
-| `src/simulador.c` | Implementación de las opciones de simulación, presentación de datos y supuestos, y lógica física | `"simulador.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>` |
+| `src/simulador.c` | Implementación de las opciones de simulación, presentación de datos y supuestos, y lógica física | `"simulador.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>`, `<time.h>` |
 | `src/validaciones.h` | Prototipos públicos para la lectura validada de enteros, reales y caracteres | — |
 | `src/validaciones.c` | Lectura segura por línea (`leer_linea`) y validación por tipo y rango con reintento ante entradas inválidas | `"validaciones.h"`, `<ctype.h>`, `<errno.h>`, `<limits.h>`, `<stdio.h>`, `<stdlib.h>`, `<string.h>` |
 | `pruebas/pruebas_simulador.c` | Pruebas automáticas de los cálculos físicos, el estado de la nave, eventos y puntaje contra los casos de referencia | `"simulador.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>` |
@@ -34,6 +34,7 @@ Las reglas de negocio y el diseño conceptual de estas entidades se detallan en 
 - `Telemetria`: concentra distancia, velocidad, atracciones gravitatorias, desaceleración neta y energía cinética de un turno; `calcular_telemetria` la completa por puntero a partir de `EstadoNave`.
 - `Evento`: combina un `TipoEvento` con el porcentaje de reserva afectado; `generar_evento` lo completa por puntero y `aplicar_evento` lo lee por puntero.
 - `ReporteFinal`: consolida datos iniciales, resultado, métricas de vuelo, balance de trabajo y puntaje de una misión terminada; `main()` reserva una instancia y la pasa por puntero a `nueva_mision` y `mostrar_ultimo_reporte`.
+- `Nivel`: agrupa nombre, masa inicial, reserva de corrección y probabilidad de eventos de un nivel de misión; declarada como contrato para `obtener_nivel` y `elegir_nivel`.
 
 ## Funciones públicas
 
@@ -62,6 +63,10 @@ Las reglas de negocio y el diseño conceptual de estas entidades se detallan en 
 | `void generar_evento(Evento *evento, int probabilidad, int nave_alcanza_siguiente);` | `simulador` | implementada |
 | `void aplicar_evento(EstadoNave *nave, const Evento *evento);` | `simulador` | implementada |
 | `double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion, double trabajo_aplicado, int correcciones);` | `simulador` | implementada |
+| `int obtener_nivel(int indice, Nivel *nivel);` | `simulador` | sin implementar |
+| `void elegir_nivel(Nivel *nivel);` | `simulador` | sin implementar |
+| `void mostrar_turno(const EstadoNave *nave, const Evento *evento);` | `simulador` | sin implementar |
+| `void armar_reporte(ReporteFinal *reporte, const ParametrosMision *mision, const EstadoNave *nave);` | `simulador` | sin implementar |
 | `int leer_entero(const char *mensaje, int minimo, int maximo, const char *aviso_rango);` | `validaciones` | implementada |
 | `double leer_real(const char *mensaje, double minimo, double maximo, const char *aviso_rango);` | `validaciones` | implementada |
 | `char leer_caracter(const char *mensaje, const char *opciones_validas, const char *aviso_invalido);` | `validaciones` | implementada |
