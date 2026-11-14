@@ -122,25 +122,26 @@ void calcular_telemetria(const EstadoNave *nave, Telemetria *telemetria)
 
 /* Energía cinética y pozos gravitatorios */
 
+/* Energía cinética: Ec = 0.5 * masa * velocidad², en J. */
 double calcular_energia_cinetica(double masa, double velocidad)
 {
-    (void)masa;
-    (void)velocidad;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0.0;
+    return 0.5 * masa * velocidad * velocidad;
 }
 
+/* Pozo terrestre: G * MT / (RT + altitud), en J/kg. */
 double calcular_pozo_tierra(double altitud)
 {
-    (void)altitud;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0.0;
+    if (altitud < 0.0) {
+        return 0.0;
+    }
+
+    return CONSTANTE_G * MASA_TIERRA / (RADIO_TIERRA + altitud);
 }
 
+/* Pozo lunar: G * ML / RL, en J/kg. */
 double calcular_pozo_luna(void)
 {
-    /* Pendiente: se implementa en esta etapa. */
-    return 0.0;
+    return CONSTANTE_G * MASA_LUNA / RADIO_LUNA;
 }
 
 /* Trabajo mínimo y distancia máxima */

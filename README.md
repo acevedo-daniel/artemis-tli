@@ -62,6 +62,8 @@ Las advertencias se tratan como errores: el código tiene que compilar sin ningu
 
 ## Registro de uso de inteligencia artificial
 
+- 14/11/2026 · Fernando Germán Ojeda · ChatGPT (OpenAI) — Implementación del cálculo de energía cinética y pozos gravitatorios (#54). Consulta: asistencia para implementar las funciones `calcular_energia_cinetica`, `calcular_pozo_tierra` y `calcular_pozo_luna`, y agregar trece pruebas unitarias. Validación: compilación con `mingw32-make` y ejecución de `mingw32-make pruebas` (22 pruebas, 0 fallas).
+
 La consigna exige registrar cada uso de herramientas de IA: herramienta, tarea, consultas realizadas y cómo se validó o adaptó el resultado. Cada integrante agrega una línea, con el formato `fecha · integrante · herramienta — tarea. Consulta: … Validación: …`, en el mismo Pull Request que incorpora el trabajo asistido.
 
 - 10/11/2026 · Mario Daniel Acevedo · Claude Code (Anthropic) — Auditoría de la documentación inicial y base de colaboración (formularios, plantilla de Pull Request, `.gitignore`, `AGENTS.md`, README, guía de GitHub y roadmap). Consulta: "Audita mis documentos iniciales y cómo se conformó; crea un plan de implementación para las tareas iniciales". Validación: revisión de cada archivo contra la consigna; configuración de GitHub verificada con `gh`.
