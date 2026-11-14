@@ -90,25 +90,34 @@ int calcular_velocidad_en(double distancia_inicial, double velocidad_inicial,
 
 /* Atracciones y telemetría */
 
+/* a_T = G · M_T / r² */
 double calcular_atraccion_tierra(double distancia)
 {
-    (void)distancia;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0.0;
+    if (!distancia_valida(distancia)) {
+        return 0.0;
+    }
+    return CONSTANTE_G * MASA_TIERRA / (distancia * distancia);
 }
 
+/* a_L = G · M_L / (D - r)² */
 double calcular_atraccion_luna(double distancia)
 {
-    (void)distancia;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0.0;
+    if (!distancia_valida(distancia)) {
+        return 0.0;
+    }
+    double d = DISTANCIA_TIERRA_LUNA - distancia;
+    return CONSTANTE_G * MASA_LUNA / (d * d);
 }
 
+/* Copia posición y velocidad; calcula atracciones, desaceleración neta y energía cinética. */
 void calcular_telemetria(const EstadoNave *nave, Telemetria *telemetria)
 {
-    (void)nave;
-    (void)telemetria;
-    /* Pendiente: se implementa en esta etapa. */
+    telemetria->distancia = nave->distancia;
+    telemetria->velocidad = nave->velocidad;
+    telemetria->atraccion_tierra = calcular_atraccion_tierra(nave->distancia);
+    telemetria->atraccion_luna = calcular_atraccion_luna(nave->distancia);
+    telemetria->desaceleracion_neta = telemetria->atraccion_tierra - telemetria->atraccion_luna;
+    telemetria->energia_cinetica = nave->velocidad * nave->velocidad / 2.0;
 }
 
 /* Energía cinética y pozos gravitatorios */
