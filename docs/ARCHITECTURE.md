@@ -27,12 +27,12 @@ flowchart LR
 
 Las reglas de negocio y el diseño conceptual de estas entidades se detallan en [PROJECT.md › Entidades candidatas a struct](PROJECT.md#entidades-candidatas-a-struct). En `src/simulador.h` se definen los siguientes `typedef`:
 
-- `ResultadoMision`: enumera los estados posibles de una misión (en curso, éxito, fracaso o abortada); forma parte de `ParametrosMision` y `ReporteFinal`, y todavía no es usado directamente por funciones implementadas.
-- `TipoEvento`: enumera los tipos de incidente de turno (ninguno, fuga de propulsión, pérdida de señal o falla de sensor); integra la estructura `Evento` y aún no tiene funciones implementadas que lo consuman.
-- `EstadoNave`: agrupa punto actual (`0` a `CANTIDAD_TRAMOS`), distancia, velocidad, reserva de corrección, trabajo aplicado y cantidad de correcciones aplicadas de la nave durante el vuelo; está declarada como contrato y aún no la utilizan funciones implementadas.
+- `ResultadoMision`: enumera los estados posibles de una misión (en curso, éxito, fracaso o abortada); forma parte de `ParametrosMision` y `ReporteFinal`, y `calcular_puntaje` lo recibe para decidir si corresponde puntuar la misión.
+- `TipoEvento`: enumera los tipos de incidente de turno (ninguno, fuga de propulsión, pérdida de señal o falla de sensor); integra la estructura `Evento` y lo utilizan `generar_evento` y `aplicar_evento`.
+- `EstadoNave`: agrupa punto actual (`0` a `CANTIDAD_TRAMOS`), distancia, velocidad, reserva de corrección, trabajo aplicado y cantidad de correcciones aplicadas de la nave durante el vuelo; las funciones de estado (`inicializar_nave`, `aplicar_correccion`, `avanzar_nave`, `recorrer_sin_correcciones`), `calcular_telemetria` y `aplicar_evento` la reciben por puntero.
 - `ParametrosMision`: reúne masa, velocidad de inyección, índice de nivel y resultado de una misión; definida como contrato, todavía sin funciones implementadas que la reciban.
-- `Telemetria`: concentra distancia, velocidad, atracciones gravitatorias, desaceleración neta y energía cinética de un turno; aún no la generan ni imprimen funciones implementadas.
-- `Evento`: combina un `TipoEvento` con el porcentaje de reserva afectado; declarada en el encabezado, todavía sin funciones implementadas que la procesen.
+- `Telemetria`: concentra distancia, velocidad, atracciones gravitatorias, desaceleración neta y energía cinética de un turno; `calcular_telemetria` la completa por puntero a partir de `EstadoNave`.
+- `Evento`: combina un `TipoEvento` con el porcentaje de reserva afectado; `generar_evento` lo completa por puntero y `aplicar_evento` lo lee por puntero.
 - `ReporteFinal`: consolida datos iniciales, resultado, métricas de vuelo, balance de trabajo y puntaje de una misión terminada; `main()` reserva una instancia y la pasa por puntero a `nueva_mision` y `mostrar_ultimo_reporte`.
 
 ## Funciones públicas
@@ -43,25 +43,25 @@ Las reglas de negocio y el diseño conceptual de estas entidades se detallan en 
 | `void submenu_consultas(void);` | `simulador` | provisional |
 | `void mostrar_datos_y_supuestos(void);` | `simulador` | implementada |
 | `void mostrar_ultimo_reporte(const ReporteFinal *reporte);` | `simulador` | provisional |
-| `double calcular_atraccion_tierra(double distancia);` | `simulador` | sin implementar |
-| `double calcular_atraccion_luna(double distancia);` | `simulador` | sin implementar |
-| `double calcular_energia_cinetica(double masa, double velocidad);` | `simulador` | sin implementar |
+| `double calcular_atraccion_tierra(double distancia);` | `simulador` | implementada |
+| `double calcular_atraccion_luna(double distancia);` | `simulador` | implementada |
+| `double calcular_energia_cinetica(double masa, double velocidad);` | `simulador` | implementada |
 | `double calcular_energia_potencial_por_kg(double distancia);` | `simulador` | implementada |
 | `double calcular_punto_equilibrio(void);` | `simulador` | implementada |
-| `double calcular_trabajo_minimo(double velocidad, double altitud);` | `simulador` | sin implementar |
-| `double calcular_pozo_tierra(double altitud);` | `simulador` | sin implementar |
-| `double calcular_pozo_luna(void);` | `simulador` | sin implementar |
+| `double calcular_trabajo_minimo(double velocidad, double altitud);` | `simulador` | implementada |
+| `double calcular_pozo_tierra(double altitud);` | `simulador` | implementada |
+| `double calcular_pozo_luna(void);` | `simulador` | implementada |
 | `int calcular_velocidad_en(double distancia_inicial, double velocidad_inicial, double distancia, double *velocidad);` | `simulador` | implementada |
-| `double calcular_distancia_maxima(double distancia_inicial, double velocidad_inicial);` | `simulador` | sin implementar |
-| `double calcular_distancia_punto(int punto);` | `simulador` | sin implementar |
-| `void inicializar_nave(EstadoNave *nave, double velocidad_inyeccion, double reserva);` | `simulador` | sin implementar |
-| `void calcular_telemetria(const EstadoNave *nave, Telemetria *telemetria);` | `simulador` | sin implementar |
-| `int aplicar_correccion(EstadoNave *nave, double trabajo);` | `simulador` | sin implementar |
-| `int avanzar_nave(EstadoNave *nave);` | `simulador` | sin implementar |
-| `int recorrer_sin_correcciones(EstadoNave *nave, double velocidades[]);` | `simulador` | sin implementar |
-| `void generar_evento(Evento *evento, int probabilidad, int nave_alcanza_siguiente);` | `simulador` | sin implementar |
-| `void aplicar_evento(EstadoNave *nave, const Evento *evento);` | `simulador` | sin implementar |
-| `double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion, double trabajo_aplicado, int correcciones);` | `simulador` | sin implementar |
+| `double calcular_distancia_maxima(double distancia_inicial, double velocidad_inicial);` | `simulador` | implementada |
+| `double calcular_distancia_punto(int punto);` | `simulador` | implementada |
+| `void inicializar_nave(EstadoNave *nave, double velocidad_inyeccion, double reserva);` | `simulador` | implementada |
+| `void calcular_telemetria(const EstadoNave *nave, Telemetria *telemetria);` | `simulador` | implementada |
+| `int aplicar_correccion(EstadoNave *nave, double trabajo);` | `simulador` | implementada |
+| `int avanzar_nave(EstadoNave *nave);` | `simulador` | implementada |
+| `int recorrer_sin_correcciones(EstadoNave *nave, double velocidades[]);` | `simulador` | implementada |
+| `void generar_evento(Evento *evento, int probabilidad, int nave_alcanza_siguiente);` | `simulador` | implementada |
+| `void aplicar_evento(EstadoNave *nave, const Evento *evento);` | `simulador` | implementada |
+| `double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion, double trabajo_aplicado, int correcciones);` | `simulador` | implementada |
 | `int leer_entero(const char *mensaje, int minimo, int maximo, const char *aviso_rango);` | `validaciones` | implementada |
 | `double leer_real(const char *mensaje, double minimo, double maximo, const char *aviso_rango);` | `validaciones` | implementada |
 | `char leer_caracter(const char *mensaje, const char *opciones_validas, const char *aviso_invalido);` | `validaciones` | implementada |
