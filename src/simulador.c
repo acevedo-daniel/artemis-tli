@@ -146,20 +146,53 @@ double calcular_pozo_luna(void)
 
 /* Trabajo mínimo y distancia máxima */
 
+/* Calcula el trabajo adicional por kilogramo necesario para alcanzar
+   el punto de equilibrio, descontando la energía cinética inicial. */
 double calcular_trabajo_minimo(double velocidad, double altitud)
 {
-    (void)velocidad;
-    (void)altitud;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0.0;
+    double r0 = RADIO_TIERRA + altitud;
+
+    return calcular_energia_potencial_por_kg(calcular_punto_equilibrio())
+           - (velocidad * velocidad / 2.0
+              + calcular_energia_potencial_por_kg(r0));
 }
 
+/* Busca la mayor distancia que puede alcanzar la nave.
+   Se utiliza búsqueda binaria porque no resulta sencillo despejar
+   directamente la distancia donde la velocidad se vuelve cero. */
 double calcular_distancia_maxima(double distancia_inicial, double velocidad_inicial)
 {
-    (void)distancia_inicial;
-    (void)velocidad_inicial;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0.0;
+    double inferior;
+    double superior;
+    double medio;
+    double velocidad;
+    int i;
+
+    if (!distancia_valida(distancia_inicial)) {
+        return 0.0;
+    }
+
+    superior = calcular_punto_equilibrio();
+
+    if (calcular_velocidad_en(distancia_inicial, velocidad_inicial,
+                              superior, &velocidad)) {
+        return superior;
+    }
+
+    inferior = distancia_inicial;
+
+    for (i = 0; i < 100; i++) {
+        medio = (inferior + superior) / 2.0;
+
+        if (calcular_velocidad_en(distancia_inicial, velocidad_inicial,
+                                  medio, &velocidad)) {
+            inferior = medio;
+        } else {
+            superior = medio;
+        }
+    }
+
+    return inferior;
 }
 
 /* Estado de la nave */
