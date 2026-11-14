@@ -275,6 +275,14 @@ static void probar_eventos_y_puntaje(void)
               calcular_puntaje(RESULTADO_EXITO, 11200.0, 150000.0, 3), 0.0, 0.0);
 }
 
+static void probar_niveles(void)
+{
+}
+
+static void probar_reporte(void)
+{
+}
+
 int main(void)
 {
     probar_energia_potencial();
@@ -283,6 +291,8 @@ int main(void)
     probar_trabajo_minimo_y_distancia_maxima();
     probar_estado_nave();
     probar_eventos_y_puntaje();
+    probar_niveles();
+    probar_reporte();
 
     printf("%d pruebas, %d fallas\n", total, fallas);
     return fallas == 0 ? EXIT_SUCCESS : EXIT_FAILURE;

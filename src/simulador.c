@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <time.h>
 #include "simulador.h"
 
 int nueva_mision(ReporteFinal *reporte)
 {
+    /* Pendiente: se implementa en esta etapa. */
     (void)reporte;
     printf("La nueva misión todavía no está disponible.\n");
     return 0;
@@ -12,6 +14,7 @@ int nueva_mision(ReporteFinal *reporte)
 
 void submenu_consultas(void)
 {
+    /* Pendiente: se implementa en esta etapa. */
     printf("Las consultas del Problema 3 todavía no están disponibles.\n");
 }
 
@@ -39,6 +42,7 @@ void mostrar_datos_y_supuestos(void)
 
 void mostrar_ultimo_reporte(const ReporteFinal *reporte)
 {
+    /* Pendiente: se implementa en esta etapa. */
     if (reporte == NULL) {
         printf("Todavía no hay misiones jugadas\n");
         return;
@@ -342,4 +346,39 @@ double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion,
               - DESCUENTO_POR_KJ_EXCESO * exceso / 1000.0
               - DESCUENTO_POR_CORRECCION * correcciones;
     return puntaje > 0.0 ? puntaje : 0.0;
+}
+
+/* Niveles */
+
+int obtener_nivel(int indice, Nivel *nivel)
+{
+    (void)indice;
+    (void)nivel;
+    /* Pendiente: se implementa en esta etapa. */
+    return 0;
+}
+
+void elegir_nivel(Nivel *nivel)
+{
+    (void)nivel;
+    /* Pendiente: se implementa en esta etapa. */
+}
+
+/* Turno en pantalla */
+
+void mostrar_turno(const EstadoNave *nave, const Evento *evento)
+{
+    (void)nave;
+    (void)evento;
+    /* Pendiente: se implementa en esta etapa. */
+}
+
+/* Reporte */
+
+void armar_reporte(ReporteFinal *reporte, const ParametrosMision *mision, const EstadoNave *nave)
+{
+    (void)reporte;
+    (void)mision;
+    (void)nave;
+    /* Pendiente: se implementa en esta etapa. */
 }

@@ -31,6 +31,16 @@
 #define FUGA_MINIMA 10                     /* % de reserva que se pierde */
 #define FUGA_MAXIMA 25
 
+/* Consultas: la pregunta c admite partir del reposo */
+#define VELOCIDAD_CONSULTA_MINIMA 0.0      /* m/s */
+
+/* Niveles */
+#define CANTIDAD_NIVELES_PREDEFINIDOS 3
+#define NIVEL_PERSONALIZADO 3
+#define RESERVA_MINIMA 0.0                 /* J/kg */
+#define RESERVA_MAXIMA 500000.0            /* J/kg */
+#define PROBABILIDAD_EVENTOS_PERSONALIZADA 25
+
 /* Menú principal */
 #define OPCION_SALIR 0
 #define OPCION_MENU_MAXIMA 4
@@ -98,6 +108,14 @@ typedef struct {
     double puntaje;                   /* 0 a 100 */
 } ReporteFinal;
 
+/* Configuración de un nivel de misión */
+typedef struct {
+    const char *nombre;
+    double masa;               /* kg */
+    double reserva;            /* J/kg de corrección inicial */
+    int probabilidad_eventos;  /* % por turno; 0 = sin eventos */
+} Nivel;
+
 /* Opciones del menú principal */
 int nueva_mision(ReporteFinal *reporte);
 void submenu_consultas(void);
@@ -130,5 +148,13 @@ void generar_evento(Evento *evento, int probabilidad, int nave_alcanza_siguiente
 void aplicar_evento(EstadoNave *nave, const Evento *evento);
 double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion,
                         double trabajo_aplicado, int correcciones);
+
+/* Niveles */
+int obtener_nivel(int indice, Nivel *nivel);
+void elegir_nivel(Nivel *nivel);
+
+/* Turno y reporte */
+void mostrar_turno(const EstadoNave *nave, const Evento *evento);
+void armar_reporte(ReporteFinal *reporte, const ParametrosMision *mision, const EstadoNave *nave);
 
 #endif
