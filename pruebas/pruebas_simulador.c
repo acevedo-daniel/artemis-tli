@@ -277,6 +277,37 @@ static void probar_eventos_y_puntaje(void)
 
 static void probar_niveles(void)
 {
+    Nivel nivel;
+    int i;
+
+    /* Masa, reserva y probabilidad de los tres niveles predefinidos */
+    obtener_nivel(0, &nivel);
+    comprobar("masa nivel 0",        nivel.masa,                  26000.0,                   0.0);
+    comprobar("reserva nivel 0",     nivel.reserva,               300000.0,                  0.0);
+    comprobar("eventos nivel 0",     nivel.probabilidad_eventos,  10,                        0.0);
+
+    obtener_nivel(1, &nivel);
+    comprobar("masa nivel 1",        nivel.masa,                  26000.0,                   0.0);
+    comprobar("reserva nivel 1",     nivel.reserva,               RESERVA_CORRECCION_DEFECTO, 0.0);
+    comprobar("eventos nivel 1",     nivel.probabilidad_eventos,  25,                        0.0);
+
+    obtener_nivel(2, &nivel);
+    comprobar("masa nivel 2",        nivel.masa,                  60000.0,                   0.0);
+    comprobar("reserva nivel 2",     nivel.reserva,               80000.0,                   0.0);
+    comprobar("eventos nivel 2",     nivel.probabilidad_eventos,  50,                        0.0);
+
+    /* Índices fuera de rango devuelven 0 */
+    comprobar("obtener_nivel fuera de rango superior", obtener_nivel(3, &nivel),  0, 0.0);
+    comprobar("obtener_nivel fuera de rango inferior", obtener_nivel(-1, &nivel), 0, 0.0);
+
+    /* Regla 2: cada nivel predefinido tiene reserva suficiente tras la peor fuga */
+    for (i = 0; i < CANTIDAD_NIVELES_PREDEFINIDOS; i++) {
+        obtener_nivel(i, &nivel);
+        comprobar("Regla 2 nivel predefinido",
+                  nivel.reserva * (100 - FUGA_MAXIMA) / 100.0
+                  > calcular_trabajo_minimo(VELOCIDAD_TLI_DEFECTO, ALTITUD_DEFECTO),
+                  1, 0.0);
+    }
 }
 
 static void probar_reporte(void)
