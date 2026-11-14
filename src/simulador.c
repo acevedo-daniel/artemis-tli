@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "simulador.h"
+#include "validaciones.h"
 
 int nueva_mision(ReporteFinal *reporte)
 {
@@ -350,18 +351,53 @@ double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion,
 
 /* Niveles */
 
+static const Nivel niveles[CANTIDAD_NIVELES_PREDEFINIDOS] = {
+    {"Prueba sin tripulacion", 26000.0, 300000.0,                 10},
+    {"Mision tripulada",       26000.0, RESERVA_CORRECCION_DEFECTO, 25},
+    {"Mision con carga",       60000.0, 80000.0,                  50}
+};
+
+/* Copia el nivel en *nivel; devuelve 1 si el índice es válido y nivel != NULL. */
 int obtener_nivel(int indice, Nivel *nivel)
 {
-    (void)indice;
-    (void)nivel;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0;
+    if (nivel == NULL || indice < 0 || indice >= CANTIDAD_NIVELES_PREDEFINIDOS) {
+        return 0;
+    }
+    *nivel = niveles[indice];
+    return 1;
 }
 
+/* Muestra los niveles disponibles y llena *nivel con la elección del jugador. */
 void elegir_nivel(Nivel *nivel)
 {
-    (void)nivel;
-    /* Pendiente: se implementa en esta etapa. */
+    int opcion;
+    int i;
+    char eventos_char;
+
+    printf("\nNIVELES DE MISIÓN\n");
+    for (i = 0; i < CANTIDAD_NIVELES_PREDEFINIDOS; i++) {
+        printf("  %d. %-24s  masa %.0f kg  reserva %.0f J/kg  eventos %d%%\n",
+               i + 1, niveles[i].nombre, niveles[i].masa,
+               niveles[i].reserva, niveles[i].probabilidad_eventos);
+    }
+    printf("  4. Personalizada\n");
+
+    opcion = leer_entero("\nElija una opción (1-4): ", 1, 4,
+                         "Opción inválida. Ingrese un número entre 1 y 4:");
+
+    if (opcion <= CANTIDAD_NIVELES_PREDEFINIDOS) {
+        obtener_nivel(opcion - 1, nivel);
+        return;
+    }
+
+    nivel->nombre = "Personalizada";
+    nivel->masa = leer_real("Masa (kg): ", MASA_MINIMA, MASA_MAXIMA,
+                            "La masa debe estar entre 1 000 y 100 000 kg. Ingrese nuevamente:");
+    nivel->reserva = leer_real("Reserva de corrección (J/kg): ", RESERVA_MINIMA, RESERVA_MAXIMA,
+                               "La reserva debe estar entre 0 y 500 000 J/kg. Ingrese nuevamente:");
+    eventos_char = leer_caracter("¿Activar eventos? (s/n): ", "sn",
+                                 "Ingrese s o n:");
+    nivel->probabilidad_eventos = (eventos_char == 's') ? PROBABILIDAD_EVENTOS_PERSONALIZADA : 0;
 }
 
 /* Turno en pantalla */
