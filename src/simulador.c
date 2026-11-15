@@ -303,12 +303,33 @@ void mostrar_datos_y_supuestos(void)
 
 void mostrar_ultimo_reporte(const ReporteFinal *reporte)
 {
-    /* Pendiente: se implementa en esta etapa. */
     if (reporte == NULL) {
-        printf("Todavía no hay misiones jugadas\n");
+        printf("Todavia no hay misiones jugadas\n");
         return;
     }
-    printf("El reporte detallado todavía no está disponible.\n");
+
+    const char *str_resultado;
+    if (reporte->resultado == RESULTADO_EXITO) {
+        str_resultado = "Exito";
+    } else if (reporte->resultado == RESULTADO_FRACASO) {
+        str_resultado = "Fracaso";
+    } else {
+        str_resultado = "Abortada";
+    }
+
+    printf("\n=== REPORTE FINAL DE LA MISION ===\n");
+    printf("Resultado: %s\n", str_resultado);
+    printf("Masa: %.2f kg | Velocidad de inyeccion: %.2f m/s\n", reporte->masa, reporte->velocidad_inyeccion);
+    printf("Energia cinetica inicial: %e J\n", reporte->energia_cinetica_inicial);
+    printf("Distancia maxima: %.2f km\n", reporte->distancia_maxima / 1000.0);
+    printf("Trabajo aplicado en correcciones: %.2f J/kg (Trabajo minimo: %.2f J/kg)\n", 
+           reporte->trabajo_aplicado, fmax(0.0, reporte->trabajo_minimo));
+    printf("Comparacion energetica ida (Pozo Tierra): %.2f MJ/kg (Total: %e J)\n", 
+           reporte->pozo_tierra / 1e6, reporte->pozo_tierra * reporte->masa);
+    printf("Comparacion energetica regreso (Pozo Luna): %.2f MJ/kg (Total: %e J)\n", 
+           reporte->pozo_luna / 1e6, reporte->pozo_luna * reporte->masa);
+    printf("Razon Tierra / Luna: %.2f\n", reporte->pozo_tierra / reporte->pozo_luna);
+    printf("Puntaje final: %.1f / 100\n", reporte->puntaje);
 }
 
 /* Devuelve 1 si la distancia está entre la Tierra y la Luna, donde las fórmulas no dividen por cero. */
@@ -724,8 +745,29 @@ void mostrar_turno(const EstadoNave *nave, const Evento *evento)
 
 void armar_reporte(ReporteFinal *reporte, const ParametrosMision *mision, const EstadoNave *nave)
 {
-    (void)reporte;
-    (void)mision;
-    (void)nave;
-    /* Pendiente: se implementa en esta etapa. */
+  if (reporte == NULL || mision == NULL || nave == NULL) {
+        return;
+    }
+
+    reporte->masa = mision->masa;
+    reporte->velocidad_inyeccion = mision->velocidad_inyeccion;
+    reporte->resultado = mision->resultado;
+    reporte->energia_cinetica_inicial = calcular_energia_cinetica(mision->masa, mision->velocidad_inyeccion);
+
+    // Determinar distancia máxima según el resultado de la misión
+    if (mision->resultado == RESULTADO_EXITO) {
+        reporte->distancia_maxima = calcular_punto_equilibrio();
+    } else if (mision->resultado == RESULTADO_FRACASO) {
+        reporte->distancia_maxima = calcular_distancia_maxima(nave->distancia, nave->velocidad);
+    } else { // Abortada u otros
+        reporte->distancia_maxima = nave->distancia;
+    }
+
+    reporte->velocidad_final = nave->velocidad;
+    reporte->trabajo_aplicado = nave->trabajo_aplicado;
+    reporte->correcciones_usadas = nave->correcciones; // Corregido de correcciones_usadas a correcciones
+    reporte->trabajo_minimo = calcular_trabajo_minimo(mision->velocidad_inyeccion, ALTITUD_DEFECTO); // Corregido a 2 argumentos
+    reporte->pozo_tierra = calcular_pozo_tierra(ALTITUD_DEFECTO);
+    reporte->pozo_luna = calcular_pozo_luna();
+    reporte->puntaje = calcular_puntaje(mision->resultado, mision->velocidad_inyeccion, nave->trabajo_aplicado, nave->correcciones); // Corregido a nave->correcciones
 }
