@@ -317,40 +317,34 @@ static void probar_reporte(void)
     ReporteFinal reporte;
     double velocidades[CANTIDAD_TRAMOS + 1];
 
-    // Configuración base de la misión para los casos
+    /* Misión por defecto: 26 000 kg a 10 900 m/s */
     mision.masa = 26000.0;
     mision.velocidad_inyeccion = 10900.0;
 
-    // --- 1. Caso: Abortada en el punto 0 ---
+    /* Abortada en el punto 0 */
     inicializar_nave(&nave, 10900.0, 150000.0);
     mision.resultado = RESULTADO_ABORTADA;
-    
     armar_reporte(&reporte, &mision, &nave);
-    
     comprobar("reporte abortada distancia máxima", reporte.distancia_maxima, 6563000.0, 1.0);
     comprobar("reporte abortada puntaje", reporte.puntaje, 0.0, 0.0);
 
-    // --- 2. Caso: Fracaso después de recorrer_sin_correcciones ---
+    /* Fracaso: recorre sin correcciones y se detiene antes del equilibrio */
     inicializar_nave(&nave, 10900.0, 150000.0);
     recorrer_sin_correcciones(&nave, velocidades);
     mision.resultado = RESULTADO_FRACASO;
-    
     armar_reporte(&reporte, &mision, &nave);
-    
     comprobar("reporte fracaso distancia máxima", reporte.distancia_maxima, 314442000.0, 1000.0);
     comprobar("reporte fracaso trabajo mínimo", reporte.trabajo_minimo, 57086.0, 1.0);
     comprobar("reporte fracaso energía cinética inicial", reporte.energia_cinetica_inicial, 1.54453e12, 1e7);
     comprobar("reporte fracaso puntaje", reporte.puntaje, 0.0, 0.0);
 
-    // --- 3. Caso: Éxito tras recorrer, corregir y avanzar ---
+    /* Éxito: corrige en el punto 9 y llega al equilibrio */
     inicializar_nave(&nave, 10900.0, 150000.0);
     recorrer_sin_correcciones(&nave, velocidades);
     aplicar_correccion(&nave, 57100.0);
     avanzar_nave(&nave);
     mision.resultado = RESULTADO_EXITO;
-    
     armar_reporte(&reporte, &mision, &nave);
-    
     comprobar("reporte éxito distancia máxima", reporte.distancia_maxima, calcular_punto_equilibrio(), 1.0);
     comprobar("reporte éxito correcciones usadas", reporte.correcciones_usadas, 1, 0);
     comprobar("reporte éxito pozo de la Tierra", reporte.pozo_tierra, 60.73e6, 0.01e6);

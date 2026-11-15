@@ -40,7 +40,7 @@ Consigna: `docs/catedra/consigna.pdf`; documentación: `docs/`; pruebas: `prueba
 - El código actual es la evidencia de lo que existe; `docs/DEVELOPMENT-ROADMAP.md` es el objetivo aprobado.
 - Todo cambio asistido por IA agrega una línea en README › Registro de uso de inteligencia artificial, en el mismo Pull Request.
 - Cada integrante abre los Pull Requests de su propio trabajo; nunca hacer commits ni abrir Pull Requests en nombre de otro integrante.
-- `local-docs/` está ignorado por Git y nunca se enlaza desde archivos versionados: planes activos en `execution/`, borradores de Issues en `issues/`, material que conserva el coordinador en `keep/` y todo otro archivo generado por agentes (scripts, textos de PR, capturas, salidas de compilación) en `tmp/`. Borrar el contenido de `tmp/`, los planes cuyos Pull Requests ya se integraron y los borradores de Issues ya publicados no requiere confirmación; nunca borrar `keep/`.
+- `local-docs/` está ignorado por Git y nunca se enlaza desde archivos versionados: planes activos en `execution/`, borradores de Issues en `issues/`, material que conserva Daniel Acevedo en `keep/` y todo otro archivo generado por agentes (scripts, textos de PR, capturas, salidas de compilación) en `tmp/`. Borrar el contenido de `tmp/`, los planes cuyos Pull Requests ya se integraron y los borradores de Issues ya publicados no requiere confirmación; nunca borrar `keep/`.
 
 ## Preguntar antes de
 
@@ -52,7 +52,7 @@ Consigna: `docs/catedra/consigna.pdf`; documentación: `docs/`; pruebas: `prueba
 
 ## Skills
 
-El coordinador tiene estas skills del playbook instaladas a nivel usuario; los agentes que no las tienen siguen este archivo y `docs/DEVELOPMENT.md`.
+Daniel Acevedo tiene estas skills del playbook instaladas a nivel usuario; los agentes que no las tienen siguen este archivo y `docs/DEVELOPMENT.md`.
 
 | Trabajo | Skill |
 | --- | --- |

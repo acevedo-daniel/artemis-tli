@@ -8,10 +8,11 @@
 | --- | --- | --- |
 | `src/main.c` | Únicamente `main()`, bienvenida, menú principal, almacenamiento del último reporte y despacho de opciones | `"simulador.h"`, `"validaciones.h"`, `<stdio.h>` (y `<windows.h>` en Windows) |
 | `src/simulador.h` | Constantes del escenario y reglas (`#define`), definiciones `typedef` (`enum` y `struct`) y prototipos públicos de simulación y física | — |
-| `src/simulador.c` | Implementación de las opciones de simulación, presentación de datos y supuestos, y lógica física | `"simulador.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>`, `<time.h>` |
+| `src/simulador.c` | Implementación de las opciones de simulación, presentación de datos y supuestos, y lógica física | `"simulador.h"`, `"validaciones.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>`, `<time.h>` |
 | `src/validaciones.h` | Prototipos públicos para la lectura validada de enteros, reales y caracteres | — |
 | `src/validaciones.c` | Lectura segura por línea (`leer_linea`) y validación por tipo y rango con reintento ante entradas inválidas | `"validaciones.h"`, `<ctype.h>`, `<errno.h>`, `<limits.h>`, `<stdio.h>`, `<stdlib.h>`, `<string.h>` |
-| `pruebas/pruebas_simulador.c` | Pruebas automáticas de los cálculos físicos, el estado de la nave, eventos y puntaje contra los casos de referencia | `"simulador.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>` |
+| `pruebas/pruebas_simulador.c` | Pruebas automáticas de los cálculos físicos, el estado de la nave, eventos, puntaje, niveles y reporte contra los casos de referencia | `"simulador.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>` |
+| `pruebas/pruebas_consultas.c` | Prueba del submenú de consultas: simula la entrada del usuario y comprueba los valores mostrados | `"simulador.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>`, `<string.h>` |
 
 ## Dependencias entre archivos
 
@@ -20,6 +21,7 @@ flowchart LR
     main_c["main.c"] --> simulador_h["simulador.h"]
     main_c --> validaciones_h["validaciones.h"]
     simulador_c["simulador.c"] --> simulador_h
+    simulador_c --> validaciones_h
     validaciones_c["validaciones.c"] --> validaciones_h
 ```
 
@@ -30,20 +32,20 @@ Las reglas de negocio y el diseño conceptual de estas entidades se detallan en 
 - `ResultadoMision`: enumera los estados posibles de una misión (en curso, éxito, fracaso o abortada); forma parte de `ParametrosMision` y `ReporteFinal`, y `calcular_puntaje` lo recibe para decidir si corresponde puntuar la misión.
 - `TipoEvento`: enumera los tipos de incidente de turno (ninguno, fuga de propulsión, pérdida de señal o falla de sensor); integra la estructura `Evento` y lo utilizan `generar_evento` y `aplicar_evento`.
 - `EstadoNave`: agrupa punto actual (`0` a `CANTIDAD_TRAMOS`), distancia, velocidad, reserva de corrección, trabajo aplicado y cantidad de correcciones aplicadas de la nave durante el vuelo; las funciones de estado (`inicializar_nave`, `aplicar_correccion`, `avanzar_nave`, `recorrer_sin_correcciones`), `calcular_telemetria` y `aplicar_evento` la reciben por puntero.
-- `ParametrosMision`: reúne masa, velocidad de inyección, índice de nivel y resultado de una misión; definida como contrato, todavía sin funciones implementadas que la reciban.
+- `ParametrosMision`: reúne masa, velocidad de inyección, índice de nivel y resultado de una misión; `nueva_mision` la completa y `armar_reporte` la lee por puntero.
 - `Telemetria`: concentra distancia, velocidad, atracciones gravitatorias, desaceleración neta y energía cinética de un turno; `calcular_telemetria` la completa por puntero a partir de `EstadoNave`.
 - `Evento`: combina un `TipoEvento` con el porcentaje de reserva afectado; `generar_evento` lo completa por puntero y `aplicar_evento` lo lee por puntero.
 - `ReporteFinal`: consolida datos iniciales, resultado, métricas de vuelo, balance de trabajo y puntaje de una misión terminada; `main()` reserva una instancia y la pasa por puntero a `nueva_mision` y `mostrar_ultimo_reporte`.
-- `Nivel`: agrupa nombre, masa inicial, reserva de corrección y probabilidad de eventos de un nivel de misión; declarada como contrato para `obtener_nivel` y `elegir_nivel`.
+- `Nivel`: agrupa nombre, masa inicial, reserva de corrección y probabilidad de eventos de un nivel de misión; los niveles predefinidos forman un arreglo que `obtener_nivel` recorre por índice y `elegir_nivel` completa por puntero.
 
 ## Funciones públicas
 
 | Prototipo | Módulo | Estado |
 | --- | --- | --- |
-| `int nueva_mision(ReporteFinal *reporte);` | `simulador` | provisional |
-| `void submenu_consultas(void);` | `simulador` | provisional |
+| `int nueva_mision(ReporteFinal *reporte);` | `simulador` | implementada |
+| `void submenu_consultas(void);` | `simulador` | implementada |
 | `void mostrar_datos_y_supuestos(void);` | `simulador` | implementada |
-| `void mostrar_ultimo_reporte(const ReporteFinal *reporte);` | `simulador` | provisional |
+| `void mostrar_ultimo_reporte(const ReporteFinal *reporte);` | `simulador` | implementada |
 | `double calcular_atraccion_tierra(double distancia);` | `simulador` | implementada |
 | `double calcular_atraccion_luna(double distancia);` | `simulador` | implementada |
 | `double calcular_energia_cinetica(double masa, double velocidad);` | `simulador` | implementada |
@@ -63,10 +65,10 @@ Las reglas de negocio y el diseño conceptual de estas entidades se detallan en 
 | `void generar_evento(Evento *evento, int probabilidad, int nave_alcanza_siguiente);` | `simulador` | implementada |
 | `void aplicar_evento(EstadoNave *nave, const Evento *evento);` | `simulador` | implementada |
 | `double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion, double trabajo_aplicado, int correcciones);` | `simulador` | implementada |
-| `int obtener_nivel(int indice, Nivel *nivel);` | `simulador` | sin implementar |
-| `void elegir_nivel(Nivel *nivel);` | `simulador` | sin implementar |
-| `void mostrar_turno(const EstadoNave *nave, const Evento *evento);` | `simulador` | sin implementar |
-| `void armar_reporte(ReporteFinal *reporte, const ParametrosMision *mision, const EstadoNave *nave);` | `simulador` | sin implementar |
+| `int obtener_nivel(int indice, Nivel *nivel);` | `simulador` | implementada |
+| `void elegir_nivel(Nivel *nivel);` | `simulador` | implementada |
+| `void mostrar_turno(const EstadoNave *nave, const Evento *evento);` | `simulador` | implementada |
+| `void armar_reporte(ReporteFinal *reporte, const ParametrosMision *mision, const EstadoNave *nave);` | `simulador` | implementada |
 | `int leer_entero(const char *mensaje, int minimo, int maximo, const char *aviso_rango);` | `validaciones` | implementada |
 | `double leer_real(const char *mensaje, double minimo, double maximo, const char *aviso_rango);` | `validaciones` | implementada |
 | `char leer_caracter(const char *mensaje, const char *opciones_validas, const char *aviso_invalido);` | `validaciones` | implementada |
