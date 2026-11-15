@@ -11,11 +11,17 @@ PRUEBAS = pruebas/pruebas_simulador.c
 
 ifeq ($(OS),Windows_NT)
     EJECUTAR_PRUEBAS = pruebas_simulador.exe
+    PRUEBAS_CONSULTAS = pruebas_consultas.exe
+    EJECUTAR_CONSULTAS = pruebas_consultas.exe
 else
     EJECUTAR_PRUEBAS = ./pruebas_simulador
+    PRUEBAS_CONSULTAS = pruebas_consultas.out
+    EJECUTAR_CONSULTAS = ./pruebas_consultas.out
 endif
 
 .PHONY: pruebas
-pruebas: $(PRUEBAS) src/simulador.c src/validaciones.c $(CABECERAS)
+pruebas: $(PRUEBAS) pruebas/pruebas_consultas.c src/simulador.c src/validaciones.c $(CABECERAS)
 	$(CC) $(CFLAGS) -Isrc $(PRUEBAS) src/simulador.c src/validaciones.c -o pruebas_simulador -lm
-	./pruebas_simulador
+	$(EJECUTAR_PRUEBAS)
+	$(CC) $(CFLAGS) -Isrc pruebas/pruebas_consultas.c src/simulador.c src/validaciones.c -o $(PRUEBAS_CONSULTAS) -lm
+	$(EJECUTAR_CONSULTAS)

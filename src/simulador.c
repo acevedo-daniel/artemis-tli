@@ -87,9 +87,11 @@ static void consulta_c(void) {
         velocidad = leer_real("Ingrese la velocidad v (m/s): ", 0.0, 11200.0, "La velocidad debe estar entre 0 y 11 200 m/s. Ingrese nuevamente: ");
     }
 
-    trabajo = calcular_trabajo_minimo(altitud, velocidad);
+    trabajo = calcular_trabajo_minimo(velocidad, altitud);
 
     printf("Punto de equilibrio (x_eq): %.2f m (%.2f km)\n", x_eq, x_eq / 1000.0);
+    printf("U(r0)/m: %.2f J/kg\n", calcular_energia_potencial_por_kg(RADIO_TIERRA + altitud));
+    printf("U(x_eq)/m: %.2f J/kg\n", calcular_energia_potencial_por_kg(x_eq));
     
     if (trabajo <= 0) {
         printf("Trabajo adicional minimo (W/m): 0.00 J/kg\n");
@@ -122,13 +124,13 @@ static void consulta_d(void) {
     pozo_tierra = calcular_pozo_tierra(altitud);
     pozo_luna = calcular_pozo_luna();
     razon = pozo_tierra / pozo_luna;
-    energia_ida = pozo_tierra * 1e6 * masa;
-    energia_regreso = pozo_luna * 1e6 * masa;
+    energia_ida = pozo_tierra * masa;
+    energia_regreso = pozo_luna * masa;
 
     printf("Masa: %.2f kg\n", masa);
     printf("Altitud: %.2f m\n", altitud);
-    printf("Pozo gravitatorio terrestre: %.2f MJ/kg\n", pozo_tierra);
-    printf("Pozo gravitatorio lunar: %.2f MJ/kg\n", pozo_luna);
+    printf("Pozo gravitatorio terrestre: %.2f MJ/kg\n", pozo_tierra / 1e6);
+    printf("Pozo gravitatorio lunar: %.2f MJ/kg\n", pozo_luna / 1e6);
     printf("Razon Tierra / Luna: %.2f\n", razon);
     printf("Energia total ida: %e J\n", energia_ida);
     printf("Energia total regreso: %e J\n", energia_regreso);
@@ -505,27 +507,113 @@ double calcular_puntaje(ResultadoMision resultado, double velocidad_inyeccion,
 
 /* Niveles */
 
+static const Nivel niveles[CANTIDAD_NIVELES_PREDEFINIDOS] = {
+    {"Prueba sin tripulación", 26000.0, 300000.0,                 10},
+    {"Misión tripulada",       26000.0, RESERVA_CORRECCION_DEFECTO, 25},
+    {"Misión con carga",       60000.0, 80000.0,                  50}
+};
+
+/* Copia el nivel en *nivel; devuelve 1 si el índice es válido y nivel != NULL. */
 int obtener_nivel(int indice, Nivel *nivel)
 {
-    (void)indice;
-    (void)nivel;
-    /* Pendiente: se implementa en esta etapa. */
-    return 0;
+    if (nivel == NULL || indice < 0 || indice >= CANTIDAD_NIVELES_PREDEFINIDOS) {
+        return 0;
+    }
+    *nivel = niveles[indice];
+    return 1;
 }
 
+/* Muestra los niveles disponibles y llena *nivel con la elección del jugador. */
 void elegir_nivel(Nivel *nivel)
 {
-    (void)nivel;
-    /* Pendiente: se implementa en esta etapa. */
+    int opcion;
+    int i;
+    char eventos_char;
+
+    printf("\nNIVELES DE MISIÓN\n");
+    for (i = 0; i < CANTIDAD_NIVELES_PREDEFINIDOS; i++) {
+        printf("  %d. %-24s  masa %.0f kg  reserva %.0f J/kg  eventos %d%%\n",
+               i + 1, niveles[i].nombre, niveles[i].masa,
+               niveles[i].reserva, niveles[i].probabilidad_eventos);
+    }
+    printf("  4. Personalizada\n");
+
+    opcion = leer_entero("\nElija una opción (1-4): ", 1, 4,
+                         "Opción inválida. Ingrese un número entre 1 y 4:");
+
+    if (opcion <= CANTIDAD_NIVELES_PREDEFINIDOS) {
+        obtener_nivel(opcion - 1, nivel);
+        return;
+    }
+
+    nivel->nombre = "Personalizada";
+    nivel->masa = leer_real("Masa (kg): ", MASA_MINIMA, MASA_MAXIMA,
+                            "La masa debe estar entre 1 000 y 100 000 kg. Ingrese nuevamente:");
+    nivel->reserva = leer_real("Reserva de corrección (J/kg): ", RESERVA_MINIMA, RESERVA_MAXIMA,
+                               "La reserva debe estar entre 0 y 500 000 J/kg. Ingrese nuevamente:");
+    eventos_char = leer_caracter("¿Activar eventos? (s/n): ", "sn",
+                                 "Ingrese s o n:");
+    nivel->probabilidad_eventos = (eventos_char == 's') ? PROBABILIDAD_EVENTOS_PERSONALIZADA : 0;
 }
 
 /* Turno en pantalla */
 
+static void mostrar_barra_progreso(int punto)
+{
+    int i;
+    printf("Tierra \xe2\x97\x8f");
+    for (i = 0; i < punto; i++) {
+        printf("\xe2\x94\x80");
+    }
+    printf("\xe2\x96\xb6");
+    for (i = punto; i < CANTIDAD_TRAMOS; i++) {
+        printf("\xe2\x94\x80");
+    }
+    printf(" \xe2\x97\x8b Luna\n");
+}
+
 void mostrar_turno(const EstadoNave *nave, const Evento *evento)
 {
-    (void)nave;
-    (void)evento;
-    /* Pendiente: se implementa en esta etapa. */
+    Telemetria tel;
+    double velocidad_siguiente;
+    int alcanza;
+
+    printf("\nTRAMO %d de %d\n", nave->punto + 1, CANTIDAD_TRAMOS);
+    mostrar_barra_progreso(nave->punto);
+
+    calcular_telemetria(nave, &tel);
+    printf("\n");
+    printf("  Distancia:          %.0f km\n", tel.distancia / 1000.0);
+    printf("  Velocidad:          %.1f m/s\n", tel.velocidad);
+    printf("  Atracci\xc3\xb3n Tierra:   %.5g m/s\xc2\xb2\n", tel.atraccion_tierra);
+    printf("  Atracci\xc3\xb3n Luna:     %.5g m/s\xc2\xb2\n", tel.atraccion_luna);
+    printf("  Desaceleraci\xc3\xb3n:     %.5g m/s\xc2\xb2\n", tel.desaceleracion_neta);
+    printf("  Energ\xc3\xad" "a cin\xc3\xa9tica:   %.0f J/kg\n", tel.energia_cinetica);
+    printf("\n  1.\xc2\xaa Ley de Newton: la nave conserva su movimiento por inercia;\n"
+           "  solo la frena la gravedad terrestre, cada vez menos a medida que se aleja.\n");
+
+    printf("\n");
+    if (evento->tipo == EVENTO_FALLA_SENSOR) {
+        printf("  Falla de sensor: predicci\xc3\xb3n no disponible en este turno\n");
+    } else {
+        alcanza = calcular_velocidad_en(nave->distancia, nave->velocidad,
+                                        calcular_distancia_punto(nave->punto + 1),
+                                        &velocidad_siguiente);
+        if (alcanza) {
+            printf("  Velocidad al final del tramo: %.1f m/s\n", velocidad_siguiente);
+        } else {
+            printf("  La nave no alcanza el pr\xc3\xb3ximo punto\n");
+        }
+    }
+
+    printf("  Reserva disponible: %.0f J/kg\n", nave->reserva);
+
+    if (evento->tipo == EVENTO_FUGA_PROPULSION) {
+        printf("\n  Fuga de propulsi\xc3\xb3n: se perdi\xc3\xb3 el %.0f %% de la reserva.\n",
+               evento->porcentaje_reserva);
+    } else if (evento->tipo == EVENTO_PERDIDA_SENAL) {
+        printf("\n  En este turno no se puede corregir\n");
+    }
 }
 
 /* Reporte */

@@ -9,7 +9,9 @@ Desde la raíz del repositorio:
 - Linux o macOS: `make pruebas`
 - Windows (WinLibs): `mingw32-make pruebas`
 
-El comando compila `pruebas/pruebas_simulador.c` junto con `src/simulador.c` usando las mismas banderas estrictas del proyecto (`-Werror`) y ejecuta el binario resultante. Muestra `N pruebas, 0 fallas` cuando todo coincide con la referencia, o una línea `FALLA` con el valor obtenido y el esperado por cada comprobación fuera de tolerancia (terminando con código de error). La CI ejecuta `make pruebas` automáticamente en cada Pull Request.
+El comando compila y ejecuta `pruebas/pruebas_simulador.c` y `pruebas/pruebas_consultas.c` junto con `src/simulador.c` y `src/validaciones.c`, usando las mismas banderas estrictas del proyecto (`-Werror`). Muestra el total de pruebas y fallas de cada grupo, o una línea `FALLA` con el valor obtenido y el esperado por cada comprobación fuera de tolerancia (terminando con código de error). La CI ejecuta `make pruebas` automáticamente en cada Pull Request.
+
+Las pruebas de consultas ingresan datos al submenú real y comprueban su salida: trabajo mínimo desde el reposo, con 10 900 m/s y con 10 906 m/s; potenciales gravitatorios; pozos en MJ/kg y energías totales en J. Los dos archivos temporales de entrada y salida se eliminan al terminar.
 
 ## Qué cubren
 
