@@ -35,3 +35,39 @@ Las pruebas de consultas ingresan datos al submenú real y comprueban su salida:
 ## Pruebas manuales
 
 Las pruebas de entradas inválidas y los recorridos interactivos del juego se siguen verificando manualmente según [docs/PROJECT.md](PROJECT.md) › Entradas inválidas y recorridos del juego.
+
+### Registro — 2026-11-14 · Windows 11 · MinGW-w64 GCC 14
+
+Nivel personalizado, eventos desactivados, salvo que se indique otra cosa.
+
+#### Entradas inválidas
+
+| Caso | Entrada | Resultado obtenido | ¿Coincide? |
+| --- | --- | --- | --- |
+| Letra donde se espera número | `a` en menú principal | `Entrada inválida. Ingrese un número entre 0 y 4:` y vuelve a pedir | ✓ |
+| Línea vacía (solo Enter) | *(vacío)* en menú principal | `Entrada inválida. Ingrese un número entre 0 y 4:` y vuelve a pedir | ✓ |
+| Número fuera del rango válido | `9` en menú principal | `Opción inexistente. Ingrese un número entre 0 y 4:` y vuelve a pedir | ✓ |
+| Decimal donde se espera entero | `1.5` en menú principal | `Entrada inválida. Ingrese un número entre 0 y 4:` y vuelve a pedir | ✓ |
+| Masa negativa o cero | `0` en ingreso de masa (nivel personalizado) | `La masa debe estar entre 1 000 y 100 000 kg. Ingrese nuevamente:` y vuelve a pedir | ✓ |
+| Masa fuera del rango superior | `200000` en ingreso de masa | `La masa debe estar entre 1 000 y 100 000 kg. Ingrese nuevamente:` y vuelve a pedir | ✓ |
+| Velocidad fuera del rango | `9000` en velocidad de inyección | `La velocidad debe estar entre 10 500 y 11 200 m/s. Ingrese nuevamente:` y vuelve a pedir | ✓ |
+| Trabajo de corrección mayor que la reserva | `200000` con reserva `100000 J/kg` | `El trabajo no puede superar la reserva disponible (100000.00 J/kg). Ingrese nuevamente:` y vuelve a pedir | ✓ |
+| Letra en ingreso de trabajo | `abc` en corrección | `Entrada inválida. Ingrese un número positivo:` y vuelve a pedir | ✓ |
+
+Ningún caso cerró el programa ni entró en bucle infinito.
+
+#### Recorridos del juego
+
+| Caso | Pasos | Resultado obtenido | ¿Coincide? |
+| --- | --- | --- | --- |
+| Misión por defecto sin corregir (fracaso) | m=26000, v=10900, 10 × continuar | Fracasa en el tramo 10; distancia máxima 314 442 km; `Resultado: Fracaso` | ✓ |
+| Misión por defecto corrigiendo a tiempo (éxito) | m=26000, v=10900, reserva=150000; 9 × continuar, turno 10 → corrección 60000 J/kg, continuar | `¡La nave alcanzó el punto de equilibrio!`; `Resultado: Exito`; puntaje 94.9/100 | ✓ |
+| Inyección con v=10906 sin correcciones (éxito) | m=26000, v=10906, 10 × continuar | `¡La nave alcanzó el punto de equilibrio!`; `Resultado: Exito`; 0 correcciones; puntaje 99.6/100 | ✓ |
+| Abortar la misión | m=26000, v=10900; turno 1 → abortar | `Resultado: Abortada`; distancia máxima 6563 km; puntaje 0.0/100 | ✓ |
+| Último reporte sin misiones jugadas | Opción 4 antes de jugar | `Todavía no hay misiones jugadas` (corregido en este PR; el texto original decía `Todavia`) | ✓ tras corrección |
+| Consultar pregunta a con valores por defecto | Menú 2 → a → valores por defecto | a_T = 9.25340 m/s²; a_L = 3.441503×10⁻⁵ m/s² | ✓ |
+| Consultar pregunta b con valores por defecto | Menú 2 → b → valores por defecto | Ec = 1.544530×10¹² J; Ec/m = 59 405 000 J/kg | ✓ |
+| Consultar pregunta c con v=0 | Menú 2 → c → v=0, h=192000 | W/m = 59 462 086 J/kg; sin mensaje de advertencia | ✓ |
+| Consultar pregunta c con v=10900 | Menú 2 → c → v=10900, h=192000 | W/m = 57 086 J/kg; `Con esa velocidad, Orion no alcanza el punto de equilibrio sin trabajo adicional` | ✓ |
+| Consultar pregunta d con valores por defecto | Menú 2 → d → valores por defecto | Pozo Tierra 60.73 MJ/kg; Pozo Luna 2.82 MJ/kg; razón 21.52; energía ida 1.579×10¹² J; energía regreso 7.337×10¹⁰ J | ✓ |
+| Salir del programa | Opción 0 | `Saliendo del simulador. ¡Hasta la próxima!` sin mensaje de error | ✓ |

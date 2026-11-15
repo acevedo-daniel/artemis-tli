@@ -304,7 +304,7 @@ void mostrar_datos_y_supuestos(void)
 void mostrar_ultimo_reporte(const ReporteFinal *reporte)
 {
     if (reporte == NULL) {
-        printf("Todavia no hay misiones jugadas\n");
+        printf("Todav\xc3\xad" "a no hay misiones jugadas\n");
         return;
     }
 
