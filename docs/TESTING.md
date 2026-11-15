@@ -54,6 +54,8 @@ Nivel personalizado, eventos desactivados, salvo que se indique otra cosa.
 | Trabajo de corrección mayor que la reserva | `200000` con reserva `100000 J/kg` | `El trabajo no puede superar la reserva disponible (100000.00 J/kg). Ingrese nuevamente:` y vuelve a pedir | ✓ |
 | Letra en ingreso de trabajo | `abc` en corrección | `Entrada inválida. Ingrese un número positivo:` y vuelve a pedir | ✓ |
 
+| Fin de entrada (Ctrl+Z + Enter en Windows) | *(EOF en menú principal)* | `No hay más datos de entrada. El programa se cierra.` y termina limpiamente | ✓ |
+
 Ningún caso cerró el programa ni entró en bucle infinito.
 
 #### Recorridos del juego
