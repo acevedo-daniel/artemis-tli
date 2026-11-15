@@ -5,12 +5,116 @@
 #include "simulador.h"
 #include "validaciones.h"
 
+static double pedir_correccion(double reserva)
+{
+    char aviso[128];
+    double trabajo;
+
+    snprintf(aviso, sizeof(aviso),
+             "El trabajo no puede superar la reserva disponible (%.2f J/kg). Ingrese nuevamente:",
+             reserva);
+
+    do {
+        trabajo = leer_real("Ingrese el trabajo de correcci\xc3\xb3n (J/kg): ",
+                            0.0, reserva, aviso);
+        if (trabajo <= 0.0) {
+            printf("El trabajo de correcci\xc3\xb3n debe ser mayor que 0.\n");
+        }
+    } while (trabajo <= 0.0);
+
+    return trabajo;
+}
+
+static void jugar_tramos(EstadoNave *nave, ParametrosMision *mision, int probabilidad_eventos)
+{
+    Evento evento;
+    double velocidad_siguiente;
+    int alcanza;
+    char decision;
+
+    while (nave->punto < CANTIDAD_TRAMOS && mision->resultado == RESULTADO_EN_CURSO) {
+        alcanza = calcular_velocidad_en(
+            nave->distancia,
+            nave->velocidad,
+            calcular_distancia_punto(nave->punto + 1),
+            &velocidad_siguiente);
+
+        generar_evento(&evento, probabilidad_eventos, alcanza);
+        aplicar_evento(nave, &evento);
+        mostrar_turno(nave, &evento);
+
+        do {
+            decision = leer_caracter(
+                "Decisi\xc3\xb3n ([c] continuar, [r] corregir, [a] abortar): ",
+                "cra",
+                "Opci\xc3\xb3n inv\xc3\xa1lida. Ingrese c, r o a:");
+
+            if (decision == 'r') {
+                if (evento.tipo == EVENTO_PERDIDA_SENAL) {
+                    printf("No se puede corregir en este turno por p\xc3\xa9rdida de se\xc3\xb1" "al.\n");
+                } else if (nave->reserva <= 0.0) {
+                    printf("No queda reserva de correcci\xc3\xb3n disponible.\n");
+                } else if (aplicar_correccion(nave, pedir_correccion(nave->reserva))) {
+                    mostrar_turno(nave, &evento);
+                }
+            }
+        } while (decision == 'r');
+
+        if (decision == 'a') {
+            mision->resultado = RESULTADO_ABORTADA;
+            printf("Misi\xc3\xb3n abortada por el comandante.\n");
+        } else if (!avanzar_nave(nave)) {
+            mision->resultado = RESULTADO_FRACASO;
+            printf("La nave no alcanza el pr\xc3\xb3ximo punto "
+                   "(se detiene a %.0f km) y vuelve a caer hacia la Tierra.\n",
+                   calcular_distancia_maxima(nave->distancia, nave->velocidad) / 1000.0);
+        }
+    }
+}
+
 int nueva_mision(ReporteFinal *reporte)
 {
-    /* Pendiente: se implementa en esta etapa. */
-    (void)reporte;
-    printf("La nueva misión todavía no está disponible.\n");
-    return 0;
+    Nivel nivel;
+    ParametrosMision mision;
+    EstadoNave nave;
+    double energia_total;
+    double energia_por_kg;
+
+    if (reporte == NULL) {
+        return 0;
+    }
+
+    srand((unsigned)time(NULL));
+    elegir_nivel(&nivel);
+
+    mision.masa = nivel.masa;
+    mision.indice_nivel = 0;
+    mision.resultado = RESULTADO_EN_CURSO;
+
+    printf("\nETAPA 1 - INYECCI\xc3\x93N TRANSLUNAR\n");
+    mision.velocidad_inyeccion = leer_real(
+        "Velocidad de inyecci\xc3\xb3n (10500 a 11200 m/s, defecto 10900): ",
+        VELOCIDAD_TLI_MINIMA,
+        VELOCIDAD_TLI_MAXIMA,
+        "La velocidad debe estar entre 10 500 y 11 200 m/s. Ingrese nuevamente:");
+
+    energia_total = calcular_energia_cinetica(mision.masa, mision.velocidad_inyeccion);
+    energia_por_kg = calcular_energia_cinetica(1.0, mision.velocidad_inyeccion);
+    printf("  Energ\xc3\xad" "a cin\xc3\xa9tica total ....... %.5e J\n", energia_total);
+    printf("  Energ\xc3\xad" "a cin\xc3\xa9tica por kg ...... %.0f J/kg\n", energia_por_kg);
+
+    inicializar_nave(&nave, mision.velocidad_inyeccion, nivel.reserva);
+
+    jugar_tramos(&nave, &mision, nivel.probabilidad_eventos);
+
+    if (mision.resultado == RESULTADO_EN_CURSO && nave.punto == CANTIDAD_TRAMOS) {
+        mision.resultado = RESULTADO_EXITO;
+        printf("\n\xc2\xa1La nave alcanz\xc3\xb3 el punto de equilibrio gravitatorio Tierra-Luna!\n");
+    }
+
+    armar_reporte(reporte, &mision, &nave);
+    mostrar_ultimo_reporte(reporte);
+    return 1;
 }
 
 /* Consulta a: Vuelo sin propulsión y 1.a Ley de Newton */
@@ -87,9 +191,11 @@ static void consulta_c(void) {
         velocidad = leer_real("Ingrese la velocidad v (m/s): ", 0.0, 11200.0, "La velocidad debe estar entre 0 y 11 200 m/s. Ingrese nuevamente: ");
     }
 
-    trabajo = calcular_trabajo_minimo(altitud, velocidad);
+    trabajo = calcular_trabajo_minimo(velocidad, altitud);
 
     printf("Punto de equilibrio (x_eq): %.2f m (%.2f km)\n", x_eq, x_eq / 1000.0);
+    printf("U(r0)/m: %.2f J/kg\n", calcular_energia_potencial_por_kg(RADIO_TIERRA + altitud));
+    printf("U(x_eq)/m: %.2f J/kg\n", calcular_energia_potencial_por_kg(x_eq));
     
     if (trabajo <= 0) {
         printf("Trabajo adicional minimo (W/m): 0.00 J/kg\n");
@@ -122,13 +228,13 @@ static void consulta_d(void) {
     pozo_tierra = calcular_pozo_tierra(altitud);
     pozo_luna = calcular_pozo_luna();
     razon = pozo_tierra / pozo_luna;
-    energia_ida = pozo_tierra * 1e6 * masa;
-    energia_regreso = pozo_luna * 1e6 * masa;
+    energia_ida = pozo_tierra * masa;
+    energia_regreso = pozo_luna * masa;
 
     printf("Masa: %.2f kg\n", masa);
     printf("Altitud: %.2f m\n", altitud);
-    printf("Pozo gravitatorio terrestre: %.2f MJ/kg\n", pozo_tierra);
-    printf("Pozo gravitatorio lunar: %.2f MJ/kg\n", pozo_luna);
+    printf("Pozo gravitatorio terrestre: %.2f MJ/kg\n", pozo_tierra / 1e6);
+    printf("Pozo gravitatorio lunar: %.2f MJ/kg\n", pozo_luna / 1e6);
     printf("Razon Tierra / Luna: %.2f\n", razon);
     printf("Energia total ida: %e J\n", energia_ida);
     printf("Energia total regreso: %e J\n", energia_regreso);
@@ -219,9 +325,9 @@ void mostrar_ultimo_reporte(const ReporteFinal *reporte)
     printf("Trabajo aplicado en correcciones: %.2f J/kg (Trabajo minimo: %.2f J/kg)\n", 
            reporte->trabajo_aplicado, fmax(0.0, reporte->trabajo_minimo));
     printf("Comparacion energetica ida (Pozo Tierra): %.2f MJ/kg (Total: %e J)\n", 
-           reporte->pozo_tierra, reporte->pozo_tierra * 1e6 * reporte->masa);
+           reporte->pozo_tierra / 1e6, reporte->pozo_tierra * reporte->masa);
     printf("Comparacion energetica regreso (Pozo Luna): %.2f MJ/kg (Total: %e J)\n", 
-           reporte->pozo_luna, reporte->pozo_luna * 1e6 * reporte->masa);
+           reporte->pozo_luna / 1e6, reporte->pozo_luna * reporte->masa);
     printf("Razon Tierra / Luna: %.2f\n", reporte->pozo_tierra / reporte->pozo_luna);
     printf("Puntaje final: %.1f / 100\n", reporte->puntaje);
 }
