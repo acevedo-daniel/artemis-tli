@@ -1,4 +1,4 @@
-# Simulador Artemis TLI — Instrucciones para agentes
+# Simulador Artemis TLI - Instrucciones para agentes
 
 ## Proyecto
 

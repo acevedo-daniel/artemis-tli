@@ -1,4 +1,4 @@
-# Simulador de Misiones Artemis — Guía de trabajo con GitHub
+# Simulador de Misiones Artemis - Guía de trabajo con GitHub
 
 > Cómo colabora el equipo de cinco integrantes: herramientas, tablero, Issues, ramas y Pull Requests.
 

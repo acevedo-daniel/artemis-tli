@@ -3,7 +3,7 @@ mode: decision
 status: active
 ---
 
-# Simulador de Misiones Artemis — Development roadmap
+# Simulador de Misiones Artemis - Development roadmap
 
 > Secuencia de etapas, límites de alcance y criterios de finalización. Las tareas y sus responsables se definen al comenzar cada etapa, no en este documento.
 
@@ -15,7 +15,7 @@ Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C q
 
 ## Constraints
 
-- El escenario asignado es el Problema 3, *Inyección Translunar — TLI e Inercia en Trayectoria Libre*; la consigna completa está en `docs/catedra/consigna.pdf`.
+- El escenario asignado es el Problema 3, *Inyección Translunar - TLI e Inercia en Trayectoria Libre*; la consigna completa está en `docs/catedra/consigna.pdf`.
 - Equipo de cinco estudiantes, con participación real y progresiva de todos en el repositorio.
 - Lenguaje C; aplicación ejecutada nativamente en consola, sin interfaz gráfica ni servicios externos.
 - Menú principal, simulación interactiva por turnos o eventos y reporte final de desempeño.

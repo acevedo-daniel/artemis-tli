@@ -1,4 +1,4 @@
-# Simulador Artemis TLI — Pruebas
+# Simulador Artemis TLI - Pruebas
 
 > Cómo se comprueban los cálculos y el estado de la misión contra los casos de referencia.
 
@@ -36,7 +36,7 @@ Las pruebas de consultas ingresan datos al submenú real y comprueban su salida:
 
 Las pruebas de entradas inválidas y los recorridos interactivos del juego se siguen verificando manualmente según [docs/PROJECT.md](PROJECT.md) › Entradas inválidas y recorridos del juego.
 
-### Registro — 2026-11-14 · Windows 11 · MinGW-w64 GCC 14
+### Registro - 2026-11-14 · Windows 11 · MinGW-w64 GCC 14
 
 Nivel personalizado, eventos desactivados, salvo que se indique otra cosa.
 
