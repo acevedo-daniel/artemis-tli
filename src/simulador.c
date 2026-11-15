@@ -5,12 +5,116 @@
 #include "simulador.h"
 #include "validaciones.h"
 
+static double pedir_correccion(double reserva)
+{
+    char aviso[128];
+    double trabajo;
+
+    snprintf(aviso, sizeof(aviso),
+             "El trabajo no puede superar la reserva disponible (%.2f J/kg). Ingrese nuevamente:",
+             reserva);
+
+    do {
+        trabajo = leer_real("Ingrese el trabajo de correcci\xc3\xb3n (J/kg): ",
+                            0.0, reserva, aviso);
+        if (trabajo <= 0.0) {
+            printf("El trabajo de correcci\xc3\xb3n debe ser mayor que 0.\n");
+        }
+    } while (trabajo <= 0.0);
+
+    return trabajo;
+}
+
+static void jugar_tramos(EstadoNave *nave, ParametrosMision *mision, int probabilidad_eventos)
+{
+    Evento evento;
+    double velocidad_siguiente;
+    int alcanza;
+    char decision;
+
+    while (nave->punto < CANTIDAD_TRAMOS && mision->resultado == RESULTADO_EN_CURSO) {
+        alcanza = calcular_velocidad_en(
+            nave->distancia,
+            nave->velocidad,
+            calcular_distancia_punto(nave->punto + 1),
+            &velocidad_siguiente);
+
+        generar_evento(&evento, probabilidad_eventos, alcanza);
+        aplicar_evento(nave, &evento);
+        mostrar_turno(nave, &evento);
+
+        do {
+            decision = leer_caracter(
+                "Decisi\xc3\xb3n ([c] continuar, [r] corregir, [a] abortar): ",
+                "cra",
+                "Opci\xc3\xb3n inv\xc3\xa1lida. Ingrese c, r o a:");
+
+            if (decision == 'r') {
+                if (evento.tipo == EVENTO_PERDIDA_SENAL) {
+                    printf("No se puede corregir en este turno por p\xc3\xa9rdida de se\xc3\xb1" "al.\n");
+                } else if (nave->reserva <= 0.0) {
+                    printf("No queda reserva de correcci\xc3\xb3n disponible.\n");
+                } else if (aplicar_correccion(nave, pedir_correccion(nave->reserva))) {
+                    mostrar_turno(nave, &evento);
+                }
+            }
+        } while (decision == 'r');
+
+        if (decision == 'a') {
+            mision->resultado = RESULTADO_ABORTADA;
+            printf("Misi\xc3\xb3n abortada por el comandante.\n");
+        } else if (!avanzar_nave(nave)) {
+            mision->resultado = RESULTADO_FRACASO;
+            printf("La nave no alcanza el pr\xc3\xb3ximo punto "
+                   "(se detiene a %.0f km) y vuelve a caer hacia la Tierra.\n",
+                   calcular_distancia_maxima(nave->distancia, nave->velocidad) / 1000.0);
+        }
+    }
+}
+
 int nueva_mision(ReporteFinal *reporte)
 {
-    /* Pendiente: se implementa en esta etapa. */
-    (void)reporte;
-    printf("La nueva misión todavía no está disponible.\n");
-    return 0;
+    Nivel nivel;
+    ParametrosMision mision;
+    EstadoNave nave;
+    double energia_total;
+    double energia_por_kg;
+
+    if (reporte == NULL) {
+        return 0;
+    }
+
+    srand((unsigned)time(NULL));
+    elegir_nivel(&nivel);
+
+    mision.masa = nivel.masa;
+    mision.indice_nivel = 0;
+    mision.resultado = RESULTADO_EN_CURSO;
+
+    printf("\nETAPA 1 - INYECCI\xc3\x93N TRANSLUNAR\n");
+    mision.velocidad_inyeccion = leer_real(
+        "Velocidad de inyecci\xc3\xb3n (10500 a 11200 m/s, defecto 10900): ",
+        VELOCIDAD_TLI_MINIMA,
+        VELOCIDAD_TLI_MAXIMA,
+        "La velocidad debe estar entre 10 500 y 11 200 m/s. Ingrese nuevamente:");
+
+    energia_total = calcular_energia_cinetica(mision.masa, mision.velocidad_inyeccion);
+    energia_por_kg = calcular_energia_cinetica(1.0, mision.velocidad_inyeccion);
+    printf("  Energ\xc3\xad" "a cin\xc3\xa9tica total ....... %.5e J\n", energia_total);
+    printf("  Energ\xc3\xad" "a cin\xc3\xa9tica por kg ...... %.0f J/kg\n", energia_por_kg);
+
+    inicializar_nave(&nave, mision.velocidad_inyeccion, nivel.reserva);
+
+    jugar_tramos(&nave, &mision, nivel.probabilidad_eventos);
+
+    if (mision.resultado == RESULTADO_EN_CURSO && nave.punto == CANTIDAD_TRAMOS) {
+        mision.resultado = RESULTADO_EXITO;
+        printf("\n\xc2\xa1La nave alcanz\xc3\xb3 el punto de equilibrio gravitatorio Tierra-Luna!\n");
+    }
+
+    armar_reporte(reporte, &mision, &nave);
+    mostrar_ultimo_reporte(reporte);
+    return 1;
 }
 
 void submenu_consultas(void)
