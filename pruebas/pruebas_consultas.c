@@ -29,7 +29,7 @@ int main(void)
     const char *captura = "pruebas_consultas_salida.tmp";
     /* Reposo, velocidad de misión, velocidad suficiente y comparación de pozos. */
     const char *datos = "c\ns\nc\nn\n192000\n10900\nc\nn\n192000\n10906\nd\ns\nv\n";
-    const char *etiqueta_trabajo = "Trabajo adicional minimo (W/m): ";
+    const char *etiqueta_trabajo = "Trabajo adicional mínimo (W/m): ";
     const char *siguiente;
     FILE *archivo;
     char salida[16000];
@@ -71,8 +71,8 @@ int main(void)
     fallas += comprobar_valor(siguiente, etiqueta_trabajo, 0.0, 0.0);
     fallas += comprobar_valor(salida, "Pozo gravitatorio terrestre: ", 60.73, 0.01);
     fallas += comprobar_valor(salida, "Pozo gravitatorio lunar: ", 2.82, 0.01);
-    fallas += comprobar_valor(salida, "Energia total ida: ", 1.579e12, 1e9);
-    fallas += comprobar_valor(salida, "Energia total regreso: ", 7.337e10, 1e7);
+    fallas += comprobar_valor(salida, "Energía total ida: ", 1.579e12, 1e9);
+    fallas += comprobar_valor(salida, "Energía total regreso: ", 7.337e10, 1e7);
     fprintf(stderr, "9 pruebas de consultas, %d fallas\n", fallas);
     return fallas == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }

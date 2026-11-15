@@ -117,78 +117,83 @@ int nueva_mision(ReporteFinal *reporte)
     return 1;
 }
 
-/* Consulta a: Vuelo sin propulsión y 1.a Ley de Newton */
-static void consulta_a(void) {
-    char usar_defecto;
+/* Devuelve 1 si el usuario elige los valores por defecto del escenario. */
+static int usar_valores_por_defecto(void)
+{
+    return leer_caracter("¿Usar los valores por defecto? (s/n): ", "sn",
+                         "Entrada inválida. Ingrese s o n:") == 's';
+}
+
+/* Consulta a: vuelo sin propulsión y 1.ª Ley de Newton */
+static void consulta_a(void)
+{
     double altitud, r, a_tierra, a_luna;
 
-    printf("\n--- CONSULTA A: 1.a LEY DE NEWTON ---\n");
-    
-    usar_defecto = leer_caracter("Desea usar los valores por defecto? (s/n): ", "snSN", "Entrada invalida. Ingrese 's' o 'n': ");
+    printf("\n--- CONSULTA A: 1.ª LEY DE NEWTON ---\n");
 
-    if (usar_defecto == 's' || usar_defecto == 'S') {
-        altitud = 192000.0;
-        r = RADIO_TIERRA + 192000.0;
+    if (usar_valores_por_defecto()) {
+        altitud = ALTITUD_DEFECTO;
+        r = RADIO_TIERRA + altitud;
     } else {
-        altitud = leer_real("Ingrese la altitud h (m): ", 160000.0, 2000000.0, "La altitud debe estar entre 160 000 y 2 000 000 m. Ingrese nuevamente: ");
-        double r_min = RADIO_TIERRA + altitud;
-        double r_max = calcular_punto_equilibrio();
-        r = leer_real("Ingrese la distancia r desde el centro de la Tierra (m): ", r_min, r_max, "Valor fuera de rango. Ingrese nuevamente: ");
+        altitud = leer_real("Ingrese la altitud h (m): ", ALTITUD_MINIMA, ALTITUD_MAXIMA,
+                            "La altitud debe estar entre 160 000 y 2 000 000 m. Ingrese nuevamente:");
+        r = leer_real("Ingrese la distancia r desde el centro de la Tierra (m): ",
+                      RADIO_TIERRA + altitud, calcular_punto_equilibrio(),
+                      "La distancia debe estar entre la órbita baja y el punto de equilibrio. Ingrese nuevamente:");
     }
 
     a_tierra = calcular_atraccion_tierra(r);
     a_luna = calcular_atraccion_luna(r);
 
-    printf("\n[Explicacion 1.a Ley de Newton]\n");
-    printf("Sin fuerza neta la nave seguiria a velocidad constante en linea recta;\n");
-    printf("la gravedad terrestre la frena con una aceleracion que disminuye con 1/r^2 a medida que se aleja.\n");
+    printf("\nSin fuerza neta, la nave seguiría a velocidad constante en línea recta (inercia).\n");
+    printf("La gravedad terrestre la frena con una aceleración que disminuye con 1/r² a medida que se aleja.\n");
     printf("Distancia r: %.2f m\n", r);
-    printf("Atraccion de la Tierra (a_T): %.5f m/s^2\n", a_tierra);
-    printf("Atraccion de la Luna (a_L): %e m/s^2\n", a_luna);
+    printf("Atracción de la Tierra (a_T): %.5f m/s²\n", a_tierra);
+    printf("Atracción de la Luna (a_L): %e m/s²\n", a_luna);
 }
 
-/* Consulta b: Energía cinética inicial */
-static void consulta_b(void) {
-    char usar_defecto;
-    double masa, velocidad, ec_total, ec_kg;
+/* Consulta b: energía cinética inicial */
+static void consulta_b(void)
+{
+    double masa, velocidad;
 
-    printf("\n--- CONSULTA B: ENERGIA CINETICA INICIAL ---\n");
+    printf("\n--- CONSULTA B: ENERGÍA CINÉTICA INICIAL ---\n");
 
-    usar_defecto = leer_caracter("Desea usar los valores por defecto? (s/n): ", "snSN", "Entrada invalida. Ingrese 's' o 'n': ");
-
-    if (usar_defecto == 's' || usar_defecto == 'S') {
-        masa = 26000.0;
-        velocidad = 10900.0;
+    if (usar_valores_por_defecto()) {
+        masa = MASA_DEFECTO;
+        velocidad = VELOCIDAD_TLI_DEFECTO;
     } else {
-        masa = leer_real("Ingrese la masa m (kg): ", 1000.0, 100000.0, "La masa debe estar entre 1 000 y 100 000 kg. Ingrese nuevamente: ");
-        velocidad = leer_real("Ingrese la velocidad de inyeccion v (m/s): ", 10500.0, 11200.0, "La velocidad debe estar entre 10 500 y 11 200 m/s. Ingrese nuevamente: ");
+        masa = leer_real("Ingrese la masa m (kg): ", MASA_MINIMA, MASA_MAXIMA,
+                         "La masa debe estar entre 1 000 y 100 000 kg. Ingrese nuevamente:");
+        velocidad = leer_real("Ingrese la velocidad de inyección v (m/s): ",
+                              VELOCIDAD_TLI_MINIMA, VELOCIDAD_TLI_MAXIMA,
+                              "La velocidad debe estar entre 10 500 y 11 200 m/s. Ingrese nuevamente:");
     }
-
-    ec_total = calcular_energia_cinetica(masa, velocidad);
-    ec_kg = 0.5 * velocidad * velocidad;
 
     printf("Masa: %.2f kg\n", masa);
     printf("Velocidad: %.2f m/s\n", velocidad);
-    printf("Energia cinetica total (Ec): %e J\n", ec_total);
-    printf("Energia cinetica por kilogramo (Ec/m): %.2f J/kg\n", ec_kg);
+    printf("Energía cinética total (Ec): %e J\n", calcular_energia_cinetica(masa, velocidad));
+    printf("Energía cinética por kilogramo (Ec/m): %.2f J/kg\n",
+           calcular_energia_cinetica(1.0, velocidad));
 }
 
-/* Consulta c: Trabajo mínimo hasta el punto de equilibrio */
-static void consulta_c(void) {
-    char usar_defecto;
+/* Consulta c: trabajo mínimo hasta el punto de equilibrio */
+static void consulta_c(void)
+{
     double altitud, velocidad, trabajo;
     double x_eq = calcular_punto_equilibrio();
 
-    printf("\n--- CONSULTA C: TRABAJO MINIMO AL PUNTO DE EQUILIBRIO ---\n");
+    printf("\n--- CONSULTA C: TRABAJO MÍNIMO HASTA EL PUNTO DE EQUILIBRIO ---\n");
 
-    usar_defecto = leer_caracter("Desea usar los valores por defecto? (s/n): ", "snSN", "Entrada invalida. Ingrese 's' o 'n': ");
-
-    if (usar_defecto == 's' || usar_defecto == 'S') {
-        altitud = 192000.0;
-        velocidad = 0.0;
+    if (usar_valores_por_defecto()) {
+        altitud = ALTITUD_DEFECTO;
+        velocidad = VELOCIDAD_CONSULTA_MINIMA;
     } else {
-        altitud = leer_real("Ingrese la altitud h (m): ", 160000.0, 2000000.0, "La altitud debe estar entre 160 000 y 2 000 000 m. Ingrese nuevamente: ");
-        velocidad = leer_real("Ingrese la velocidad v (m/s): ", 0.0, 11200.0, "La velocidad debe estar entre 0 y 11 200 m/s. Ingrese nuevamente: ");
+        altitud = leer_real("Ingrese la altitud h (m): ", ALTITUD_MINIMA, ALTITUD_MAXIMA,
+                            "La altitud debe estar entre 160 000 y 2 000 000 m. Ingrese nuevamente:");
+        velocidad = leer_real("Ingrese la velocidad v (m/s): ",
+                              VELOCIDAD_CONSULTA_MINIMA, VELOCIDAD_TLI_MAXIMA,
+                              "La velocidad debe estar entre 0 y 11 200 m/s. Ingrese nuevamente:");
     }
 
     trabajo = calcular_trabajo_minimo(velocidad, altitud);
@@ -196,89 +201,85 @@ static void consulta_c(void) {
     printf("Punto de equilibrio (x_eq): %.2f m (%.2f km)\n", x_eq, x_eq / 1000.0);
     printf("U(r0)/m: %.2f J/kg\n", calcular_energia_potencial_por_kg(RADIO_TIERRA + altitud));
     printf("U(x_eq)/m: %.2f J/kg\n", calcular_energia_potencial_por_kg(x_eq));
-    
-    if (trabajo <= 0) {
-        printf("Trabajo adicional minimo (W/m): 0.00 J/kg\n");
+
+    if (trabajo <= 0.0) {
+        printf("Trabajo adicional mínimo (W/m): 0.00 J/kg\n");
         printf("Con esa velocidad, Orion alcanza el punto de equilibrio sin trabajo adicional.\n");
     } else {
-        printf("Trabajo adicional minimo (W/m): %.2f J/kg\n", trabajo);
-        if (velocidad > 0) {
+        printf("Trabajo adicional mínimo (W/m): %.2f J/kg\n", trabajo);
+        if (velocidad > 0.0) {
             printf("Con esa velocidad, Orion no alcanza el punto de equilibrio sin trabajo adicional.\n");
         }
     }
 }
 
-/* Consulta d: Comparación energética entre la ida y el regreso */
-static void consulta_d(void) {
-    char usar_defecto;
-    double masa, altitud, pozo_tierra, pozo_luna, razon, energia_ida, energia_regreso;
+/* Consulta d: comparación energética entre la ida y el regreso */
+static void consulta_d(void)
+{
+    double masa, altitud, pozo_tierra, pozo_luna;
 
-    printf("\n--- CONSULTA D: COMPARACION ENERGETICA IDA Y REGRESO ---\n");
+    printf("\n--- CONSULTA D: COMPARACIÓN ENERGÉTICA ENTRE LA IDA Y EL REGRESO ---\n");
 
-    usar_defecto = leer_caracter("Desea usar los valores por defecto? (s/n): ", "snSN", "Entrada invalida. Ingrese 's' o 'n': ");
-
-    if (usar_defecto == 's' || usar_defecto == 'S') {
-        masa = 26000.0;
-        altitud = 192000.0;
+    if (usar_valores_por_defecto()) {
+        masa = MASA_DEFECTO;
+        altitud = ALTITUD_DEFECTO;
     } else {
-        masa = leer_real("Ingrese la masa m (kg): ", 1000.0, 100000.0, "La masa debe estar entre 1 000 y 100 000 kg. Ingrese nuevamente: ");
-        altitud = leer_real("Ingrese la altitud h (m): ", 160000.0, 2000000.0, "La altitud debe estar entre 160 000 y 2 000 000 m. Ingrese nuevamente: ");
+        masa = leer_real("Ingrese la masa m (kg): ", MASA_MINIMA, MASA_MAXIMA,
+                         "La masa debe estar entre 1 000 y 100 000 kg. Ingrese nuevamente:");
+        altitud = leer_real("Ingrese la altitud h (m): ", ALTITUD_MINIMA, ALTITUD_MAXIMA,
+                            "La altitud debe estar entre 160 000 y 2 000 000 m. Ingrese nuevamente:");
     }
 
     pozo_tierra = calcular_pozo_tierra(altitud);
     pozo_luna = calcular_pozo_luna();
-    razon = pozo_tierra / pozo_luna;
-    energia_ida = pozo_tierra * masa;
-    energia_regreso = pozo_luna * masa;
 
     printf("Masa: %.2f kg\n", masa);
     printf("Altitud: %.2f m\n", altitud);
     printf("Pozo gravitatorio terrestre: %.2f MJ/kg\n", pozo_tierra / 1e6);
     printf("Pozo gravitatorio lunar: %.2f MJ/kg\n", pozo_luna / 1e6);
-    printf("Razon Tierra / Luna: %.2f\n", razon);
-    printf("Energia total ida: %e J\n", energia_ida);
-    printf("Energia total regreso: %e J\n", energia_regreso);
-    printf("Conclusion: Salir de la atraccion terrestre demanda una cantidad de energia enormemente superior a la lunar.\n");
+    printf("Razón Tierra / Luna: %.2f\n", pozo_tierra / pozo_luna);
+    printf("Energía total ida: %e J\n", pozo_tierra * masa);
+    printf("Energía total regreso: %e J\n", pozo_luna * masa);
+    printf("Salir del pozo terrestre exige mucha más energía que salir del lunar:\n");
+    printf("por eso la ida necesita mucho más combustible que el regreso.\n");
 }
 
-void submenu_consultas(void) {
+/* Cada pregunta del Problema 3 se puede consultar por separado, con datos propios o por defecto. */
+void submenu_consultas(void)
+{
     char opcion;
+
     do {
-        printf("\n=== SUBMENU DE CONSULTAS (PROBLEMA 3) ===\n");
-        printf("a) Consulta a (Fuerzas / 1.a Ley de Newton)\n");
-        printf("b) Consulta b (Energia Cinetica TLI)\n");
-        printf("c) Consulta c (Punto de equilibrio y trabajo minimo)\n");
-        printf("d) Consulta d (Pozos potenciales y energia de viaje)\n");
-        printf("v) Volver al menu principal\n");
-        
-        opcion = leer_caracter("Seleccione una opcion: ", "abcdvABCDV", "Opcion invalida. Por favor, elija a, b, c, d o v: ");
+        printf("\nCONSULTAS DEL PROBLEMA 3\n");
+        printf("  a. Vuelo sin propulsión y 1.ª Ley de Newton\n");
+        printf("  b. Energía cinética inicial\n");
+        printf("  c. Trabajo mínimo hasta el punto de equilibrio\n");
+        printf("  d. Comparación energética entre la ida y el regreso\n");
+        printf("  v. Volver al menú principal\n");
+
+        opcion = leer_caracter("Elija una opción: ", "abcdv",
+                               "Opción inválida. Ingrese a, b, c, d o v:");
 
         switch (opcion) {
             case 'a':
-            case 'A':
                 consulta_a();
                 break;
             case 'b':
-            case 'B':
                 consulta_b();
                 break;
             case 'c':
-            case 'C':
                 consulta_c();
                 break;
             case 'd':
-            case 'D':
                 consulta_d();
-                break;
-            case 'v':
-            case 'V':
                 break;
             default:
                 break;
         }
-    } while (opcion != 'v' && opcion != 'V');
+    } while (opcion != 'v');
 }
 
+/* Constantes y simplificaciones que usa el modelo. */
 void mostrar_datos_y_supuestos(void)
 {
     printf("\n");
