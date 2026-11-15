@@ -15,9 +15,9 @@
 
 Cada integrante, una sola vez:
 
-1. Aceptar la invitación al repositorio desde el correo o desde <https://github.com/acevedo-daniel/trabajo-final-tpi-artemis/invitations>.
+1. Aceptar la invitación al repositorio desde el correo o desde <https://github.com/acevedo-daniel/artemis-tli/invitations>.
 2. Instalar GitHub Desktop e iniciar sesión con la cuenta de GitHub.
-3. En GitHub Desktop, usar **File → Clone repository** y elegir `acevedo-daniel/trabajo-final-tpi-artemis`.
+3. En GitHub Desktop, usar **File → Clone repository** y elegir `acevedo-daniel/artemis-tli`.
 4. Abrir el [tablero del proyecto](https://github.com/users/acevedo-daniel/projects/4) y confirmar que se pueden mover tarjetas.
 5. En una terminal, ejecutar `gcc --version` y confirmar que GCC responde.
 
@@ -40,8 +40,8 @@ Cada Issue tiene el milestone de la etapa del roadmap en curso y, cuando alguien
 2. En GitHub Desktop selecciona `main`, usa **Fetch origin** y **Pull origin**, y crea una rama nueva desde esa versión actualizada.
 3. Implementa solo esa tarea, la compila y la prueba. Hace uno o más commits pequeños.
 4. Usa **Push origin** y crea un Pull Request hacia `main`. Completa `Resumen` y `Cambios` de la plantilla; el último punto de `Resumen` es `Closes #N`, con el número real del Issue. Mueve la tarjeta a `In review`.
-5. El coordinador revisa el Pull Request y lo aprueba o comenta qué corregir. El autor corrige en la misma rama y avisa en el Pull Request.
-6. El coordinador integra con **Squash and merge**, revisando que el título siga el formato de nombres. La rama se borra sola y el Issue pasa a `Done`.
+5. Daniel Acevedo revisa el Pull Request y lo aprueba o comenta qué corregir. El autor corrige en la misma rama y avisa en el Pull Request.
+6. Daniel Acevedo integra con **Squash and merge**, revisando que el título siga el formato de nombres. La rama se borra sola y el Issue pasa a `Done`.
 7. El autor vuelve a `main`, usa **Fetch origin** y **Pull origin**, y sigue con su próxima tarea.
 
 Con **Squash and merge**, cada Pull Request queda en `main` como un único commit a nombre de quien lo abrió. Por eso cada integrante abre los Pull Requests de su propio trabajo: así el historial refleja los aportes reales de los cinco.
@@ -83,20 +83,20 @@ Quedan en inglés solo las convenciones que no se traducen:
 
 ## Cómo informar un bloqueo
 
-Comentar en el Issue qué se intentó, qué falló (con el mensaje de error completo) y mencionar al coordinador. La tarjeta queda en `In progress`. Si el Issue no coincide con el repositorio o el siguiente paso no está claro, comentar y esperar antes de cambiar el alcance.
+Comentar en el Issue qué se intentó, qué falló (con el mensaje de error completo) y mencionar a Daniel Acevedo. La tarjeta queda en `In progress`. Si el Issue no coincide con el repositorio o el siguiente paso no está claro, comentar y esperar antes de cambiar el alcance.
 
 ## Cómo nos organizamos
 
 - **Roadmap:** etapa actual, alcance y criterios de finalización; archivo [DEVELOPMENT-ROADMAP.md](DEVELOPMENT-ROADMAP.md).
-- **Plan de etapa:** al comenzar cada etapa, el coordinador revisa el repositorio y arma un plan con decisiones y tareas. A partir de él crea los Issues; el equipo trabaja solo desde los Issues.
+- **Plan de etapa:** al comenzar cada etapa, Daniel Acevedo revisa el repositorio y arma un plan con decisiones y tareas. A partir de él crea los Issues; el equipo trabaja solo desde los Issues.
 - **Issue:** una tarea autocontenida, que toma un solo integrante y creada con el formulario Tarea. Los errores encontrados se informan con el formulario Reporte de error.
-- **Pull Request:** propuesta de cambios que revisa e integra el coordinador.
+- **Pull Request:** propuesta de cambios que revisa e integra Daniel Acevedo.
 - **README:** explicación pública del programa y registro obligatorio del uso de IA.
 
 Los cinco deben tener trabajo real de código y comprender el proyecto completo. Revisar Pull Requests, probar y documentar también suma, pero no reemplaza programar.
 
 Las tareas de una etapa se distribuyen cuando ya están decididos los módulos y sus dependencias. No hace falta repartir cinco tareas simultáneas si alguna depende de otra; sí hay que equilibrar los aportes a lo largo del proyecto.
 
-## Qué no configuramos todavía
+## Verificación automática
 
 No usamos Docker, bots ni herramientas de gestión adicionales. Cada Pull Request se compila y ejecuta las pruebas automáticamente en GitHub Actions; si el check `CI Gate` falla, no se puede integrar.
