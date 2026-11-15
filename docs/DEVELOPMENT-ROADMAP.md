@@ -11,7 +11,7 @@ status: active
 
 Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C que represente correctamente el escenario Artemis asignado por la cátedra: Problema 3, inyección translunar (TLI). Construirlo de forma gradual, comprensible para cinco integrantes y verificable mediante GitHub, pruebas y una defensa técnica.
 
-**Current phase:** Interacción, validaciones y reportes
+**Current phase:** Integración, revisión y entrega
 
 ## Constraints
 
@@ -31,33 +31,7 @@ Desarrollar en equipo un simulador/juego interactivo por consola en lenguaje C q
 
 | Phase | Outcome | Depends on |
 | --- | --- | --- |
-| Interacción, validaciones y reportes | El usuario puede completar una simulación sin fallas ante entradas comunes o erróneas | Ninguna |
-| Integración, revisión y entrega | El proyecto cumple la consigna, está documentado y puede ser defendido por los cinco | Interacción, validaciones y reportes |
-
-## Phase: Interacción, validaciones y reportes
-
-### Objective
-
-Convertir el núcleo técnico en un simulador usable, robusto y demostrable de principio a fin.
-
-### In scope
-
-- Conectar menú, entradas del usuario, turnos/eventos, decisiones, cálculos y condiciones de fin.
-- Validar tipos y rangos; permitir reintentos ante letras donde se esperan números, valores fuera de rango o entradas incompletas.
-- Mostrar mensajes comprensibles y reportes finales con resultados y evaluación del desempeño.
-- Verificar recorridos completos: misión exitosa, resultado alternativo/fallido y distintos errores de entrada.
-- Ajustar los mensajes de consola para facilitar la demostración y la comprensión de quien evalúe.
-
-### Out of scope
-
-- Incorporar interfaz gráfica, guardar partidas, crear servicios web o ampliar el alcance con funcionalidades no exigidas.
-
-### Exit criteria
-
-- Una persona que no desarrolló el programa puede completar una simulación siguiendo el menú.
-- Las entradas inválidas previstas no provocan cierres inesperados ni bucles infinitos.
-- El reporte final refleja lo ocurrido en la simulación y los resultados de los cálculos.
-- Se han ejecutado y registrado pruebas manuales de éxito, error y límites.
+| Integración, revisión y entrega | El proyecto cumple la consigna, está documentado y puede ser defendido por los cinco | Ninguna |
 
 ## Phase: Integración, revisión y entrega
 
@@ -90,6 +64,6 @@ Entregar una versión reproducible que cumpla la consigna y pueda ser defendida 
 
 Al completar una etapa, actualizar **Current phase** con el nombre exacto de la siguiente. Eliminar del documento activo la sección y la fila de la etapa terminada: el historial de Git conserva el registro anterior.
 
-Al **comenzar cada etapa**, quien coordina revisa el estado real del repositorio y prepara un plan local de la etapa con decisiones, dependencias, tareas, criterios de aceptación y verificaciones. A partir de él crea Issues con el formulario Tarea, los asigna según capacidad y dependencias, y los agrega al tablero con el milestone de la etapa. Los Issues son la fuente de instrucciones compartida con el equipo.
+Al **comenzar cada etapa**, Daniel Acevedo revisa el estado real del repositorio y prepara un plan local de la etapa con decisiones, dependencias, tareas, criterios de aceptación y verificaciones. A partir de él crea Issues con el formulario Tarea, los asigna según capacidad y dependencias, y los agrega al tablero con el milestone de la etapa. Los Issues son la fuente de instrucciones compartida con el equipo.
 
 **Flujo de ejecución:** roadmap → plan específico de etapa → Issues asignados → ramas y commits → Pull Requests revisados → verificación de criterios de salida → siguiente etapa.
