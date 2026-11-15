@@ -1,4 +1,4 @@
-# Simulador Artemis TLI — Especificación funcional
+# Simulador Artemis TLI - Especificación funcional
 
 > Qué ingresa el usuario, qué sucede en cada paso y qué responde el programa.
 
@@ -64,9 +64,9 @@ El menú se repite hasta que el jugador elige `0`. Una opción inexistente muest
 
 ### Misión en cuatro etapas
 
-**Etapa 1 — Inyección (pregunta b).** El jugador ingresa la masa de la nave (por defecto, 26 000 kg) y la velocidad de inyección (por defecto, 10 900 m/s). El programa muestra la energía cinética total y por kilogramo.
+**Etapa 1 - Inyección (pregunta b).** El jugador ingresa la masa de la nave (por defecto, 26 000 kg) y la velocidad de inyección (por defecto, 10 900 m/s). El programa muestra la energía cinética total y por kilogramo.
 
-**Etapa 2 — Vuelo sin propulsión (pregunta a).** El trayecto desde `r0` hasta el punto de equilibrio se divide en 10 tramos iguales. En cada turno el programa muestra:
+**Etapa 2 - Vuelo sin propulsión (pregunta a).** El trayecto desde `r0` hasta el punto de equilibrio se divide en 10 tramos iguales. En cada turno el programa muestra:
 
 - la barra de progreso, por ejemplo `Tierra ●────────▶──────○ Luna`;
 - la telemetría: distancia al centro de la Tierra, velocidad, atracción de la Tierra y de la Luna por separado, desaceleración neta y energía cinética;
@@ -85,9 +85,9 @@ Después de una corrección, el programa recalcula la predicción y el jugador v
 
 La explicación de la 1.ª Ley de Newton acompaña la telemetría: la nave conserva su estado de movimiento por inercia, y lo único que la frena es la gravedad terrestre, cada vez menos a medida que se aleja.
 
-**Etapa 3 — Punto de equilibrio (pregunta c).** Si la nave alcanza el punto de equilibrio, la misión es un éxito: a partir de ahí domina la atracción de la Luna. El programa compara el trabajo aplicado por el jugador con el trabajo adicional mínimo.
+**Etapa 3 - Punto de equilibrio (pregunta c).** Si la nave alcanza el punto de equilibrio, la misión es un éxito: a partir de ahí domina la atracción de la Luna. El programa compara el trabajo aplicado por el jugador con el trabajo adicional mínimo.
 
-**Etapa 4 — Regreso (pregunta d).** No se juega. El reporte compara la energía por kilogramo necesaria para salir del pozo gravitatorio de la Tierra con la necesaria para salir del de la Luna, y la convierte en energía total con la masa ingresada.
+**Etapa 4 - Regreso (pregunta d).** No se juega. El reporte compara la energía por kilogramo necesaria para salir del pozo gravitatorio de la Tierra con la necesaria para salir del de la Luna, y la convierte en energía total con la masa ingresada.
 
 ### Corrección como trabajo adicional
 
@@ -185,7 +185,7 @@ Para que las pruebas y la demostración del video sean repetibles, la misión pu
 
 Cada capa se integra completa antes de empezar la siguiente; si el tiempo no alcanza, lo ya integrado cumple la consigna.
 
-1. **Núcleo:** menú, consultas a–d, las cuatro etapas, correcciones con reserva de trabajo, abortar, reporte con puntaje, validaciones y barra de progreso.
+1. **Núcleo:** menú, consultas a-d, las cuatro etapas, correcciones con reserva de trabajo, abortar, reporte con puntaje, validaciones y barra de progreso.
 2. **Eventos:** los tres de la tabla, con semilla fija y opción para desactivarlos.
 3. **Niveles:** las tres misiones predefinidas y la personalizada.
 4. **Extras, si sobra tiempo:** modo entrenamiento y modo misión (el segundo oculta la predicción), pronóstico del jugador antes de inyectar, historial de intentos de la sesión, regreso jugable y dispersión de la inyección (la velocidad real difiere un poco de la elegida). La dispersión cambia la energía de la nave: si se agrega, primero hay que modificar la regla 3 y recalcular la reserva con la regla 2.
@@ -194,7 +194,7 @@ Cada capa se integra completa antes de empezar la siguiente; si el tiempo no alc
 
 Cada pregunta tiene una opción en el submenú de consultas, donde el usuario ingresa sus propios valores, y además aparece dentro de la misión.
 
-### Pregunta a — Vuelo sin propulsión y 1.ª Ley de Newton
+### Pregunta a - Vuelo sin propulsión y 1.ª Ley de Newton
 
 #### Entradas
 
@@ -231,9 +231,9 @@ Calculado con r = r0 = 6 563 000 m:
 
 #### En la misión
 
-Etapa 2 — vuelo sin propulsión: la explicación y las atracciones acompañan la telemetría en cada turno (véase `### Misión en cuatro etapas`).
+Etapa 2 - vuelo sin propulsión: la explicación y las atracciones acompañan la telemetría en cada turno (véase `### Misión en cuatro etapas`).
 
-### Pregunta b — Energía cinética inicial
+### Pregunta b - Energía cinética inicial
 
 #### Entradas
 
@@ -267,9 +267,9 @@ Calculado con los valores por defecto (m = 26 000 kg, v = 10 900 m/s):
 
 #### En la misión
 
-Etapa 1 — inyección: el programa muestra Ec y Ec/m después de que el jugador ingresa la masa y la velocidad de inyección (véase `### Misión en cuatro etapas`).
+Etapa 1 - inyección: el programa muestra Ec y Ec/m después de que el jugador ingresa la masa y la velocidad de inyección (véase `### Misión en cuatro etapas`).
 
-### Pregunta c — Trabajo mínimo hasta el punto de equilibrio
+### Pregunta c - Trabajo mínimo hasta el punto de equilibrio
 
 #### Entradas
 
@@ -309,7 +309,7 @@ W/m    = U(x_eq)/m − (v²/2 + U(r0)/m)
 
 Etapas 2 y 3: W/m es el trabajo mínimo que el jugador debe tomar de la reserva de corrección durante el vuelo (etapa 2) para alcanzar el punto de equilibrio (etapa 3); el reporte lo compara con el trabajo aplicado.
 
-### Pregunta d — Comparación energética entre la ida y el regreso
+### Pregunta d - Comparación energética entre la ida y el regreso
 
 #### Entradas
 
@@ -358,15 +358,15 @@ Etapa 4 del juego y parte del reporte final (véase `### Desempeño y reporte fi
 
 ### Entidades candidatas a struct
 
-**Estado de la nave** — distancia al centro de la Tierra (m), velocidad (m/s) y reserva de corrección disponible (J/kg). La necesitan todas las funciones de la etapa 2: calcular telemetría, aplicar correcciones y decidir si la nave avanza o se detiene.
+**Estado de la nave** - distancia al centro de la Tierra (m), velocidad (m/s) y reserva de corrección disponible (J/kg). La necesitan todas las funciones de la etapa 2: calcular telemetría, aplicar correcciones y decidir si la nave avanza o se detiene.
 
-**Parámetros de misión** — masa (kg), velocidad de inyección (m/s), índice de nivel y resultado final (éxito / fracaso / abortada). La inicializa la etapa 1 y la consume el reporte final para calcular el puntaje.
+**Parámetros de misión** - masa (kg), velocidad de inyección (m/s), índice de nivel y resultado final (éxito / fracaso / abortada). La inicializa la etapa 1 y la consume el reporte final para calcular el puntaje.
 
-**Telemetría de un turno** — distancia, velocidad, atracción terrestre (m/s²), atracción lunar (m/s²), desaceleración neta y energía cinética. Se genera en cada turno de la etapa 2 para mostrar la barra de progreso y los datos al jugador.
+**Telemetría de un turno** - distancia, velocidad, atracción terrestre (m/s²), atracción lunar (m/s²), desaceleración neta y energía cinética. Se genera en cada turno de la etapa 2 para mostrar la barra de progreso y los datos al jugador.
 
-**Evento** — tipo (fuga de propulsión, pérdida de señal, falla de sensor) y magnitud (porcentaje de reserva afectada). Se genera una vez por turno y condiciona la decisión del jugador.
+**Evento** - tipo (fuga de propulsión, pérdida de señal, falla de sensor) y magnitud (porcentaje de reserva afectada). Se genera una vez por turno y condiciona la decisión del jugador.
 
-**Reporte final** — masa, v_TLI, energía cinética inicial, resultado, distancia máxima alcanzada, trabajo aplicado en correcciones, trabajo mínimo de referencia, comparación energética ida/regreso y puntaje. Lo arma el final de la misión y lo muestra también la opción 4 del menú.
+**Reporte final** - masa, v_TLI, energía cinética inicial, resultado, distancia máxima alcanzada, trabajo aplicado en correcciones, trabajo mínimo de referencia, comparación energética ida/regreso y puntaje. Lo arma el final de la misión y lo muestra también la opción 4 del menú.
 
 ### Arreglos y punteros
 
@@ -394,7 +394,7 @@ Etapa 4 del juego y parte del reporte final (véase `### Desempeño y reporte fi
 ```text
 mostrar_bienvenida()
 repetir
-  mostrar_menu_principal()              // opciones 0–4
+  mostrar_menu_principal()              // opciones 0-4
   leer opcion (validada)
   segun opcion:
     1 → nueva_mision():
@@ -473,7 +473,7 @@ Todos los recorridos se ejecutan con **eventos desactivados** para que sean repe
 
 | Recorrido | Pasos | Resultado esperado |
 | --- | --- | --- |
-| Misión por defecto sin corregir (fracaso) | Iniciar misión con valores por defecto (m = 26 000 kg, v = 10 900 m/s); en cada turno elegir `Continuar` sin corregir | El programa informa que la nave no alcanza el punto 10 (se detiene alrededor del punto 9–10), muestra la distancia máxima (~314 442 km) y registra `Fracaso` en el reporte |
+| Misión por defecto sin corregir (fracaso) | Iniciar misión con valores por defecto (m = 26 000 kg, v = 10 900 m/s); en cada turno elegir `Continuar` sin corregir | El programa informa que la nave no alcanza el punto 10 (se detiene alrededor del punto 9-10), muestra la distancia máxima (~314 442 km) y registra `Fracaso` en el reporte |
 | Misión por defecto corrigiendo a tiempo (éxito) | Igual que el anterior; al acercarse al punto 9 ingresar una corrección de al menos 57 086 J/kg | La nave alcanza el punto de equilibrio, el reporte muestra `Éxito` y el puntaje descontado por la corrección usada |
 | Inyección con v = 10 906 m/s sin correcciones (éxito) | Iniciar misión ingresando m = 26 000 kg y v = 10 906 m/s; elegir `Continuar` en todos los turnos | La nave llega al punto de equilibrio sin correcciones; el reporte registra `Éxito`, 0 correcciones y puntaje ≈ 99,6 (exceso 8 332 J/kg × 0,05 puntos por kJ/kg) |
 | Abortar la misión | Iniciar cualquier misión; en el turno 1 elegir `Abortar` | El reporte muestra `Abortada`, distancia máxima = r0, puntaje = 0 |

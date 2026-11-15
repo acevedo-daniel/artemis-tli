@@ -16,23 +16,23 @@ $$x_{eq} = \frac{D}{1 + \sqrt{\dfrac{M_L}{M_T}}}$$
 
 ## Sustitución de valores
 
-**Paso 1 — cociente de masas:**
+**Paso 1 - cociente de masas:**
 
 $$\frac{M_L}{M_T} = \frac{7{,}346 \times 10^{22}}{5{,}972 \times 10^{24}} = 0{,}01230074$$
 
-**Paso 2 — raíz cuadrada del cociente:**
+**Paso 2 - raíz cuadrada del cociente:**
 
 $$\sqrt{0{,}01230074} = 0{,}1109087$$
 
-**Paso 3 — denominador:**
+**Paso 3 - denominador:**
 
 $$1 + 0{,}1109087 = 1{,}1109087$$
 
-**Paso 4 — punto de equilibrio:**
+**Paso 4 - punto de equilibrio:**
 
 $$x_{eq} = \frac{384\,000\,000 \text{ m}}{1{,}1109087} = 345\,662\,974 \text{ m} \approx 345\,663 \text{ km}$$
 
-**Paso 5 — distancia desde el punto de equilibrio hasta la Luna:**
+**Paso 5 - distancia desde el punto de equilibrio hasta la Luna:**
 
 $$D - x_{eq} = 384\,000\,000 - 345\,662\,974 = 38\,337\,026 \text{ m} \approx 38\,337 \text{ km}$$
 

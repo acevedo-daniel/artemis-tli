@@ -1,4 +1,4 @@
-# Simulador Artemis TLI — Arquitectura
+# Simulador Artemis TLI - Arquitectura
 
 > Organización de los módulos en C, dependencias entre archivos, estructuras de datos, funciones públicas y flujo de ejecución desde `main()`.
 
@@ -7,9 +7,9 @@
 | Archivo | Responsabilidad | Incluye |
 | --- | --- | --- |
 | `src/main.c` | Únicamente `main()`, bienvenida, menú principal, almacenamiento del último reporte y despacho de opciones | `"simulador.h"`, `"validaciones.h"`, `<stdio.h>` (y `<windows.h>` en Windows) |
-| `src/simulador.h` | Constantes del escenario y reglas (`#define`), definiciones `typedef` (`enum` y `struct`) y prototipos públicos de simulación y física | — |
+| `src/simulador.h` | Constantes del escenario y reglas (`#define`), definiciones `typedef` (`enum` y `struct`) y prototipos públicos de simulación y física | - |
 | `src/simulador.c` | Implementación de las opciones de simulación, presentación de datos y supuestos, y lógica física | `"simulador.h"`, `"validaciones.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>`, `<time.h>` |
-| `src/validaciones.h` | Prototipos públicos para la lectura validada de enteros, reales y caracteres | — |
+| `src/validaciones.h` | Prototipos públicos para la lectura validada de enteros, reales y caracteres | - |
 | `src/validaciones.c` | Lectura segura por línea (`leer_linea`) y validación por tipo y rango con reintento ante entradas inválidas | `"validaciones.h"`, `<ctype.h>`, `<errno.h>`, `<limits.h>`, `<stdio.h>`, `<stdlib.h>`, `<string.h>` |
 | `pruebas/pruebas_simulador.c` | Pruebas automáticas de los cálculos físicos, el estado de la nave, eventos, puntaje, niveles y reporte contra los casos de referencia | `"simulador.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>` |
 | `pruebas/pruebas_consultas.c` | Prueba del submenú de consultas: simula la entrada del usuario y comprueba los valores mostrados | `"simulador.h"`, `<math.h>`, `<stdio.h>`, `<stdlib.h>`, `<string.h>` |
