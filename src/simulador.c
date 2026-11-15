@@ -5,6 +5,7 @@
 #include "simulador.h"
 #include "validaciones.h"
 
+/* Pide un trabajo de corrección mayor que 0 y no mayor que la reserva disponible. */
 static double pedir_correccion(double reserva)
 {
     char aviso[128];
@@ -15,16 +16,18 @@ static double pedir_correccion(double reserva)
              reserva);
 
     do {
-        trabajo = leer_real("Ingrese el trabajo de correcci\xc3\xb3n (J/kg): ",
+        trabajo = leer_real("Ingrese el trabajo de corrección (J/kg): ",
                             0.0, reserva, aviso);
         if (trabajo <= 0.0) {
-            printf("El trabajo de correcci\xc3\xb3n debe ser mayor que 0.\n");
+            printf("El trabajo de corrección debe ser mayor que 0.\n");
         }
     } while (trabajo <= 0.0);
 
     return trabajo;
 }
 
+/* Un turno por tramo. Después de cada corrección se vuelve a mostrar el turno,
+   así el jugador ve la nueva predicción antes de decidir si continúa. */
 static void jugar_tramos(EstadoNave *nave, ParametrosMision *mision, int probabilidad_eventos)
 {
     Evento evento;
@@ -33,27 +36,23 @@ static void jugar_tramos(EstadoNave *nave, ParametrosMision *mision, int probabi
     char decision;
 
     while (nave->punto < CANTIDAD_TRAMOS && mision->resultado == RESULTADO_EN_CURSO) {
-        alcanza = calcular_velocidad_en(
-            nave->distancia,
-            nave->velocidad,
-            calcular_distancia_punto(nave->punto + 1),
-            &velocidad_siguiente);
+        alcanza = calcular_velocidad_en(nave->distancia, nave->velocidad,
+                                        calcular_distancia_punto(nave->punto + 1),
+                                        &velocidad_siguiente);
 
         generar_evento(&evento, probabilidad_eventos, alcanza);
         aplicar_evento(nave, &evento);
         mostrar_turno(nave, &evento);
 
         do {
-            decision = leer_caracter(
-                "Decisi\xc3\xb3n ([c] continuar, [r] corregir, [a] abortar): ",
-                "cra",
-                "Opci\xc3\xb3n inv\xc3\xa1lida. Ingrese c, r o a:");
+            decision = leer_caracter("Decisión ([c] continuar, [r] corregir, [a] abortar): ",
+                                     "cra", "Opción inválida. Ingrese c, r o a:");
 
             if (decision == 'r') {
                 if (evento.tipo == EVENTO_PERDIDA_SENAL) {
-                    printf("No se puede corregir en este turno por p\xc3\xa9rdida de se\xc3\xb1" "al.\n");
+                    printf("No se puede corregir en este turno por pérdida de señal.\n");
                 } else if (nave->reserva <= 0.0) {
-                    printf("No queda reserva de correcci\xc3\xb3n disponible.\n");
+                    printf("No queda reserva de corrección disponible.\n");
                 } else if (aplicar_correccion(nave, pedir_correccion(nave->reserva))) {
                     mostrar_turno(nave, &evento);
                 }
@@ -62,16 +61,18 @@ static void jugar_tramos(EstadoNave *nave, ParametrosMision *mision, int probabi
 
         if (decision == 'a') {
             mision->resultado = RESULTADO_ABORTADA;
-            printf("Misi\xc3\xb3n abortada por el comandante.\n");
+            printf("Misión abortada por el comandante.\n");
         } else if (!avanzar_nave(nave)) {
             mision->resultado = RESULTADO_FRACASO;
-            printf("La nave no alcanza el pr\xc3\xb3ximo punto "
+            printf("La nave no alcanza el próximo punto "
                    "(se detiene a %.0f km) y vuelve a caer hacia la Tierra.\n",
                    calcular_distancia_maxima(nave->distancia, nave->velocidad) / 1000.0);
         }
     }
 }
 
+/* Juega una misión de punta a punta. El resultado queda en *reporte para que
+   main() lo pueda volver a mostrar con la opción 4. */
 int nueva_mision(ReporteFinal *reporte)
 {
     Nivel nivel;
@@ -91,17 +92,16 @@ int nueva_mision(ReporteFinal *reporte)
     mision.indice_nivel = 0;
     mision.resultado = RESULTADO_EN_CURSO;
 
-    printf("\nETAPA 1 - INYECCI\xc3\x93N TRANSLUNAR\n");
+    printf("\nETAPA 1 - INYECCIÓN TRANSLUNAR\n");
     mision.velocidad_inyeccion = leer_real(
-        "Velocidad de inyecci\xc3\xb3n (10500 a 11200 m/s, defecto 10900): ",
-        VELOCIDAD_TLI_MINIMA,
-        VELOCIDAD_TLI_MAXIMA,
+        "Velocidad de inyección (10500 a 11200 m/s; la de la consigna es 10900): ",
+        VELOCIDAD_TLI_MINIMA, VELOCIDAD_TLI_MAXIMA,
         "La velocidad debe estar entre 10 500 y 11 200 m/s. Ingrese nuevamente:");
 
     energia_total = calcular_energia_cinetica(mision.masa, mision.velocidad_inyeccion);
     energia_por_kg = calcular_energia_cinetica(1.0, mision.velocidad_inyeccion);
-    printf("  Energ\xc3\xad" "a cin\xc3\xa9tica total ....... %.5e J\n", energia_total);
-    printf("  Energ\xc3\xad" "a cin\xc3\xa9tica por kg ...... %.0f J/kg\n", energia_por_kg);
+    printf("  Energía cinética total ....... %.5e J\n", energia_total);
+    printf("  Energía cinética por kg ...... %.0f J/kg\n", energia_por_kg);
 
     inicializar_nave(&nave, mision.velocidad_inyeccion, nivel.reserva);
 
@@ -109,7 +109,7 @@ int nueva_mision(ReporteFinal *reporte)
 
     if (mision.resultado == RESULTADO_EN_CURSO && nave.punto == CANTIDAD_TRAMOS) {
         mision.resultado = RESULTADO_EXITO;
-        printf("\n\xc2\xa1La nave alcanz\xc3\xb3 el punto de equilibrio gravitatorio Tierra-Luna!\n");
+        printf("\n¡La nave alcanzó el punto de equilibrio gravitatorio Tierra-Luna!\n");
     }
 
     armar_reporte(reporte, &mision, &nave);
@@ -302,35 +302,40 @@ void mostrar_datos_y_supuestos(void)
     printf("  - Conservación de la energía: la velocidad en cada punto se obtiene de Em = K + U.\n");
 }
 
+/* Se llama al terminar cada misión y desde la opción 4; con NULL avisa que todavía no se jugó. */
 void mostrar_ultimo_reporte(const ReporteFinal *reporte)
 {
+    const char *resultado;
+
     if (reporte == NULL) {
-        printf("Todav\xc3\xad" "a no hay misiones jugadas\n");
+        printf("Todavía no hay misiones jugadas\n");
         return;
     }
 
-    const char *str_resultado;
     if (reporte->resultado == RESULTADO_EXITO) {
-        str_resultado = "Exito";
+        resultado = "Éxito";
     } else if (reporte->resultado == RESULTADO_FRACASO) {
-        str_resultado = "Fracaso";
+        resultado = "Fracaso";
     } else {
-        str_resultado = "Abortada";
+        resultado = "Abortada";
     }
 
-    printf("\n=== REPORTE FINAL DE LA MISION ===\n");
-    printf("Resultado: %s\n", str_resultado);
-    printf("Masa: %.2f kg | Velocidad de inyeccion: %.2f m/s\n", reporte->masa, reporte->velocidad_inyeccion);
-    printf("Energia cinetica inicial: %e J\n", reporte->energia_cinetica_inicial);
-    printf("Distancia maxima: %.2f km\n", reporte->distancia_maxima / 1000.0);
-    printf("Trabajo aplicado en correcciones: %.2f J/kg (Trabajo minimo: %.2f J/kg)\n", 
+    printf("\nREPORTE FINAL DE LA MISIÓN\n");
+    printf("  Resultado: %s\n", resultado);
+    printf("  Masa: %.2f kg | Velocidad de inyección: %.2f m/s\n",
+           reporte->masa, reporte->velocidad_inyeccion);
+    printf("  Energía cinética inicial: %e J\n", reporte->energia_cinetica_inicial);
+    printf("  Distancia máxima: %.2f km\n", reporte->distancia_maxima / 1000.0);
+    printf("  Velocidad final: %.2f m/s\n", reporte->velocidad_final);
+    printf("  Trabajo aplicado en correcciones: %.2f J/kg (trabajo mínimo: %.2f J/kg)\n",
            reporte->trabajo_aplicado, fmax(0.0, reporte->trabajo_minimo));
-    printf("Comparacion energetica ida (Pozo Tierra): %.2f MJ/kg (Total: %e J)\n", 
+    printf("  Ida (pozo terrestre): %.2f MJ/kg (total: %e J)\n",
            reporte->pozo_tierra / 1e6, reporte->pozo_tierra * reporte->masa);
-    printf("Comparacion energetica regreso (Pozo Luna): %.2f MJ/kg (Total: %e J)\n", 
+    printf("  Regreso (pozo lunar): %.2f MJ/kg (total: %e J)\n",
            reporte->pozo_luna / 1e6, reporte->pozo_luna * reporte->masa);
-    printf("Razon Tierra / Luna: %.2f\n", reporte->pozo_tierra / reporte->pozo_luna);
-    printf("Puntaje final: %.1f / 100\n", reporte->puntaje);
+    printf("  Razón Tierra / Luna: %.2f\n", reporte->pozo_tierra / reporte->pozo_luna);
+    printf("  Correcciones usadas: %d\n", reporte->correcciones_usadas);
+    printf("  Puntaje final: %.1f / 100\n", reporte->puntaje);
 }
 
 /* Devuelve 1 si la distancia está entre la Tierra y la Luna, donde las fórmulas no dividen por cero. */
@@ -639,7 +644,7 @@ static const Nivel niveles[CANTIDAD_NIVELES_PREDEFINIDOS] = {
     {"Misión con carga",       60000.0, 80000.0,                  50}
 };
 
-/* Copia el nivel en *nivel; devuelve 1 si el índice es válido y nivel != NULL. */
+/* Copia el nivel pedido en *nivel; devuelve 0 si ese índice no existe. */
 int obtener_nivel(int indice, Nivel *nivel)
 {
     if (nivel == NULL || indice < 0 || indice >= CANTIDAD_NIVELES_PREDEFINIDOS) {
@@ -649,7 +654,7 @@ int obtener_nivel(int indice, Nivel *nivel)
     return 1;
 }
 
-/* Muestra los niveles disponibles y llena *nivel con la elección del jugador. */
+/* Muestra los niveles; en el personalizado, el jugador elige masa, reserva y eventos. */
 void elegir_nivel(Nivel *nivel)
 {
     int opcion;
@@ -684,20 +689,22 @@ void elegir_nivel(Nivel *nivel)
 
 /* Turno en pantalla */
 
+/* Dibuja la posición de la nave entre la Tierra y el punto de equilibrio. */
 static void mostrar_barra_progreso(int punto)
 {
     int i;
-    printf("Tierra \xe2\x97\x8f");
+    printf("Tierra ●");
     for (i = 0; i < punto; i++) {
-        printf("\xe2\x94\x80");
+        printf("─");
     }
-    printf("\xe2\x96\xb6");
+    printf("▶");
     for (i = punto; i < CANTIDAD_TRAMOS; i++) {
-        printf("\xe2\x94\x80");
+        printf("─");
     }
-    printf(" \xe2\x97\x8b Luna\n");
+    printf(" ○ Luna\n");
 }
 
+/* Muestra un turno: barra, telemetría, predicción del tramo siguiente, reserva y evento. */
 void mostrar_turno(const EstadoNave *nave, const Evento *evento)
 {
     Telemetria tel;
@@ -711,16 +718,16 @@ void mostrar_turno(const EstadoNave *nave, const Evento *evento)
     printf("\n");
     printf("  Distancia:          %.0f km\n", tel.distancia / 1000.0);
     printf("  Velocidad:          %.1f m/s\n", tel.velocidad);
-    printf("  Atracci\xc3\xb3n Tierra:   %.5g m/s\xc2\xb2\n", tel.atraccion_tierra);
-    printf("  Atracci\xc3\xb3n Luna:     %.5g m/s\xc2\xb2\n", tel.atraccion_luna);
-    printf("  Desaceleraci\xc3\xb3n:     %.5g m/s\xc2\xb2\n", tel.desaceleracion_neta);
-    printf("  Energ\xc3\xad" "a cin\xc3\xa9tica:   %.0f J/kg\n", tel.energia_cinetica);
-    printf("\n  1.\xc2\xaa Ley de Newton: la nave conserva su movimiento por inercia;\n"
+    printf("  Atracción Tierra:   %.5g m/s²\n", tel.atraccion_tierra);
+    printf("  Atracción Luna:     %.5g m/s²\n", tel.atraccion_luna);
+    printf("  Desaceleración:     %.5g m/s²\n", tel.desaceleracion_neta);
+    printf("  Energía cinética:   %.0f J/kg\n", tel.energia_cinetica);
+    printf("\n  1.ª Ley de Newton: la nave conserva su movimiento por inercia;\n"
            "  solo la frena la gravedad terrestre, cada vez menos a medida que se aleja.\n");
 
     printf("\n");
     if (evento->tipo == EVENTO_FALLA_SENSOR) {
-        printf("  Falla de sensor: predicci\xc3\xb3n no disponible en este turno\n");
+        printf("  Falla de sensor: predicción no disponible en este turno\n");
     } else {
         alcanza = calcular_velocidad_en(nave->distancia, nave->velocidad,
                                         calcular_distancia_punto(nave->punto + 1),
@@ -728,14 +735,14 @@ void mostrar_turno(const EstadoNave *nave, const Evento *evento)
         if (alcanza) {
             printf("  Velocidad al final del tramo: %.1f m/s\n", velocidad_siguiente);
         } else {
-            printf("  La nave no alcanza el pr\xc3\xb3ximo punto\n");
+            printf("  La nave no alcanza el próximo punto\n");
         }
     }
 
     printf("  Reserva disponible: %.0f J/kg\n", nave->reserva);
 
     if (evento->tipo == EVENTO_FUGA_PROPULSION) {
-        printf("\n  Fuga de propulsi\xc3\xb3n: se perdi\xc3\xb3 el %.0f %% de la reserva.\n",
+        printf("\n  Fuga de propulsión: se perdió el %.0f %% de la reserva.\n",
                evento->porcentaje_reserva);
     } else if (evento->tipo == EVENTO_PERDIDA_SENAL) {
         printf("\n  En este turno no se puede corregir\n");
@@ -744,31 +751,34 @@ void mostrar_turno(const EstadoNave *nave, const Evento *evento)
 
 /* Reporte */
 
+/* Arma el reporte final a partir de la misión y del estado en que terminó la nave. */
 void armar_reporte(ReporteFinal *reporte, const ParametrosMision *mision, const EstadoNave *nave)
 {
-  if (reporte == NULL || mision == NULL || nave == NULL) {
+    if (reporte == NULL || mision == NULL || nave == NULL) {
         return;
     }
 
     reporte->masa = mision->masa;
     reporte->velocidad_inyeccion = mision->velocidad_inyeccion;
     reporte->resultado = mision->resultado;
-    reporte->energia_cinetica_inicial = calcular_energia_cinetica(mision->masa, mision->velocidad_inyeccion);
+    reporte->energia_cinetica_inicial = calcular_energia_cinetica(mision->masa,
+                                                                  mision->velocidad_inyeccion);
 
-    // Determinar distancia máxima según el resultado de la misión
+    /* Éxito: llegó al equilibrio; fracaso: se detuvo antes; abortada: quedó donde estaba. */
     if (mision->resultado == RESULTADO_EXITO) {
         reporte->distancia_maxima = calcular_punto_equilibrio();
     } else if (mision->resultado == RESULTADO_FRACASO) {
         reporte->distancia_maxima = calcular_distancia_maxima(nave->distancia, nave->velocidad);
-    } else { // Abortada u otros
+    } else {
         reporte->distancia_maxima = nave->distancia;
     }
 
     reporte->velocidad_final = nave->velocidad;
     reporte->trabajo_aplicado = nave->trabajo_aplicado;
-    reporte->correcciones_usadas = nave->correcciones; // Corregido de correcciones_usadas a correcciones
-    reporte->trabajo_minimo = calcular_trabajo_minimo(mision->velocidad_inyeccion, ALTITUD_DEFECTO); // Corregido a 2 argumentos
+    reporte->correcciones_usadas = nave->correcciones;
+    reporte->trabajo_minimo = calcular_trabajo_minimo(mision->velocidad_inyeccion, ALTITUD_DEFECTO);
     reporte->pozo_tierra = calcular_pozo_tierra(ALTITUD_DEFECTO);
     reporte->pozo_luna = calcular_pozo_luna();
-    reporte->puntaje = calcular_puntaje(mision->resultado, mision->velocidad_inyeccion, nave->trabajo_aplicado, nave->correcciones); // Corregido a nave->correcciones
+    reporte->puntaje = calcular_puntaje(mision->resultado, mision->velocidad_inyeccion,
+                                        nave->trabajo_aplicado, nave->correcciones);
 }
