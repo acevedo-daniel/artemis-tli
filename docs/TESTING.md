@@ -79,7 +79,7 @@ Ningún caso cerró el programa ni entró en bucle infinito.
 
 Verificación repetida por Daniel Acevedo durante la revisión del Pull Request. Se usó una clonación nueva de `main` en el commit `3d04250`, sin copiar ejecutables ni archivos de compilación. Los fuentes, las pruebas y el Makefile son los mismos que en este Pull Request. Se conserva íntegro el registro anterior.
 
-Esta comprobación acredita una copia limpia en la computadora de revisión. **Queda pendiente la comprobación en otra computadora solicitada en el Issue #94**. Los datos de Windows/MSYS2 y GCC 13.2.0 de la versión anterior del registro no se acreditan con esta ejecución y se sustituyen por el entorno efectivamente utilizado.
+Esta comprobación acredita una copia limpia en la computadora de revisión. Los datos de Windows/MSYS2 y GCC 13.2.0 de la versión anterior del registro no se acreditan con esta ejecución y se sustituyen por el entorno efectivamente utilizado.
 
 | Paso | Comando | Resultado obtenido | ¿Coincide? |
 | --- | --- | --- | --- |
