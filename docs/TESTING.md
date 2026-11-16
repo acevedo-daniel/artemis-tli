@@ -75,6 +75,22 @@ Ningún caso cerró el programa ni entró en bucle infinito.
 
 ### Registro - 2026-11-15 · Windows 11 Pro · WinLibs MinGW-w64 GCC 16.2.0
 
+#### Compilación desde copia limpia
+
+Verificación repetida por Daniel Acevedo durante la revisión del Pull Request. Se usó una clonación nueva de `main` en el commit `3d04250`, sin copiar ejecutables ni archivos de compilación. Los fuentes, las pruebas y el Makefile son los mismos que en este Pull Request. Se conserva íntegro el registro anterior.
+
+Esta comprobación acredita una copia limpia en la computadora de revisión. Los datos de Windows/MSYS2 y GCC 13.2.0 de la versión anterior del registro no se acreditan con esta ejecución y se sustituyen por el entorno efectivamente utilizado.
+
+| Paso | Comando | Resultado obtenido | ¿Coincide? |
+| --- | --- | --- | --- |
+| Requisitos y clonado | `gcc --version`; `git clone --single-branch --branch main https://github.com/acevedo-daniel/artemis-tli.git <carpeta-nueva>` | GCC 16.2.0 de WinLibs; GNU Make 4.4.1 disponible como `mingw32-make`. Clonación completada. | Sí; se seleccionó explícitamente `main` y un destino nuevo. |
+| Compilación con make | `mingw32-make` desde la copia nueva | Genera `artemis_tli.exe` con las banderas del Makefile, incluido `-Werror`; código 0. | Sí |
+| Pruebas automáticas | `mingw32-make pruebas` | `96 pruebas, 0 fallas` y `9 pruebas de consultas, 0 fallas`; código 0. | Sí |
+| Ejecución y salida | `.\artemis_tli.exe`, ingresar `0` | `Saliendo del simulador. ¡Hasta la próxima!`; código 0. | Sí |
+| Compilación directa | `gcc -std=c11 -Wall -Wextra -pedantic -Werror src/main.c src/simulador.c src/validaciones.c -o artemis_tli -lm` | Termina sin advertencias ni errores; código 0. | Sí |
+
+El README original ya contiene el comando completo de GCC, con las banderas estrictas y `-lm`; no fue necesario cambiar sus instrucciones.
+
 #### Prueba rápida del README
 
 Verificación repetida por Daniel Acevedo durante la revisión del Pull Request, sobre una clonación nueva del commit `3d04250`, cuyos fuentes coinciden con los de este Pull Request. Compilación con `mingw32-make` y `mingw32-make pruebas`: 96 pruebas del simulador y 9 de consultas, sin fallas. Se conserva íntegro el registro anterior.
