@@ -90,3 +90,33 @@ Esta comprobación acredita una copia limpia en la computadora de revisión. Los
 | Compilación directa | `gcc -std=c11 -Wall -Wextra -pedantic -Werror src/main.c src/simulador.c src/validaciones.c -o artemis_tli -lm` | Termina sin advertencias ni errores; código 0. | Sí |
 
 El README original ya contiene el comando completo de GCC, con las banderas estrictas y `-lm`; no fue necesario cambiar sus instrucciones.
+
+#### Prueba rápida del README
+
+Verificación repetida por Daniel Acevedo durante la revisión del Pull Request, sobre una clonación nueva del commit `3d04250`, cuyos fuentes coinciden con los de este Pull Request. Compilación con `mingw32-make` y `mingw32-make pruebas`: 96 pruebas del simulador y 9 de consultas, sin fallas. Se conserva íntegro el registro anterior.
+
+Se suministraron por entrada estándar las mismas respuestas de teclado indicadas abajo. Cada recorrido terminó con la opción `0`, código de salida 0 y sin fin de entrada inesperado. Las entradas inválidas volvieron a pedir el dato y aceptaron el valor válido siguiente. Los resultados reemplazan los mensajes y el entorno no acreditados del registro anterior del Pull Request.
+
+En las misiones: `1` → nivel `4` → masa `26000`, reserva `150000`, eventos `n`. Cada respuesta se confirma con Enter.
+
+| Caso | Entrada | Resultado obtenido | ¿Coincide? |
+| --- | --- | --- | --- |
+| Misión fallida | Velocidad `10900`, `c` en los 10 turnos | `Resultado: Fracaso` | Sí |
+| Misión exitosa corrigiendo | Velocidad `10900`, 9 veces `c`, luego `r`, `60000`, `c` | `Resultado: Éxito`; `Correcciones usadas: 1`; `Puntaje final: 94.9 / 100` | Sí |
+| Misión exitosa sin corregir | Velocidad `10906`, `c` en los 10 turnos | `Resultado: Éxito`; `Correcciones usadas: 0`; `Puntaje final: 99.6 / 100` | Sí |
+| Último reporte | `4` después del éxito sin corregir | Se repite el reporte: `Resultado: Éxito`; `Puntaje final: 99.6 / 100` | Sí |
+| Consulta a | `2`, `a`, `s` | `Atracción de la Tierra (a_T): 9.25340 m/s²`; `Atracción de la Luna (a_L): 3.441503e-05 m/s²` | Sí |
+| Consulta b | En consultas, `b`, `s` | `Energía cinética total (Ec): 1.544530e+12 J` | Sí |
+| Consulta c | En consultas, `c`, `s` | `Trabajo adicional mínimo (W/m): 59462085.69 J/kg` | Sí; 59 462 086 J/kg redondeado, como indica el README. |
+| Consulta d | En consultas, `d`, `s`; después `v` | `Pozo gravitatorio terrestre: 60.73 MJ/kg`; `Pozo gravitatorio lunar: 2.82 MJ/kg`; `Razón Tierra / Luna: 21.52`; vuelve al menú. | Sí |
+| Letra en menú | `a`, después `0` | `Entrada inválida. Ingrese un número entre 0 y 4:` | Sí |
+| Línea vacía en menú | Enter, después `0` | `Entrada inválida. Ingrese un número entre 0 y 4:` | Sí |
+| Entero fuera de rango en menú | `9`, después `0` | `Opción inexistente. Ingrese un número entre 0 y 4:` | Sí |
+| Decimal en menú | `1.5`, después `0` | `Entrada inválida. Ingrese un número entre 0 y 4:` | Sí |
+| Masa cero | `0`, después `26000` | `La masa debe estar entre 1 000 y 100 000 kg. Ingrese nuevamente:` | Sí |
+| Masa sobre el máximo | `200000`, después `26000` | `La masa debe estar entre 1 000 y 100 000 kg. Ingrese nuevamente:` | Sí |
+| Velocidad fuera de rango | `9000`, después `10900` | `La velocidad debe estar entre 10 500 y 11 200 m/s. Ingrese nuevamente:` | Sí |
+| Letra en trabajo de corrección | `r`, `abc`, después `60000` | `Entrada inválida. Ingrese un número positivo:`; acepta la corrección. Luego `a` aborta y vuelve al menú. | Sí |
+| Salir | `0` | `Saliendo del simulador. ¡Hasta la próxima!` | Sí |
+
+El README original coincide con las ejecuciones; se conserva su prueba rápida, sus instrucciones y el historial de uso de IA.
